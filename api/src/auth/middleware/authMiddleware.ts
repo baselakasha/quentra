@@ -5,10 +5,11 @@ export const authMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Unauthorized" });
+    res.status(401).json({ error: "Unauthorized" });
+    return;
   }
 
   const token = authHeader.split(" ")[1];
@@ -17,6 +18,8 @@ export const authMiddleware = (
     (req as any).user = decoded;
     next();
   } catch (err) {
-    return res.status(403).json({ error: "Token invalid" });
+    console.error('JWT verification error:', err);
+    res.status(403).json({ error: "Token invalid" });
+    return;
   }
 };

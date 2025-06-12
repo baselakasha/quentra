@@ -13,6 +13,11 @@ import { NotebookComponent } from '../../components/notebook/notebook';
 })
 export class Signup {
   signUpForm: FormGroup = new FormGroup({
+    fullName: new FormControl("", [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
+    
     username: new FormControl("", [
       Validators.required,
       Validators.minLength(5),
@@ -39,9 +44,9 @@ export class Signup {
       this.errorMessage = '';
       this.successMessage = '';
 
-      const { username, password } = this.signUpForm.value;
+      const { username, password, fullName } = this.signUpForm.value;
 
-      this.authService.signup({ username, password }).subscribe({
+      this.authService.signup({ username, password, fullName }).subscribe({
         next: (response) => {
           this.isLoading = false;
           this.successMessage = 'Account created successfully!';

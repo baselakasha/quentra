@@ -43,7 +43,10 @@ export class Login {
         next: (response) => {
           this.isLoading = false;
           this.authService.saveToken(response.token);
-          this.router.navigate(['/']);
+          // Use setTimeout to ensure the event is processed after token is saved
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 100);
         },
         error: (error) => {
           this.isLoading = false;

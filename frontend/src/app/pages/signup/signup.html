@@ -16,6 +16,23 @@
 
   <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
     <div class="field mt-4">
+      <label class="label has-text-white">Full Name</label>
+      <div class="control">
+        <input
+          class="input"
+          [class.is-danger]="getFieldError('fullName')"
+          type="text"
+          formControlName="fullName"
+          placeholder="Enter your full name"
+          required
+        />
+      </div>
+      @if (getFieldError('fullName')) {
+      <p class="help is-danger">{{ getFieldError('fullName') }}</p>
+      }
+    </div>
+
+    <div class="field mt-4">
       <label class="label has-text-white">Username</label>
       <div class="control">
         <input
