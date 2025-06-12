@@ -1,0 +1,42 @@
+@import "../../node_modules/bulma/bulma.scss";
+
+@import "abstracts/variables";
+@import "abstracts/media-quiries";
+
+@import "base/base";
+@import "base/typography";
+@import "base/utilities";
+
+.rounded {
+    border-radius: 1rem;
+}
+
+
+:root {
+  /* ─── Base colour (HSL & RGB) ─────────────────────── */
+  --bulma-primary-h: 205deg;      /* hue   */
+  --bulma-primary-s: 39%;         /* sat   */
+  --bulma-primary-l: 33%;         /* light */
+  --bulma-primary-rgb: 52, 91, 118;
+
+  /* Core tokens Bulma expects */
+  --bulma-primary:      hsla(var(--bulma-primary-h),
+                             var(--bulma-primary-s),
+                             var(--bulma-primary-l), 1);
+  --bulma-primary-base: hsla(var(--bulma-primary-h),
+                             var(--bulma-primary-s),
+                             var(--bulma-primary-l), 1);
+
+  /* Optional darker shades (mirroring your old 00-20 scale) */
+  --bulma-primary-00-l: 3%;   /* ≈ base – 30 % */
+  --bulma-primary-05-l: 8%;   /* ≈ base – 25 % */
+  --bulma-primary-10-l: 13%;  /* ≈ base – 20 % */
+  --bulma-primary-15-l: 18%;  /* ≈ base – 15 % */
+  --bulma-primary-20-l: 23%;  /* ≈ base – 10 % */
+}
+
+.button {
+    &.is-primary{
+        color: white;
+    }
+}

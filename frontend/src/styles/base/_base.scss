@@ -1,0 +1,41 @@
+body, html {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    min-height: 100vh;
+    /* on mobile the width is 95% */
+    max-width: 96%;
+    margin: 0 auto;
+    /* on non mobile its full width */
+    @include media-query(laptops){
+        font-size: 1.01rem;
+    }
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    color: $link-color;
+    text-decoration: none;
+    background-color: transparent;
+    &:visited{
+        color: darken($link-color , 10%);
+        font-weight: bold;
+    }
+    &:hover {
+        color: $link-hover-color;
+        text-decoration: underline;
+    }
+}
+
+ul {
+    list-style-position: inside;
+}
+
+ul li{
+    margin-bottom: 0.3rem;
+}

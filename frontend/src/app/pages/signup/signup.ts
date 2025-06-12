@@ -1,0 +1,85 @@
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { NotebookComponent } from '../../components/notebook/notebook';
+
+@Component({
+  selector: 'app-signup',
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, NotebookComponent],
+  templateUrl: './signup.html',
+  styleUrl: './signup.scss'
+})
+export class Signup {
+  signUpForm: FormGroup = new FormGroup({
+    username: new FormControl("", [
+      Validators.required,
+      Validators.minLength(5),
+    ]),
+
+    password: new FormControl("", [
+      Validators.required,
+      Validators.minLength(6),
+    ])
+  });
+
+  isLoading = false;
+  errorMessage = '';
+  successMessage = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  onSubmit(): void {
+    if (this.signUpForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      const { username, password } = this.signUpForm.value;
+
+      this.authService.signup({ username, password }).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          this.successMessage = 'Account created successfully!';
+          this.authService.saveToken(response.token);
+          
+          // Redirect to home or dashboard after successful signup
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 1500);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.error || 'An error occurred during signup';
+        }
+      });
+    } else {
+      this.markFormGroupTouched();
+    }
+  }
+
+  private markFormGroupTouched(): void {
+    Object.keys(this.signUpForm.controls).forEach(key => {
+      const control = this.signUpForm.get(key);
+      control?.markAsTouched();
+    });
+  }
+
+  getFieldError(fieldName: string): string {
+    const field = this.signUpForm.get(fieldName);
+    if (field?.errors && field.touched) {
+      if (field.errors['required']) {
+        return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
+      }
+      if (field.errors['minlength']) {
+        const requiredLength = field.errors['minlength'].requiredLength;
+        return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} must be at least ${requiredLength} characters`;
+      }
+    }
+    return '';
+  }
+}

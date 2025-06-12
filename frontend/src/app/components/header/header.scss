@@ -1,0 +1,8 @@
+@import "../../../styles/abstracts/media-quiries";
+
+.navbar.auth-page {
+  margin: 0 auto;
+  @include media-query(laptops){
+    max-width: 50%;
+  }
+}

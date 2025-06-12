@@ -1,0 +1,60 @@
+<app-notebook title="Login">
+  <div class="mb-4 has-text-white">
+    Don't have an account?
+    <a routerLink="/signup" class="has-text-white" style="text-decoration: underline;">Sign up</a>
+  </div>
+
+  <!-- Error Message -->
+  @if (errorMessage) {
+    <div class="notification is-danger mb-4">{{ errorMessage }}</div>
+  }
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label class="label has-text-white">Username</label>
+      <div class="control">
+        <input
+          class="input"
+          [class.is-danger]="getFieldError('username')"
+          type="text"
+          formControlName="username"
+          placeholder="Enter your username"
+          required
+        />
+      </div>
+      @if (getFieldError('username')) {
+      <p class="help is-danger">{{ getFieldError('username') }}</p>
+      }
+    </div>
+
+    <div class="field mt-4">
+      <label class="label has-text-white">Password</label>
+      <div class="control">
+        <input
+          class="input"
+          [class.is-danger]="getFieldError('password')"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+      @if (getFieldError('password')) {
+      <p class="help is-danger">{{ getFieldError('password') }}</p>
+      }
+    </div>
+
+    <div class="field mt-5">
+      <div class="control">
+        <button
+          type="submit"
+          class="button is-black"
+          [class.is-loading]="isLoading"
+          [disabled]="isLoading"
+        >
+          @if (isLoading) { Logging In... } @else { Login }
+        </button>
+      </div>
+    </div>
+  </form>
+</app-notebook>
