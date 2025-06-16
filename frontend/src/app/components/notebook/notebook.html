@@ -1,53 +1,5 @@
 <div class="book__outside-container">
-  <div class="side-punch" style="top: 1rem;">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
-
-  <div class="side-punch" style="top: 5rem;">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
-
-  <div class="side-punch" style="top: 9rem;">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
-
-  <div class="side-punch" style="top: 13rem;">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
-
-  <div class="side-punch" style="top: 17rem;">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
-
-  <div class="side-punch" style="top: 21rem;">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
-
-  <div class="side-punch" style="top: 25rem;">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
-
-  <div class="side-punch" style="top: 29rem;">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
-
-  <div class="side-punch" style="top: 33rem;">
+  <div class="side-punch" *ngFor="let punch of sidePunches" [style.top.rem]="punch">
     <div class="side-punch__outside-circle"></div>
     <div class="side-punch__line"></div>
     <div class="side-punch__inside-circle"></div>

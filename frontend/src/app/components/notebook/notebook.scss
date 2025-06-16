@@ -21,6 +21,8 @@ main {
     padding: 0;
     min-height: 80vh;
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
   &__container-black {
     background-color: black;
@@ -94,6 +96,7 @@ main {
 
 .side-punch {
   position: absolute;
+  left: 0;
   &__outside-circle {
     position: absolute;
     width: 33px;
@@ -101,7 +104,7 @@ main {
     border-radius: 50%;
     border: 0.7rem solid black;
     left: -15px;
-    top: 3rem;
+    top: -1.6rem;
   }
   &__line {
     width: 2rem;
@@ -109,7 +112,7 @@ main {
     position: absolute;
     background-color: #000;
     z-index: 2;
-    top: 3rem;
+    top: -1.6rem;
   }
   &__inside-circle{
     background-color: black;
@@ -117,7 +120,7 @@ main {
     width: 1.9rem;
     height: 1.9rem;
     position: absolute;
-    top: 2.4rem;
+    top: -2.2rem;
     z-index: 2;
     left: 1.6rem;
   }
