@@ -1,13 +1,11 @@
+import "../../tests/env-setup";
 import "reflect-metadata";
-import AppDataSource   from "@/config/ormconfig";
+import AppDataSource from "@/config/ormconfig";
 
 import request from "supertest";
 import { describe, expect, it, beforeAll, afterAll, afterEach } from "@jest/globals";
 import app from "@/app";
 import { User } from "@/auth/entity/user";
-
-process.env.NODE_ENV = "testing";
-process.env.JWT_SECRET = "test-secret-key";
 
 // Add error handling middleware for tests
 app.use((err: any, req: any, res: any, next: any) => {
@@ -43,7 +41,7 @@ describe("Authentication", () => {
     try {
       const response = await request(app)
         .post("/api/auth/signup")
-        .send({ username: "testuser", password: "password123" });
+        .send({ username: "testuser", fullName: "Test User", password: "password123" });
 
       expect(response.statusCode).toBe(201);
       expect(response.body).toHaveProperty("token");
@@ -56,11 +54,11 @@ describe("Authentication", () => {
   it("should not register a user with a duplicate username", async () => {
     await request(app)
       .post("/api/auth/signup")
-      .send({ username: "testuser", password: "password123" });
+        .send({ username: "testuser", fullName: "Test User", password: "password123" });
 
     const response = await request(app)
       .post("/api/auth/signup")
-      .send({ username: "testuser", password: "differentpassword" });
+        .send({ username: "testuser", fullName: "Test User", password: "password123" });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toHaveProperty("error");
@@ -70,7 +68,7 @@ describe("Authentication", () => {
   it("should allow a registered user to sign in", async () => {
     await request(app)
       .post("/api/auth/signup")
-      .send({ username: "loginuser", password: "password123" });
+      .send({ username: "loginuser", fullName: "Test User", password: "password123" });
 
     const response = await request(app)
       .post("/api/auth/signin")
@@ -83,7 +81,7 @@ describe("Authentication", () => {
   it("should not allow login with incorrect password", async () => {
     await request(app)
       .post("/api/auth/signup")
-      .send({ username: "secureuser", password: "correctpassword" });
+        .send({ username: "secureuser", fullName: "Test User", password: "password123" });
 
     const response = await request(app)
       .post("/api/auth/signin")

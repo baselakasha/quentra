@@ -3,8 +3,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
 } from "typeorm";
 
+import { Budget } from "@/budget/entity/budget";
 @Entity()
 export class User {
   @PrimaryGeneratedColumn("uuid")
@@ -16,9 +18,12 @@ export class User {
   @Column()
   password!: string;
   
-  @Column({ nullable: true })
+  @Column()
   fullName!: string;
 
   @CreateDateColumn()
   createdAt!: Date;
+
+  @OneToMany(()  => Budget, (budget) => budget.user)
+  budgets!: Budget[];
 }

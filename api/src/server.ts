@@ -9,6 +9,12 @@ AppDataSource.initialize()
     app.listen(config.port, () => {
       console.log(`Server running on port ${config.port}`);
     });
+    app.on("error", (err) => {
+      console.error("Server error:", err);
+    });
+    app.on("uncaughtException", (err) => {
+      console.error("Uncaught Exception:", err);
+    });
   })
   .catch((error) => {
     console.error("Error during Data Source initialization:", error);
