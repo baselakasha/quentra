@@ -38,7 +38,7 @@ export interface ErrorResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth'; // Updated to match API port
+  private apiUrl = 'http://localhost:8080/api/auth'; 
 
   constructor(
     private http: HttpClient,

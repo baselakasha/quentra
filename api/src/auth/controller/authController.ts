@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
-import { AppDataSource } from "@/config/ormconfig";
+import AppDataSource  from "@/config/ormconfig";
 import { User } from "@/auth/entity/user";
 import { generateToken } from "@/auth/util/jwt";
 

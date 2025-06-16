@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { AppDataSource } from "@/config/ormconfig";
+import AppDataSource   from "@/config/ormconfig";
 
 import request from "supertest";
 import { describe, expect, it, beforeAll, afterAll, afterEach } from "@jest/globals";
