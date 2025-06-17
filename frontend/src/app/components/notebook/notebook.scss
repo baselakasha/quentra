@@ -1,4 +1,4 @@
-@import "../../../styles/abstracts/media-quiries";
+@use "../../../styles/abstracts/media-quiries";
 
 main {
   width: 100vw !important;
@@ -11,7 +11,7 @@ main {
     position: relative;
     margin: auto;
     margin-top: 2rem;
-    @include media-query(laptops){
+    @include media-quiries.media-query(laptops){
       width: 50%;
     }
   }

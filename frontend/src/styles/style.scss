@@ -1,11 +1,11 @@
-@import "../../node_modules/bulma/bulma.scss";
+@use "../../node_modules/bulma/bulma.scss";
 
-@import "abstracts/variables";
-@import "abstracts/media-quiries";
+@use "abstracts/variables";
+@use "abstracts/media-quiries";
 
-@import "base/base";
-@import "base/typography";
-@import "base/utilities";
+@use "base/base";
+@use "base/typography";
+@use "base/utilities";
 
 .rounded {
     border-radius: 1rem;

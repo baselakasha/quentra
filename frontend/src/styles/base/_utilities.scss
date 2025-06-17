@@ -1,11 +1,13 @@
+@use "../abstracts/media-quiries";
+
 @mixin right-aligned-container {
     width: 94.5%;
     margin-left: auto;
     margin-right: 0;
-    @include media-query(laptops){
+    @include media-quiries.media-query(laptops){
         width: 88%;
     }
-    @include media-query(four_k){
+    @include media-quiries.media-query(four_k){
         width: 85%;
     }
 }
@@ -16,13 +18,13 @@
 
 .small-container{
     width: 89%;
-    @include media-query(laptops){
+    margin: 0 auto;
+    @include media-quiries.media-query(laptops){
         width: 45%;
     }
-    @include media-query(four_k){
+    @include media-quiries.media-query(four_k){
         width: 40%;
     }
-    margin: 0 auto;
     &--no-center{
         margin: 0;
     }
@@ -30,27 +32,27 @@
 
 .container {
     width: 96%;
-    @include media-query(tablets){
-        width: 89%;
+    margin: 0 auto;
+    @include media-quiries.media-query(tablets){
+        max-width: 60%;
     }
-    @include media-query(laptops){
+    @include media-quiries.media-query(laptops){
         width: 86%;
-    }
-    @include media-query(four_k){
+    } 
+    @include media-quiries.media-query(four_k){
         width: 60%;
     }
-    margin: 0 auto;
 }
 
 .medium-container{
     width: 89%;
-    @include media-query(laptops){
+    margin: 0 auto;
+    @include media-quiries.media-query(laptops){
         width: 52%;
     }
-    @include media-query(four_k){
+    @include media-quiries.media-query(four_k){
         width: 50%;
     }
-    margin: 0 auto;
 }
 
 .bg-light{
