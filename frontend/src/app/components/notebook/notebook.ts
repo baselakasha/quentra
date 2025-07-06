@@ -12,6 +12,7 @@ export class NotebookComponent implements AfterViewInit {
   @Input() title: string = '';
   @Input() showSidePunches: boolean = true;
   @Input() centerContent: boolean = true;
+  @Input() fullWidth: boolean = false;
   
   sidePunches: number[] = [];
   private minPunches = 5;

@@ -1,4 +1,4 @@
-<div class="book__outside-container">
+<div class="book__outside-container" [class.full-width]="fullWidth">
   <ng-container *ngIf="showSidePunches">
     <div class="side-punch" *ngFor="let punch of sidePunches" [style.top.rem]="punch">
       <div class="side-punch__outside-circle"></div>
