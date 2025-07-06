@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 })
 export class NotebookComponent implements AfterViewInit {
   @Input() title: string = '';
+  @Input() showSidePunches: boolean = true;
+  @Input() centerContent: boolean = true;
   
   sidePunches: number[] = [];
   private minPunches = 5;
@@ -29,6 +31,12 @@ export class NotebookComponent implements AfterViewInit {
   }
   
   private calculatePunches() {
+    // Skip calculation if side punches are hidden
+    if (!this.showSidePunches) {
+      this.sidePunches = [];
+      return;
+    }
+    
     const containerElement = this.el.nativeElement.querySelector('.book__container');
     if (!containerElement) return;
     

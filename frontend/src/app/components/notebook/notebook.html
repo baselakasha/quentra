@@ -1,15 +1,17 @@
 <div class="book__outside-container">
-  <div class="side-punch" *ngFor="let punch of sidePunches" [style.top.rem]="punch">
-    <div class="side-punch__outside-circle"></div>
-    <div class="side-punch__line"></div>
-    <div class="side-punch__inside-circle"></div>
-  </div>
+  <ng-container *ngIf="showSidePunches">
+    <div class="side-punch" *ngFor="let punch of sidePunches" [style.top.rem]="punch">
+      <div class="side-punch__outside-circle"></div>
+      <div class="side-punch__line"></div>
+      <div class="side-punch__inside-circle"></div>
+    </div>
+  </ng-container>
   
   <div class="book book__container">
     <div class="book book__container-black">
       <div class="book book__container-top">
-        <div class="main-block">
-          <h1 class="title is-1 has-text-white mb-5">{{ title }}</h1>
+        <div class="main-block" [class.centered]="centerContent">
+          <h1 class="title is-1 has-text-white mb-5" *ngIf="title">{{ title }}</h1>
           <ng-content></ng-content>
         </div>
       </div>

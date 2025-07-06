@@ -45,11 +45,22 @@ main {
   }
   .main-block {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
     width: 90%;
     max-width: 400px;
+    
+    &.centered {
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+    
+    &:not(.centered) {
+      left: 2rem;
+      top: 2rem;
+      right: 2rem;
+      width: auto;
+      max-width: none;
+    }
     
     .field {
       margin-bottom: 1.5rem;
