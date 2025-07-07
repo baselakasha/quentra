@@ -58,7 +58,18 @@
                       step="0.01"
                     />
                   </td>
-                  <td>{{getProgressPercentage(category)}}%</td>
+                  <td>
+                    {{getProgressPercentage(category) | number:'1.0-0'}}%
+                    <div class="progress-container">
+                      <div class="progress-bar" 
+                           [ngClass]="{
+                             'warning': getProgressPercentage(category) > 75 && getProgressPercentage(category) <= 100, 
+                             'danger': getProgressPercentage(category) > 100
+                           }"
+                           [style.width.%]="getProgressPercentage(category) > 100 ? 100 : getProgressPercentage(category)">
+                      </div>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td>
@@ -74,7 +85,7 @@
                     <button class="button is-primary" (click)="addCategory(budget)">Add</button>
                   </td>
                 </tr>
-                <tr class="has-text-weight-bold">
+                <tr class="has-text-weight-bold" [ngClass]="getBudgetHealthClass(budget)">
                   <td class="has-text-weight-bold">Totals</td>
                   <td class="has-text-weight-bold">
                     £{{ getTotalPlanned(budget) | number:'1.2-2' }}
@@ -83,7 +94,16 @@
                     £{{ getTotalSpent(budget) | number:'1.2-2' }}
                   </td>
                   <td class="has-text-weight-bold">
-                    £{{ getRemainingBudget(budget) | number:'1.2-2' }}
+                    {{ getTotalPercentage(budget) | number:'1.0-0' }}%
+                    <div class="progress-container">
+                      <div class="progress-bar" 
+                           [ngClass]="{
+                             'warning': getTotalPercentage(budget) > 75 && getTotalPercentage(budget) <= 100, 
+                             'danger': getTotalPercentage(budget) > 100
+                           }"
+                           [style.width.%]="getTotalPercentage(budget) > 100 ? 100 : getTotalPercentage(budget)">
+                      </div>
+                    </div>
                   </td>
                 </tr>
               </tbody>

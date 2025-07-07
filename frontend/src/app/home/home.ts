@@ -110,9 +110,28 @@ export class Home implements OnInit {
 
   getProgressPercentage(category: Category): number {
     if (category.plannedAmount === 0) return 0;
-    return Math.min((category.spentAmount / category.plannedAmount) * 100, 100);
+    // Remove the Math.min to allow percentages above 100%
+    return (category.spentAmount / category.plannedAmount) * 100;
   }
 
+  // Get total budget percentage spent
+  getTotalPercentage(budget: Budget): number {
+    const totalPlanned = this.getTotalPlanned(budget);
+    if (totalPlanned === 0) return 0;
+    
+    const totalSpent = this.getTotalSpent(budget);
+    // Remove the Math.min to allow percentages above 100%
+    return (totalSpent / totalPlanned) * 100;
+  }
+  
+  // Get budget health based on spending percentage
+  getBudgetHealthClass(budget: Budget): string {
+    const percentage = this.getTotalPercentage(budget);
+    if (percentage > 100) return 'danger';
+    if (percentage > 75) return 'warning';
+    return 'good';
+  }
+  
   // Action methods
   createSampleCategory(budgetId: string) {
     const sampleCategory = {

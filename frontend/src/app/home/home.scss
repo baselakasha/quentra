@@ -9,6 +9,30 @@
     }
   }
   
+  // Progress bar styles
+  .progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 0.3rem;
+    
+    .progress-bar {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #3db9dc 0%, #1a7fa1 100%);
+      transition: width 0.3s ease;
+      
+      &.warning {
+        background: linear-gradient(90deg, #ffba08 0%, #faa307 100%);
+      }
+      
+      &.danger {
+        background: linear-gradient(90deg, #ef476f 0%, #d1365b 100%);
+      }
+    }
+  }
+  
   .budget-summary {
     .summary-stats {
       display: flex;
@@ -105,6 +129,21 @@
       font-size: 0.75rem;
       padding: 0.5rem 0.75rem;
       height: auto;
+    }
+  }
+  
+  // Budget health indicator styles
+  .has-text-weight-bold {
+    &.good {
+      color: #1a7fa1;
+    }
+    
+    &.warning {
+      color: #faa307;
+    }
+    
+    &.danger {
+      color: #d1365b;
     }
   }
 }
