@@ -46,6 +46,7 @@ export interface CreateCategoryRequest {
   name: string;
   budgetId: string;
   plannedAmount?: number;
+  spentAmount?: number;
 }
 
 export interface UpdateCategoryRequest {

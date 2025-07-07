@@ -2,11 +2,11 @@
   <div *ngIf="loading" class="notification is-info">
     <p>Loading budgets...</p>
   </div>
-  
+
   <div *ngIf="error" class="notification is-danger">
     <p>{{ error }}</p>
   </div>
-  
+
   <div *ngIf="budgets.length === 0 && !loading" class="has-text-centered py-6">
     <div class="notification is-warning">
       <p>No budgets found. Create your first budget!</p>
@@ -15,82 +15,81 @@
       </button>
     </div>
   </div>
-  
+
   <div class="" *ngIf="budgets.length > 0">
     <div *ngFor="let budget of budgets">
-      <app-notebook 
-        [title]="budget.name" 
-        [showSidePunches]="false" 
-        [centerContent]="false" 
+      <app-notebook
+        [title]="budget.name"
+        [showSidePunches]="false"
+        [centerContent]="false"
         [fullWidth]="true"
-        >
-        
-        <div class="budget-content">
-          <div class="budget-info mb-4">
-            <p><strong>Period:</strong> {{ budget.startDate }} - {{ budget.endDate }}</p>
-            <p><strong>Monthly Income:</strong> ${{ budget.monthlyIncome | number:'1.2-2' }}</p>
+      >
+        <div class="budget-content columns">
+          <div class="column is-7">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Planned Spending</th>
+                  <th>Actual Spending</th>
+                  <th>Percentage of Planned Spending</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let category of budget.categories">
+                  <td>{{ category.name }}</td>
+                  <td>
+                    <input
+                      class="input"
+                      type="number"
+                      [(ngModel)]="category.plannedAmount"
+                      (blur)="updateCategory(category)"
+                      min="0"
+                      step="0.01"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      class="input"
+                      type="number"
+                      [(ngModel)]="category.spentAmount"
+                      (blur)="updateCategory(category)"
+                      min="0"
+                      step="0.01"
+                    />
+                  </td>
+                  <td>{{getProgressPercentage(category)}}%</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input class="input" type="text" placeholder="Category Name" [(ngModel)]="newCategoryName" />
+                  </td>
+                  <td>
+                    <input class="input" type="number" placeholder="Planned Amount" [(ngModel)]="newCategoryPlannedAmount" min="0" step="0.01" />
+                  </td>
+                  <td>
+                    <input class="input" type="number" placeholder="Actual Spending" [(ngModel)]="newCategorySpentAmount" min="0" step="0.01" />
+                  </td>
+                  <td>
+                    <button class="button is-primary" (click)="addCategory(budget)">Add</button>
+                  </td>
+                </tr>
+                <tr class="has-text-weight-bold">
+                  <td class="has-text-weight-bold">Totals</td>
+                  <td class="has-text-weight-bold">
+                    £{{ getTotalPlanned(budget) | number:'1.2-2' }}
+                  </td>
+                  <td class="has-text-weight-bold">
+                    £{{ getTotalSpent(budget) | number:'1.2-2' }}
+                  </td>
+                  <td class="has-text-weight-bold">
+                    £{{ getRemainingBudget(budget) | number:'1.2-2' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          
-          <div class="budget-summary mb-4" *ngIf="budget.categories && budget.categories.length > 0">
-            <h4 class="title is-6 has-text-white">Budget Summary</h4>
-            <div class="summary-stats">
-              <div class="stat-item">
-                <span class="stat-label">Total Planned:</span>
-                <span class="stat-value">${{ getTotalPlanned(budget) | number:'1.2-2' }}</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Total Spent:</span>
-                <span class="stat-value">${{ getTotalSpent(budget) | number:'1.2-2' }}</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Remaining:</span>
-                <span class="stat-value" [class.has-text-danger]="getRemainingBudget(budget) < 0">
-                  ${{ getRemainingBudget(budget) | number:'1.2-2' }}
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="categories-section">
-            <h4 class="title is-6 has-text-white">Categories</h4>
-            
-            <div *ngIf="!budget.categories || budget.categories.length === 0" class="has-text-centered">
-              <p class="has-text-grey-light">No categories yet</p>
-              <button class="button is-small is-primary mt-2" (click)="createSampleCategory(budget.id)">
-                Add Category
-              </button>
-            </div>
-            
-            <div *ngIf="budget.categories && budget.categories.length > 0">
-              <div class="category-item" *ngFor="let category of budget.categories">
-                <div class="category-header">
-                  <span class="category-name">{{ category.name }}</span>
-                  <span class="category-amount">${{ category.spentAmount | number:'1.2-2' }} / ${{ category.plannedAmount | number:'1.2-2' }}</span>
-                </div>
-                <div class="category-progress">
-                  <div class="progress-bar">
-                    <div class="progress-fill" 
-                         [style.width.%]="getProgressPercentage(category)"
-                         [class.is-over-budget]="category.spentAmount > category.plannedAmount">
-                    </div>
-                  </div>
-                  <span class="progress-text">{{ getProgressPercentage(category) | number:'1.0-0' }}%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="budget-actions mt-4">
-            <button class="button is-small is-info" (click)="viewBudgetDetails(budget)">
-              View Details
-            </button>
-            <button class="button is-small is-warning" (click)="editBudget(budget)">
-              Edit
-            </button>
-            <button class="button is-small is-danger" (click)="deleteBudget(budget.id)">
-              Delete
-            </button>
-          </div>
+          <div class="column"></div>
         </div>
       </app-notebook>
     </div>
