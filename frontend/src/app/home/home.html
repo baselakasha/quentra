@@ -16,102 +16,21 @@
     </div>
   </div>
 
-  <div class="" *ngIf="budgets.length > 0">
-    <div *ngFor="let budget of budgets">
-      <app-notebook
-        [title]="budget.name"
-        [showSidePunches]="false"
-        [centerContent]="false"
-        [fullWidth]="true"
-      >
-        <div class="budget-content columns">
-          <div class="column is-7">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>Planned Spending</th>
-                  <th>Actual Spending</th>
-                  <th>Percentage of Planned Spending</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let category of budget.categories">
-                  <td>{{ category.name }}</td>
-                  <td>
-                    <input
-                      class="input"
-                      type="number"
-                      [(ngModel)]="category.plannedAmount"
-                      (blur)="updateCategory(category)"
-                      min="0"
-                      step="0.01"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      class="input"
-                      type="number"
-                      [(ngModel)]="category.spentAmount"
-                      (blur)="updateCategory(category)"
-                      min="0"
-                      step="0.01"
-                    />
-                  </td>
-                  <td>
-                    {{getProgressPercentage(category) | number:'1.0-0'}}%
-                    <div class="progress-container">
-                      <div class="progress-bar" 
-                           [ngClass]="{
-                             'warning': getProgressPercentage(category) > 75 && getProgressPercentage(category) <= 100, 
-                             'danger': getProgressPercentage(category) > 100
-                           }"
-                           [style.width.%]="getProgressPercentage(category) > 100 ? 100 : getProgressPercentage(category)">
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <input class="input" type="text" placeholder="Category Name" [(ngModel)]="newCategoryName" />
-                  </td>
-                  <td>
-                    <input class="input" type="number" placeholder="Planned Amount" [(ngModel)]="newCategoryPlannedAmount" min="0" step="0.01" />
-                  </td>
-                  <td>
-                    <input class="input" type="number" placeholder="Actual Spending" [(ngModel)]="newCategorySpentAmount" min="0" step="0.01" />
-                  </td>
-                  <td>
-                    <button class="button is-primary" (click)="addCategory(budget)">Add</button>
-                  </td>
-                </tr>
-                <tr class="has-text-weight-bold" [ngClass]="getBudgetHealthClass(budget)">
-                  <td class="has-text-weight-bold">Totals</td>
-                  <td class="has-text-weight-bold">
-                    £{{ getTotalPlanned(budget) | number:'1.2-2' }}
-                  </td>
-                  <td class="has-text-weight-bold">
-                    £{{ getTotalSpent(budget) | number:'1.2-2' }}
-                  </td>
-                  <td class="has-text-weight-bold">
-                    {{ getTotalPercentage(budget) | number:'1.0-0' }}%
-                    <div class="progress-container">
-                      <div class="progress-bar" 
-                           [ngClass]="{
-                             'warning': getTotalPercentage(budget) > 75 && getTotalPercentage(budget) <= 100, 
-                             'danger': getTotalPercentage(budget) > 100
-                           }"
-                           [style.width.%]="getTotalPercentage(budget) > 100 ? 100 : getTotalPercentage(budget)">
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="column"></div>
-        </div>
-      </app-notebook>
+  <div class="budget-list" *ngIf="budgets.length > 0">
+    <div class="add-budget-btn mb-4">
+      <button class="button is-primary" (click)="createNewBudget()">
+        Create New Budget
+      </button>
+    </div>
+    
+    <div class="budgets-container">
+      <app-budget 
+        *ngFor="let budget of budgets" 
+        [budget]="budget"
+        (budgetDeleted)="onBudgetDeleted($event)"
+        (error)="onError($event)"
+        class="mb-5"
+      ></app-budget>
     </div>
   </div>
 </div>
