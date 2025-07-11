@@ -1,3 +1,70 @@
+.container-fluid {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.budget-list {
+  margin-top: 1.5rem;
+  
+  .add-budget-btn {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.budgets-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// Add animation for notifications
+.notification {
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+  margin-bottom: 1rem;
+  
+  &.is-success {
+    background-color: rgba(35, 209, 96, 0.85);
+    box-shadow: 0 2px 10px rgba(35, 209, 96, 0.3);
+  }
+  
+  &.is-danger {
+    background-color: rgba(241, 70, 104, 0.85);
+    box-shadow: 0 2px 10px rgba(241, 70, 104, 0.3);
+  }
+  
+  .delete {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+// Style for empty state
+.has-text-centered.py-6 {
+  padding: 3rem 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin: 2rem auto;
+  max-width: 600px;
+  
+  .button.is-large {
+    margin-top: 1rem;
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
 .budget-content {
   padding: 1rem;
   

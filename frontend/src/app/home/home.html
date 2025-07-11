@@ -1,22 +1,40 @@
 <div class="container-fluid">
+  <!-- Budget Creation Modal -->
+  <app-budget-modal (budgetCreated)="onBudgetFormSubmit($event)"></app-budget-modal>
+  
   <div *ngIf="loading" class="notification is-info">
     <p>Loading budgets...</p>
   </div>
 
   <div *ngIf="error" class="notification is-danger">
+    <button class="delete" (click)="error = null"></button>
     <p>{{ error }}</p>
+  </div>
+  
+  <div *ngIf="successMessage" class="notification is-success">
+    <button class="delete" (click)="successMessage = null"></button>
+    <p>{{ successMessage }}</p>
   </div>
 
   <div *ngIf="budgets.length === 0 && !loading" class="has-text-centered py-6">
-    <div class="notification is-warning">
+    <div class="notification is-warning mb-4">
       <p>No budgets found. Create your first budget!</p>
     </div>
+    <button class="button is-primary is-large" (click)="createNewBudget()">
+      <span class="icon">
+        <i class="fas fa-plus"></i>
+      </span>
+      <span>Create New Budget</span>
+    </button>
   </div>
 
   <div class="budget-list" *ngIf="budgets.length > 0">
     <div class="add-budget-btn mb-4">
       <button class="button is-primary" (click)="createNewBudget()">
-        Create New Budget
+        <span class="icon">
+          <i class="fas fa-plus"></i>
+        </span>
+        <span>Create New Budget</span>
       </button>
     </div>
     

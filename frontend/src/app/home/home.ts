@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BudgetComponent } from '../components/budget/budget';
+import { BudgetModalComponent } from '../components/budget-modal/budget-modal';
 import { BudgetService } from '../services/budget.service';
-import { Budget } from '../types/budget.types';
+import { Budget, CreateBudgetRequest } from '../types/budget.types';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, BudgetComponent],
+  imports: [CommonModule, FormsModule, BudgetComponent, BudgetModalComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
@@ -16,6 +17,9 @@ export class Home implements OnInit {
   budgets: Budget[] = [];
   loading = false;
   error: string | null = null;
+  successMessage: string | null = null;
+  
+  @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
 
   constructor(private budgetService: BudgetService) {}
 
@@ -62,21 +66,61 @@ export class Home implements OnInit {
 
   
   createNewBudget() {
-    const newBudget = {
-      name: 'New Budget',
-      startDate: new Date().toISOString().split('T')[0],
-      endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
-      monthlyIncome: 0
-    };
+    // Open the modal instead of directly creating a budget
+    this.budgetModal.open();
+  }
+  
+  onBudgetFormSubmit(budgetData: CreateBudgetRequest) {
+    this.error = null;
     
-    this.budgetService.createBudget(newBudget).subscribe({
+    // Validate budget data
+    if (!budgetData.name || budgetData.name.trim() === '') {
+      this.budgetModal.setErrorMessage('Budget name is required');
+      return;
+    }
+    
+    if (!budgetData.startDate) {
+      this.budgetModal.setErrorMessage('Start date is required');
+      return;
+    }
+    
+    if (!budgetData.endDate) {
+      this.budgetModal.setErrorMessage('End date is required');
+      return;
+    }
+    
+    if (new Date(budgetData.endDate) < new Date(budgetData.startDate)) {
+      this.budgetModal.setErrorMessage('End date must be after start date');
+      return;
+    }
+    
+    // Ensure monthly income is a number
+    budgetData.monthlyIncome = Number(budgetData.monthlyIncome) || 0;
+    
+    this.budgetService.createBudget(budgetData).subscribe({
       next: (budget) => {
+        // Format any numeric values
+        budget.monthlyIncome = Number(budget.monthlyIncome) || 0;
+        
+        // Add the new budget to the list
         this.budgets.push(budget);
+        
+        // Show success message
+        this.error = null;
+        this.showSuccessMessage(`Budget "${budget.name}" created successfully!`);
+        
         console.log('New budget created:', budget);
+        this.budgetModal.finishLoading(true); // Close modal on success
       },
       error: (error) => {
-        this.error = 'Failed to create new budget';
+        // Show specific error message if available
+        const errorMessage = error.error?.message || 'Failed to create new budget';
+        this.error = errorMessage;
         console.error('Error creating new budget:', error);
+        this.budgetModal.finishLoading(false); // Keep modal open on error
+        
+        // Set error in modal
+        this.budgetModal.setErrorMessage(errorMessage);
       }
     });
   }
@@ -88,5 +132,14 @@ export class Home implements OnInit {
   
   onError(errorMessage: string) {
     this.error = errorMessage;
+  }
+  
+  showSuccessMessage(message: string) {
+    this.successMessage = message;
+    
+    // Auto-hide success message after 5 seconds
+    setTimeout(() => {
+      this.successMessage = null;
+    }, 5000);
   }
 }
