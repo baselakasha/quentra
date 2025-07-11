@@ -156,14 +156,4 @@ export class BudgetComponent {
       });
     }
   }
-
-  editBudget() {
-    // Could open an edit modal or navigate to edit page
-    console.log('Editing budget:', this.budget);
-  }
-
-  viewBudgetDetails() {
-    // Could navigate to a detailed view or open a modal
-    console.log('Viewing budget details:', this.budget);
-  }
 }
