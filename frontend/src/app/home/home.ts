@@ -60,25 +60,6 @@ export class Home implements OnInit {
     });
   }
 
-  createSampleBudget() {
-    const sampleBudget = {
-      name: 'Monthly Budget',
-      startDate: '2025-01-01',
-      endDate: '2025-01-31',
-      monthlyIncome: 5000
-    };
-
-    this.budgetService.createBudget(sampleBudget).subscribe({
-      next: (budget) => {
-        this.budgets.push(budget);
-        console.log('Budget created:', budget);
-      },
-      error: (error) => {
-        this.error = 'Failed to create budget';
-        console.error('Error creating budget:', error);
-      }
-    });
-  }
   
   createNewBudget() {
     const newBudget = {

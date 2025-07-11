@@ -13,6 +13,7 @@ export class NotebookComponent implements AfterViewInit {
   @Input() showSidePunches: boolean = true;
   @Input() centerContent: boolean = true;
   @Input() fullWidth: boolean = false;
+  @Input() fixedHeight: boolean = false;
   
   sidePunches: number[] = [];
   private minPunches = 5;
@@ -41,7 +42,14 @@ export class NotebookComponent implements AfterViewInit {
     const containerElement = this.el.nativeElement.querySelector('.book__container');
     if (!containerElement) return;
     
-    const containerHeight = containerElement.offsetHeight;
+    // If fixed height is used, we can calculate based on viewport height
+    let containerHeight;
+    if (this.fixedHeight) {
+      containerHeight = window.innerHeight * 0.8; // 80vh
+    } else {
+      containerHeight = containerElement.offsetHeight;
+    }
+    
     const remSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
     
     const containerHeightRem = containerHeight / remSize;

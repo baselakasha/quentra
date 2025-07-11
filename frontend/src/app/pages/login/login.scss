@@ -1,0 +1,14 @@
+// Login page specific styles
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.login-form-container {
+  width: 100%;
+  
+  form {
+    width: 100%;
+  }
+}

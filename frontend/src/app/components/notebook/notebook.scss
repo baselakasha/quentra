@@ -4,13 +4,30 @@ main {
   width: 100vw !important;
 }
 
+// Utility classes
+.text-center {
+  text-align: center;
+}
+
+// Special styling for login/signup forms
+.login-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 .book {
   &__outside-container {
     height: auto;
-    min-height: 80vh;
     position: relative;
     margin: auto;
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    
     @include media-quiries.media-query(laptops){
       width: 50%;
     }
@@ -24,7 +41,15 @@ main {
         width: 100%;
       }
     }
+    
+    &.fixed-height {
+      min-height: 80vh;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+    }
   }
+  
   &__container {
     background-color: #5EA5D7;
     border-radius: 0 3rem 3rem 3rem;
@@ -35,7 +60,13 @@ main {
     position: relative;
     display: flex;
     flex-direction: column;
+    flex: 1;
+    
+    .fixed-height & {
+      min-height: 80vh;
+    }
   }
+  
   &__container-black {
     border-radius: 0 3rem 3rem 3rem;
     background-color: black;
@@ -44,11 +75,14 @@ main {
     min-height: 100%;
     margin: 0;
     padding: 0;
-    display: block;
+    display: flex; // Changed from block to flex
+    flex-direction: column;
+    flex: 1;
     position: relative; // Change from absolute to relative
     left: 4px;
     top: 4px;
   }
+  
   &__container-top {
     border-radius: 0 3rem 3rem 3rem;
     background: linear-gradient(150deg,rgba(96, 168, 219, 1) 0%, rgba(51, 90, 117, 1) 43%, rgba(51, 90, 117, 1) 100%);    
@@ -58,8 +92,34 @@ main {
     margin-top: 10px;
     height: auto; // Allow height to grow with content
     min-height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     padding-bottom: 2rem; // Add padding at the bottom
+    
+    // Special scrollbar styling
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    // When using fixed height and centered content
+    .fixed-height.has-centered-content & {
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+    }
   }
+  
   .main-block {
     position: relative; // Change from absolute to relative
     width: 90%;
@@ -74,6 +134,21 @@ main {
     &:not(.centered) {
       width: auto;
       max-width: none;
+    }
+    
+    // Fixed height centered content styling
+    .fixed-height.has-centered-content & {
+      width: 90%;
+      max-width: 400px;
+      margin: auto;
+      
+      h1.title {
+        text-align: center;
+      }
+      
+      form {
+        width: 100%;
+      }
     }
     
     .field {
@@ -119,9 +194,16 @@ main {
   }
 }
 
+// Side punch styles
 .side-punch {
   position: absolute;
   left: 0;
+  
+  // For fixed height notebooks, we need to adjust the side punch z-index
+  .fixed-height & {
+    z-index: 10;
+  }
+  
   &__outside-circle {
     position: absolute;
     width: 33px;
@@ -131,6 +213,7 @@ main {
     left: -15px;
     top: -1.6rem;
   }
+  
   &__line {
     width: 2rem;
     height: 0.7rem;
@@ -139,7 +222,8 @@ main {
     z-index: 2;
     top: -1.6rem;
   }
-  &__inside-circle{
+  
+  &__inside-circle {
     background-color: black;
     border-radius: 50%;
     width: 1.9rem;
