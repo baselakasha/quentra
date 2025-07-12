@@ -1,12 +1,4 @@
-.container-fluid {
-  padding: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .budget-list {
-  margin-top: 1.5rem;
-  
   .add-budget-btn {
     display: flex;
     justify-content: flex-end;
@@ -16,7 +8,7 @@
 .budgets-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 3rem;
 }
 
 // Add animation for notifications

@@ -24,7 +24,6 @@ main {
     height: auto;
     position: relative;
     margin: auto;
-    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     
@@ -95,7 +94,6 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding-bottom: 2rem; // Add padding at the bottom
     
     // Special scrollbar styling
     &::-webkit-scrollbar {

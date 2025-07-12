@@ -1,0 +1,115 @@
+<div class="modal" [class.is-active]="isActive">
+  <div class="modal-background" (click)="close()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">{{ title }}</p>
+      <button class="delete" aria-label="close" (click)="close()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div *ngIf="errorMessage" class="notification is-danger">
+        {{ errorMessage }}
+      </div>
+
+      <div class="field">
+        <label class="label">Budget Name</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            [(ngModel)]="budgetData.name"
+            placeholder="Enter budget name"
+            required
+            #budgetName="ngModel"
+            [ngClass]="{'is-danger': budgetName.invalid && (budgetName.dirty || budgetName.touched || formSubmitted)}"
+          />
+        </div>
+        <p
+          *ngIf="budgetName.invalid && (budgetName.dirty || budgetName.touched || formSubmitted)"
+          class="help is-danger"
+        >
+          Budget name is required
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label">Start Date</label>
+        <div class="control">
+          <input
+            class="input"
+            type="date"
+            [(ngModel)]="budgetData.startDate"
+            required
+            #startDate="ngModel"
+            [ngClass]="{'is-danger': startDate.invalid && (startDate.dirty || startDate.touched || formSubmitted)}"
+          />
+        </div>
+        <p
+          *ngIf="startDate.invalid && (startDate.dirty || startDate.touched || formSubmitted)"
+          class="help is-danger"
+        >
+          Start date is required
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label">End Date</label>
+        <div class="control">
+          <input
+            class="input"
+            type="date"
+            [(ngModel)]="budgetData.endDate"
+            required
+            #endDate="ngModel"
+            [ngClass]="{'is-danger': endDate.invalid && (endDate.dirty || endDate.touched || formSubmitted) || endDateBeforeStartDate()}"
+          />
+        </div>
+        <p
+          *ngIf="endDate.invalid && (endDate.dirty || endDate.touched || formSubmitted)"
+          class="help is-danger"
+        >
+          End date is required
+        </p>
+        <p *ngIf="endDateBeforeStartDate()" class="help is-danger">
+          End date must be after start date
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label">Monthly Income</label>
+        <div class="control has-icons-left">
+          <span class="icon is-small is-left">
+            <i class="fas fa-pound-sign"></i>
+          </span>
+          <input
+            class="input"
+            type="number"
+            [(ngModel)]="budgetData.monthlyIncome"
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+            required
+            #monthlyIncome="ngModel"
+            [ngClass]="{'is-danger': monthlyIncome.invalid && (monthlyIncome.dirty || monthlyIncome.touched || formSubmitted)}"
+          />
+        </div>
+        <p
+          *ngIf="monthlyIncome.invalid && (monthlyIncome.dirty || monthlyIncome.touched || formSubmitted)"
+          class="help is-danger"
+        >
+          Monthly income must be a positive number
+        </p>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button
+        class="button is-primary"
+        [class.is-loading]="isLoading"
+        [disabled]="isLoading"
+        (click)="save()"
+      >
+        {{ isLoading ? 'Saving...' : 'Save' }}
+      </button>
+      <button class="button ml-3" (click)="close()">Cancel</button>
+    </footer>
+  </div>
+</div>
