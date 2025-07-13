@@ -34,3 +34,5 @@
 - [x] As a user, I want the home page to only display budget options when I'm logged in so that I know when I need to authenticate.
 
 - [x] As a user, I want to duplicate a budget so that I can create a new budget based on an existing one.
+
+- [x] As a user, I want a clean budget interface with an organized menu for actions so that I can easily manage my budgets.

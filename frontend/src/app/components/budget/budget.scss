@@ -17,6 +17,83 @@
   }
 }
 
+// Budget dropdown menu styles
+.budget-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative; // Ensure the container is positioned
+  
+  // Mobile-specific dropdown positioning
+  @media screen and (max-width: 768px) {
+    .dropdown.is-right {
+      position: static; // On mobile, make the dropdown position relative to its parent
+      
+      .dropdown-menu {
+        min-width: 12rem; // Slightly narrower on mobile
+        max-width: 90vw; // Prevent overflow
+        position: absolute;
+        z-index: 100; // Ensure it appears above other content
+      }
+    }
+  }
+  
+  .dropdown {
+    position: relative;
+    
+    &.dropdown-right-aligned {
+      .dropdown-menu {
+        right: 0;
+        left: auto;
+        position: absolute;
+      }
+    }
+    
+    &.dropdown-left-aligned {
+      .dropdown-menu {
+        right: auto;
+        left: 0;
+        position: absolute;
+      }
+    }
+    
+    .dropdown-menu {
+      min-width: 16rem;
+      position: absolute;
+      
+      @media screen and (max-width: 768px) {
+        // On mobile, ensure it doesn't go offscreen
+        max-width: calc(100vw - 30px);
+      }
+      
+      .dropdown-content {
+        background-color: #fff;
+        border-radius: 0.375rem;
+        box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.02);
+        
+        .dropdown-item {
+          display: flex;
+          align-items: center;
+          padding: 0.5rem 1rem;
+          cursor: pointer;
+          
+          &:hover {
+            background-color: #f5f5f5;
+          }
+          
+          &.has-text-danger:hover {
+            background-color: rgba(241, 70, 104, 0.1);
+          }
+        }
+        
+        .dropdown-divider {
+          margin: 0.25rem 0;
+        }
+      }
+    }
+  }
+}
+
 .budget-content {
   
   .budget-info {

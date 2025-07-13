@@ -16,6 +16,7 @@
     </div>
     <div class="column has-text-right-tablet">
       <div class="budget-actions">
+        <!-- Pin/Unpin button remains visible because it's used frequently -->
         <button 
           *ngIf="!budget.isPinned" 
           class="button is-primary mr-2" 
@@ -38,24 +39,45 @@
           </span>
           <span>Unpin</span>
         </button>
-        <button class="button is-light mr-2" (click)="editBudget()">
-          <span class="icon is-small">
-            <i class="fas fa-edit"></i>
-          </span>
-          <span>Edit Budget</span>
-        </button>
-        <button class="button is-info mr-2" (click)="duplicateBudget()">
-          <span class="icon is-small">
-            <i class="fas fa-copy"></i>
-          </span>
-          <span>Duplicate</span>
-        </button>
-        <button class="button is-dark" (click)="deleteBudget()">
-          <span class="icon is-small">
-            <i class="fas fa-trash"></i>
-          </span>
-          <span>Delete Budget</span>
-        </button>
+        
+        <!-- Hamburger dropdown menu -->
+        <div class="dropdown is-right" [class.is-active]="isDropdownActive">
+          <div class="dropdown-trigger">
+            <button 
+              class="button is-light" 
+              aria-haspopup="true" 
+              aria-controls="budget-dropdown-menu"
+              (click)="toggleDropdown($event)"
+            >
+              <span class="icon is-small">
+                <i class="fas fa-ellipsis-v"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="budget-dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item" (click)="editBudget(); $event.stopImmediatePropagation()">
+                <span class="icon is-small mr-2">
+                  <i class="fas fa-edit"></i>
+                </span>
+                <span>Edit Budget</span>
+              </a>
+              <a class="dropdown-item" (click)="duplicateBudget(); $event.stopImmediatePropagation()">
+                <span class="icon is-small mr-2">
+                  <i class="fas fa-copy"></i>
+                </span>
+                <span>Duplicate</span>
+              </a>
+              <hr class="dropdown-divider">
+              <a class="dropdown-item has-text-danger" (click)="deleteBudget(); $event.stopImmediatePropagation()">
+                <span class="icon is-small mr-2">
+                  <i class="fas fa-trash"></i>
+                </span>
+                <span>Delete Budget</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotebookComponent } from '../notebook/notebook';
@@ -27,12 +27,77 @@ export class BudgetComponent {
   newCategoryName: string = '';
   newCategoryPlannedAmount: number = 0;
   newCategorySpentAmount: number = 0;
+  isDropdownActive: boolean = false;
 
   constructor(
     private categoryService: CategoryService,
     private budgetService: BudgetService
   ) {}
 
+  // Toggle dropdown menu
+  toggleDropdown(event?: MouseEvent) {
+    if (event) {
+      // Stop immediate propagation to prevent immediate closing
+      event.stopImmediatePropagation();
+    }
+    this.isDropdownActive = !this.isDropdownActive;
+    
+    // If opening the dropdown, check position and adjust if needed
+    if (this.isDropdownActive && event) {
+      setTimeout(() => this.adjustDropdownPosition(), 0);
+    }
+  }
+  
+  // Adjust dropdown position to ensure it doesn't open outside the viewport
+  adjustDropdownPosition() {
+    const dropdownMenu = document.getElementById('budget-dropdown-menu');
+    if (!dropdownMenu) return;
+    
+    const dropdownRect = dropdownMenu.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    
+    // Check if dropdown extends beyond right edge of viewport
+    if (dropdownRect.right > viewportWidth) {
+      // Add class to make dropdown open to the left
+      dropdownMenu.parentElement?.classList.add('dropdown-left-aligned');
+      dropdownMenu.parentElement?.classList.remove('dropdown-right-aligned');
+    } else {
+      // Default behavior - open to the right
+      dropdownMenu.parentElement?.classList.add('dropdown-right-aligned');
+      dropdownMenu.parentElement?.classList.remove('dropdown-left-aligned');
+    }
+  }
+  
+  // Listen for window resize events to adjust dropdown position
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    if (this.isDropdownActive) {
+      this.adjustDropdownPosition();
+    }
+  }
+  
+  // Close dropdown when clicking anywhere outside
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.isDropdownActive) return;
+    
+    // Get the dropdown element and trigger
+    const dropdownElement = document.getElementById('budget-dropdown-menu');
+    const dropdownTrigger = document.querySelector('.dropdown-trigger button');
+    const clickedElement = event.target as HTMLElement;
+    
+    // Check if the clicked element is the dropdown itself or a child of the dropdown
+    const isClickInsideDropdown = dropdownElement?.contains(clickedElement);
+    
+    // Check if the clicked element is the trigger button or a child of the trigger
+    const isClickOnTrigger = dropdownTrigger?.contains(clickedElement);
+    
+    // If click is outside both the dropdown and its trigger, close the dropdown
+    if (!isClickInsideDropdown && !isClickOnTrigger) {
+      this.isDropdownActive = false;
+    }
+  }
+  
   // Helper methods for budget calculations
   getTotalPlanned(): number {
     if (!this.budget.categories || this.budget.categories.length === 0) return 0;
@@ -197,6 +262,7 @@ export class BudgetComponent {
 
   // Edit budget handler
   editBudget() {
+    this.isDropdownActive = false;
     this.budgetModal.openForEdit(this.budget);
   }
   
@@ -230,6 +296,7 @@ export class BudgetComponent {
   }
   
   duplicateBudget() {
+    this.isDropdownActive = false;
     this.budgetService.duplicateBudget(this.budget.id).subscribe({
       next: (newBudget) => {
         // Emit a special event for the parent component to handle
@@ -261,6 +328,7 @@ export class BudgetComponent {
   }
 
   deleteBudget() {
+    this.isDropdownActive = false;
     if (confirm('Are you sure you want to delete this budget?')) {
       this.budgetService.deleteBudget(this.budget.id).subscribe({
         next: () => {

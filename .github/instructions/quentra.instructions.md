@@ -8,6 +8,10 @@ Quentra is a personal finance management application that helps users track thei
 # Project stack
 Quentra has a backend rest api in the /api folder and a frontend in the /frontend folder. The backend is built with Typescript, Node.js and Express, while the frontend is developed using Angular.
 
+# Guidelines
+- Do not add unecessary comments to the code.
+- Do not add explain your changes through code.
+- Only add comments when necessary to explain complex logic.
 
 # Typescript guidelines
 - Use Typescript for all new code.
