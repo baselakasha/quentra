@@ -5,6 +5,7 @@ import { BudgetComponent } from '../components/budget/budget';
 import { BudgetModalComponent } from '../components/budget-modal/budget-modal';
 import { BudgetService } from '../services/budget.service';
 import { Budget, CreateBudgetRequest } from '../types/budget.types';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,8 @@ export class Home implements OnInit {
   loading = false;
   error: string | null = null;
   successMessage: string | null = null;
-  
+  budgetSubscription: Subscription | null = null;
+
   @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
 
   constructor(private budgetService: BudgetService) {}
@@ -27,11 +29,15 @@ export class Home implements OnInit {
     this.loadBudgets();
   }
 
+  ngOnDestroy() {
+    this.budgetSubscription?.unsubscribe();
+  }
+
   loadBudgets() {
     this.loading = true;
     this.error = null;
     
-    this.budgetService.getBudgets().subscribe({
+    this.budgetSubscription = this.budgetService.getBudgets().subscribe({
       next: (budgets) => {
         // Ensure categories have proper default values with explicit number conversion
         this.budgets = budgets.map(budget => {
