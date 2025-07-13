@@ -5,10 +5,39 @@
 >
   <div class="budget-header columns">
     <div class="column">
-      <h1 class="title is-2 has-text-white">Budget: {{ budget.name }}</h1>
+      <span class="icon-text title is-3">
+        <span *ngIf="budget.isPinned" class="icon has-text-white">
+          <i class="fas fa-thumbtack"></i>
+        </span>
+        <span class="has-text-white">
+          {{ budget.name }}
+        </span>
+      </span>
     </div>
     <div class="column has-text-right-tablet">
       <div class="budget-actions">
+        <button 
+          *ngIf="!budget.isPinned" 
+          class="button is-primary mr-2" 
+          (click)="pinBudget()" 
+          title="Pin this budget to the top"
+        >
+          <span class="icon is-small">
+            <i class="fas fa-thumbtack"></i>
+          </span>
+          <span>Pin</span>
+        </button>
+        <button 
+          *ngIf="budget.isPinned" 
+          class="button is-primary mr-2" 
+          (click)="unpinBudget()" 
+          title="Unpin this budget"
+        >
+          <span class="icon is-small">
+            <i class="fas fa-thumbtack fa-rotate-90"></i>
+          </span>
+          <span>Unpin</span>
+        </button>
         <button class="button is-light mr-2" (click)="editBudget()">
           <span class="icon is-small">
             <i class="fas fa-edit"></i>

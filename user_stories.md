@@ -12,7 +12,7 @@
 - [ ] As a user, I want to be able to view my profile information so that I can see my account details.
 
 ## Budget Management
-- [ ] As a user, I want to be able to create a new budget so that I can track my expenses.
+- [x] As a user, I want to be able to create a new budget so that I can track my expenses.
     - A budget should have:
         - name
         - start date
@@ -23,8 +23,12 @@
             - monthly planned for each category
             - actual (for recurring expenses)
 
-- [ ] As a user, I want to be able to view my budgets so that I can see my financial plans.
+- [x] As a user, I want to be able to view my budgets so that I can see my financial plans.
 
-- [ ] As a user, I want to be able to edit my budgets and default values so that I can adjust my financial plans as needed.
+- [x] As a user, I want to be able to edit my budgets and default values so that I can adjust my financial plans as needed.
+
+- [x] As a user, I want to be able to delete a budget so that I can remove budgets I no longer need.
+
+- [x] As a user, I want to be able to pin a budget so that its always at the top and I can quickly access it.
 
 - [ ] As a user, I want to duplciate a budget so that I can create a new budget based on an existing one.

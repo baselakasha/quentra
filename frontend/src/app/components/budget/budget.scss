@@ -1,3 +1,22 @@
+.budget-header {
+  .icon-text {
+    display: flex;
+    align-items: center;
+    
+    .icon {
+      margin-right: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: auto;
+    }
+    
+    span.has-text-white {
+      line-height: 1.2;
+    }
+  }
+}
+
 .budget-content {
   
   .budget-info {

@@ -145,6 +145,14 @@ export class Home implements OnInit {
     }
   }
   
+  onBudgetPinned(pinnedBudget: Budget) {
+    // When a budget is pinned/unpinned, reload all budgets to ensure correct order
+    this.loadBudgets();
+    
+    const action = pinnedBudget.isPinned ? 'pinned' : 'unpinned';
+    this.showSuccessMessage(`Budget "${pinnedBudget.name}" ${action} successfully!`);
+  }
+  
   onError(errorMessage: string) {
     this.error = errorMessage;
   }

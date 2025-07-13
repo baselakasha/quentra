@@ -31,6 +31,9 @@ export class Budget {
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   monthlyIncome!: number;
 
+  @Column({ default: false })
+  isPinned!: boolean;
+
   @OneToMany(() => Category, (category) => category.budget, {
     cascade: true,
     onDelete: "CASCADE"

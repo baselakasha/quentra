@@ -12,6 +12,7 @@ export interface Budget {
   startDate: string;
   endDate: string;
   monthlyIncome: number;
+  isPinned?: boolean;
   categories?: Category[];
   user?: User;
 }

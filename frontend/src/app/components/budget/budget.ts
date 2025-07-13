@@ -18,6 +18,7 @@ export class BudgetComponent {
   @Input() budget!: Budget;
   @Output() budgetDeleted = new EventEmitter<string>();
   @Output() budgetUpdated = new EventEmitter<Budget>();
+  @Output() budgetPinned = new EventEmitter<Budget>();
   @Output() error = new EventEmitter<string>();
   @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
   
@@ -196,6 +197,36 @@ export class BudgetComponent {
   // Edit budget handler
   editBudget() {
     this.budgetModal.openForEdit(this.budget);
+  }
+  
+  // Pin budget handler
+  pinBudget() {
+    this.budgetService.pinBudget(this.budget.id).subscribe({
+      next: (updatedBudget) => {
+        Object.assign(this.budget, updatedBudget);
+        this.budgetPinned.emit(updatedBudget);
+        console.log('Budget pinned:', updatedBudget);
+      },
+      error: (error) => {
+        this.error.emit('Failed to pin budget');
+        console.error('Error pinning budget:', error);
+      }
+    });
+  }
+  
+  // Unpin budget handler
+  unpinBudget() {
+    this.budgetService.unpinBudget(this.budget.id).subscribe({
+      next: (updatedBudget) => {
+        Object.assign(this.budget, updatedBudget);
+        this.budgetPinned.emit(updatedBudget);
+        console.log('Budget unpinned:', updatedBudget);
+      },
+      error: (error) => {
+        this.error.emit('Failed to unpin budget');
+        console.error('Error unpinning budget:', error);
+      }
+    });
   }
 
   // Handle budget update from modal

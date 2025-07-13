@@ -52,6 +52,20 @@ export class BudgetService {
         catchError(this.handleError)
       );
   }
+  
+  pinBudget(id: string): Observable<Budget> {
+    return this.http.put<Budget>(`${this.apiUrl}/${id}/pin`, {})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  unpinBudget(id: string): Observable<Budget> {
+    return this.http.put<Budget>(`${this.apiUrl}/${id}/unpin`, {})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   // Utility method to calculate budget summary
   calculateBudgetSummary(budget: Budget): BudgetSummary {
