@@ -45,6 +45,54 @@ export class BudgetComponent {
   getRemainingBudget(): number {
     return this.budget.monthlyIncome - this.getTotalSpent();
   }
+  
+  // Calculate days left until budget end date
+  getDaysLeft(): number {
+    if (!this.budget.endDate) return 0;
+    
+    const today = new Date();
+    const endDate = new Date(this.budget.endDate);
+    
+    // Reset hours to compare just the dates
+    today.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+    
+    const diffTime = endDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays;
+  }
+  
+  // Check if the budget period has started
+  hasBudgetStarted(): boolean {
+    if (!this.budget.startDate) return true; // Default to true if no start date
+    
+    const today = new Date();
+    const startDate = new Date(this.budget.startDate);
+    
+    // Reset hours to compare just the dates
+    today.setHours(0, 0, 0, 0);
+    startDate.setHours(0, 0, 0, 0);
+    
+    return today >= startDate;
+  }
+  
+  // Calculate days until budget starts
+  getDaysUntilStart(): number {
+    if (!this.budget.startDate) return 0;
+    
+    const today = new Date();
+    const startDate = new Date(this.budget.startDate);
+    
+    // Reset hours to compare just the dates
+    today.setHours(0, 0, 0, 0);
+    startDate.setHours(0, 0, 0, 0);
+    
+    const diffTime = startDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays > 0 ? diffDays : 0;
+  }
 
   getProgressPercentage(category: Category): number {
     if (category.plannedAmount === 0) return 0;

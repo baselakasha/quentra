@@ -6,6 +6,36 @@
       color: rgba(255, 255, 255, 0.9);
       font-size: 0.9rem;
     }
+    
+    .days-upcoming {
+      font-weight: 600;
+      color: #8a5cf5; // Purple color for upcoming budgets
+      background-color: rgba(138, 92, 245, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      display: inline-block;
+      margin-top: 0.25rem;
+    }
+    
+    .days-left {
+      font-weight: 600;
+      color: #4bc5e8;
+      background-color: rgba(75, 197, 232, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      display: inline-block;
+      margin-top: 0.25rem;
+    }
+    
+    .days-expired {
+      font-weight: 600;
+      color: #ef476f;
+      background-color: rgba(239, 71, 111, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      display: inline-block;
+      margin-top: 0.25rem;
+    }
   }
   
   .budget-actions {
