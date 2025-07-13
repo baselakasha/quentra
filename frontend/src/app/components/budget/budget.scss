@@ -17,23 +17,21 @@
   }
 }
 
-// Budget dropdown menu styles
 .budget-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  position: relative; // Ensure the container is positioned
+  position: relative;
   
-  // Mobile-specific dropdown positioning
   @media screen and (max-width: 768px) {
     .dropdown.is-right {
-      position: static; // On mobile, make the dropdown position relative to its parent
+      position: static;
       
       .dropdown-menu {
-        min-width: 12rem; // Slightly narrower on mobile
-        max-width: 90vw; // Prevent overflow
+        min-width: 12rem;
+        max-width: 90vw;
         position: absolute;
-        z-index: 100; // Ensure it appears above other content
+        z-index: 100;
       }
     }
   }

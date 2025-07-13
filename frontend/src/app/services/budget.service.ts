@@ -9,66 +9,70 @@ import {
   ErrorResponse,
   BudgetSummary 
 } from '../types/budget.types';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BudgetService {
-  private apiUrl = 'http://localhost:8080/api/budget';
+  private apiEndpoint = 'budget';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private configService: ConfigService
+  ) { }
 
   createBudget(budgetData: CreateBudgetRequest): Observable<Budget> {
-    return this.http.post<Budget>(this.apiUrl, budgetData)
+    return this.http.post<Budget>(this.configService.getFullApiUrl(this.apiEndpoint), budgetData)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   getBudgets(): Observable<Budget[]> {
-    return this.http.get<Budget[]>(this.apiUrl)
+    return this.http.get<Budget[]>(this.configService.getFullApiUrl(this.apiEndpoint))
       .pipe(
         catchError(this.handleError)
       );
   }
 
   getBudgetById(id: string): Observable<Budget> {
-    return this.http.get<Budget>(`${this.apiUrl}/${id}`)
+    return this.http.get<Budget>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}`))
       .pipe(
         catchError(this.handleError)
       );
   }
 
   updateBudget(id: string, budgetData: UpdateBudgetRequest): Observable<Budget> {
-    return this.http.put<Budget>(`${this.apiUrl}/${id}`, budgetData)
+    return this.http.put<Budget>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}`), budgetData)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   deleteBudget(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`)
+    return this.http.delete<void>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}`))
       .pipe(
         catchError(this.handleError)
       );
   }
   
   pinBudget(id: string): Observable<Budget> {
-    return this.http.put<Budget>(`${this.apiUrl}/${id}/pin`, {})
+    return this.http.put<Budget>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}/pin`), {})
       .pipe(
         catchError(this.handleError)
       );
   }
   
   unpinBudget(id: string): Observable<Budget> {
-    return this.http.put<Budget>(`${this.apiUrl}/${id}/unpin`, {})
+    return this.http.put<Budget>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}/unpin`), {})
       .pipe(
         catchError(this.handleError)
       );
   }
   
   duplicateBudget(id: string): Observable<Budget> {
-    return this.http.post<Budget>(`${this.apiUrl}/${id}/duplicate`, {})
+    return this.http.post<Budget>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}/duplicate`), {})
       .pipe(
         catchError(this.handleError)
       );
@@ -98,7 +102,6 @@ export class BudgetService {
     };
   }
 
-  // Helper method to get budgets with calculated summaries
   getBudgetsWithSummaries(): Observable<(Budget & { summary: BudgetSummary })[]> {
     return this.getBudgets().pipe(
       map(budgets => budgets.map(budget => ({
@@ -110,13 +113,11 @@ export class BudgetService {
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
-      // A client-side or network error occurred
       console.error('An error occurred:', error.error);
       return throwError(() => ({
         error: { error: 'Unable to connect to server. Please try again later.' }
       }));
     } else {
-      // The backend returned an unsuccessful response code
       console.error(`Backend returned code ${error.status}, body was: `, error.error);
       return throwError(() => error);
     }

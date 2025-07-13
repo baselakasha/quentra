@@ -3,12 +3,12 @@ import cors from "cors";
 import authRouter from "./auth/route/auth";
 import budgetRouter from "./budget/route/budget";
 import categoryRouter from "./budget/route/category";
+import config from "./config/config";
 
 const app = express();
 
-// Enable CORS for all routes
 app.use(cors({
-  origin: 'http://localhost:4200', // Angular dev server
+  origin: config.corsOrigin,
   credentials: true
 }));
 

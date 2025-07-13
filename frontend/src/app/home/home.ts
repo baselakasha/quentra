@@ -87,8 +87,6 @@ export class Home implements OnInit {
           return budget;
         });
         
-        // Log to verify data is loaded correctly
-        console.log('Budgets loaded with categories:', this.budgets);
         this.loading = false;
       },
       error: (error) => {
@@ -151,8 +149,7 @@ export class Home implements OnInit {
         this.error = null;
         this.showSuccessMessage(`Budget "${budget.name}" created successfully!`);
         
-        console.log('New budget created:', budget);
-        this.budgetModal.finishLoading(true); // Close modal on success
+        this.budgetModal.finishLoading(true);
       },
       error: (error) => {
         // Show specific error message if available
@@ -169,7 +166,7 @@ export class Home implements OnInit {
   
   onBudgetDeleted(budgetId: string) {
     this.budgets = this.budgets.filter(b => b.id !== budgetId);
-    console.log('Budget removed from list');
+
   }
   
   onBudgetUpdated(updatedBudget: Budget) {

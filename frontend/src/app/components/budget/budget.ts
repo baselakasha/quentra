@@ -23,7 +23,6 @@ export class BudgetComponent {
   @Output() error = new EventEmitter<string>();
   @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
   
-  // Properties for category form
   newCategoryName: string = '';
   newCategoryPlannedAmount: number = 0;
   newCategorySpentAmount: number = 0;
@@ -34,21 +33,17 @@ export class BudgetComponent {
     private budgetService: BudgetService
   ) {}
 
-  // Toggle dropdown menu
   toggleDropdown(event?: MouseEvent) {
     if (event) {
-      // Stop immediate propagation to prevent immediate closing
       event.stopImmediatePropagation();
     }
     this.isDropdownActive = !this.isDropdownActive;
     
-    // If opening the dropdown, check position and adjust if needed
     if (this.isDropdownActive && event) {
       setTimeout(() => this.adjustDropdownPosition(), 0);
     }
   }
   
-  // Adjust dropdown position to ensure it doesn't open outside the viewport
   adjustDropdownPosition() {
     const dropdownMenu = document.getElementById('budget-dropdown-menu');
     if (!dropdownMenu) return;
@@ -56,19 +51,15 @@ export class BudgetComponent {
     const dropdownRect = dropdownMenu.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     
-    // Check if dropdown extends beyond right edge of viewport
     if (dropdownRect.right > viewportWidth) {
-      // Add class to make dropdown open to the left
       dropdownMenu.parentElement?.classList.add('dropdown-left-aligned');
       dropdownMenu.parentElement?.classList.remove('dropdown-right-aligned');
     } else {
-      // Default behavior - open to the right
       dropdownMenu.parentElement?.classList.add('dropdown-right-aligned');
       dropdownMenu.parentElement?.classList.remove('dropdown-left-aligned');
     }
   }
   
-  // Listen for window resize events to adjust dropdown position
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     if (this.isDropdownActive) {
@@ -76,29 +67,22 @@ export class BudgetComponent {
     }
   }
   
-  // Close dropdown when clicking anywhere outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     if (!this.isDropdownActive) return;
     
-    // Get the dropdown element and trigger
     const dropdownElement = document.getElementById('budget-dropdown-menu');
     const dropdownTrigger = document.querySelector('.dropdown-trigger button');
     const clickedElement = event.target as HTMLElement;
     
-    // Check if the clicked element is the dropdown itself or a child of the dropdown
     const isClickInsideDropdown = dropdownElement?.contains(clickedElement);
-    
-    // Check if the clicked element is the trigger button or a child of the trigger
     const isClickOnTrigger = dropdownTrigger?.contains(clickedElement);
     
-    // If click is outside both the dropdown and its trigger, close the dropdown
     if (!isClickInsideDropdown && !isClickOnTrigger) {
       this.isDropdownActive = false;
     }
   }
   
-  // Helper methods for budget calculations
   getTotalPlanned(): number {
     if (!this.budget.categories || this.budget.categories.length === 0) return 0;
     return this.budget.categories.reduce((sum, cat) => sum + cat.plannedAmount, 0);
@@ -113,14 +97,12 @@ export class BudgetComponent {
     return this.budget.monthlyIncome - this.getTotalSpent();
   }
   
-  // Calculate days left until budget end date
   getDaysLeft(): number {
     if (!this.budget.endDate) return 0;
     
     const today = new Date();
     const endDate = new Date(this.budget.endDate);
     
-    // Reset hours to compare just the dates
     today.setHours(0, 0, 0, 0);
     endDate.setHours(0, 0, 0, 0);
     
@@ -130,21 +112,17 @@ export class BudgetComponent {
     return diffDays;
   }
   
-  // Check if the budget period has started
   hasBudgetStarted(): boolean {
-    if (!this.budget.startDate) return true; // Default to true if no start date
+    if (!this.budget.startDate) return true;
     
     const today = new Date();
     const startDate = new Date(this.budget.startDate);
     
-    // Reset hours to compare just the dates
     today.setHours(0, 0, 0, 0);
     startDate.setHours(0, 0, 0, 0);
     
     return today >= startDate;
   }
-  
-  // Calculate days until budget starts
   getDaysUntilStart(): number {
     if (!this.budget.startDate) return 0;
     
@@ -221,7 +199,7 @@ export class BudgetComponent {
         this.newCategoryPlannedAmount = 0;
         this.newCategorySpentAmount = 0;
         
-        console.log('Category created:', completeCategory);
+
       },
       error: (error) => {
         this.error.emit('Failed to create category');
@@ -251,7 +229,7 @@ export class BudgetComponent {
           plannedAmount: Number(updatedCategory.plannedAmount) || plannedAmount,
           spentAmount: Number(updatedCategory.spentAmount) || spentAmount
         });
-        console.log('Category updated:', updatedCategory);
+
       },
       error: (error) => {
         this.error.emit('Failed to update category');
@@ -272,7 +250,7 @@ export class BudgetComponent {
       next: (updatedBudget) => {
         Object.assign(this.budget, updatedBudget);
         this.budgetPinned.emit(updatedBudget);
-        console.log('Budget pinned:', updatedBudget);
+
       },
       error: (error) => {
         this.error.emit('Failed to pin budget');
@@ -317,7 +295,7 @@ export class BudgetComponent {
         Object.assign(this.budget, updatedBudget);
         this.budgetModal.finishLoading(true);
         this.budgetUpdated.emit(updatedBudget);
-        console.log('Budget updated:', updatedBudget);
+
       },
       error: (error) => {
         this.budgetModal.setErrorMessage('Failed to update budget');
@@ -333,7 +311,7 @@ export class BudgetComponent {
       this.budgetService.deleteBudget(this.budget.id).subscribe({
         next: () => {
           this.budgetDeleted.emit(this.budget.id);
-          console.log('Budget deleted');
+
         },
         error: (error) => {
           this.error.emit('Failed to delete budget');

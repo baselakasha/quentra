@@ -9,38 +9,42 @@ import {
   ErrorResponse,
   CategoryWithCalculations 
 } from '../types/budget.types';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  private apiUrl = 'http://localhost:8080/api/category';
+  private apiEndpoint = 'category';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private configService: ConfigService
+  ) { }
 
   createCategory(categoryData: CreateCategoryRequest): Observable<Category> {
-    return this.http.post<Category>(this.apiUrl, categoryData)
+    return this.http.post<Category>(this.configService.getFullApiUrl(this.apiEndpoint), categoryData)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   getCategoryById(id: string): Observable<Category> {
-    return this.http.get<Category>(`${this.apiUrl}/${id}`)
+    return this.http.get<Category>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}`))
       .pipe(
         catchError(this.handleError)
       );
   }
 
   updateCategory(id: string, categoryData: UpdateCategoryRequest): Observable<Category> {
-    return this.http.put<Category>(`${this.apiUrl}/${id}`, categoryData)
+    return this.http.put<Category>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}`), categoryData)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   deleteCategory(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`)
+    return this.http.delete<void>(this.configService.getFullApiUrl(`${this.apiEndpoint}/${id}`))
       .pipe(
         catchError(this.handleError)
       );
