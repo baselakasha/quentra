@@ -19,6 +19,7 @@ export class BudgetComponent {
   @Output() budgetDeleted = new EventEmitter<string>();
   @Output() budgetUpdated = new EventEmitter<Budget>();
   @Output() budgetPinned = new EventEmitter<Budget>();
+  @Output() budgetDuplicated = new EventEmitter<Budget>();
   @Output() error = new EventEmitter<string>();
   @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
   
@@ -218,13 +219,25 @@ export class BudgetComponent {
   unpinBudget() {
     this.budgetService.unpinBudget(this.budget.id).subscribe({
       next: (updatedBudget) => {
-        Object.assign(this.budget, updatedBudget);
+        this.budget.isPinned = false;
         this.budgetPinned.emit(updatedBudget);
-        console.log('Budget unpinned:', updatedBudget);
       },
-      error: (error) => {
+      error: (err) => {
         this.error.emit('Failed to unpin budget');
-        console.error('Error unpinning budget:', error);
+        console.error('Error unpinning budget:', err);
+      }
+    });
+  }
+  
+  duplicateBudget() {
+    this.budgetService.duplicateBudget(this.budget.id).subscribe({
+      next: (newBudget) => {
+        // Emit a special event for the parent component to handle
+        this.budgetDuplicated.emit(newBudget);
+      },
+      error: (err) => {
+        this.error.emit('Failed to duplicate budget');
+        console.error('Error duplicating budget:', err);
       }
     });
   }

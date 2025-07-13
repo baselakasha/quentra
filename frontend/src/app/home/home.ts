@@ -189,6 +189,16 @@ export class Home implements OnInit {
     this.showSuccessMessage(`Budget "${pinnedBudget.name}" ${action} successfully!`);
   }
   
+  onBudgetDuplicated(newBudget: Budget) {
+    // Add the duplicated budget to the list
+    this.budgets.push(newBudget);
+    
+    // Reload all budgets to ensure correct order
+    this.loadBudgets();
+    
+    this.showSuccessMessage(`Budget "${newBudget.name}" created successfully!`);
+  }
+  
   onError(errorMessage: string) {
     this.error = errorMessage;
   }

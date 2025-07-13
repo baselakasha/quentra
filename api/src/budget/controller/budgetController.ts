@@ -5,6 +5,7 @@ import { Category } from "../entity/category";
 import AppDataSource  from "@/config/ormconfig";
 
 const budgetRepo  = AppDataSource.getRepository(Budget);
+const categoryRepo = AppDataSource.getRepository(Category);
 
 export const createBudget = async (
   req: Request,
@@ -211,6 +212,63 @@ export const unpinBudget = async (
     await budgetRepo.save(budget);
 
     res.status(200).json(budget);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const duplicateBudget = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const userId = (req as any).user.userId || (req as any).user.id;
+    
+    // Find the budget to duplicate
+    const sourceBudget = await budgetRepo.findOne({
+      where: { id, user: { id: userId } },
+      relations: ["categories"]
+    });
+    
+    if (!sourceBudget) {
+      return res.status(404).json({ error: "Budget not found" });
+    }
+    
+    // Create a new budget with data from the source budget
+    const newBudget = budgetRepo.create({
+      name: `${sourceBudget.name} (Copy)`,
+      startDate: sourceBudget.startDate,
+      endDate: sourceBudget.endDate,
+      monthlyIncome: sourceBudget.monthlyIncome,
+      isPinned: false, // Never duplicate as pinned
+      user: { id: userId }
+    });
+    
+    // Save the new budget
+    const savedBudget = await budgetRepo.save(newBudget);
+    
+    // Duplicate all categories if they exist
+    if (sourceBudget.categories && sourceBudget.categories.length > 0) {
+      const newCategories = sourceBudget.categories.map(category => {
+        return categoryRepo.create({
+          name: category.name,
+          plannedAmount: category.plannedAmount,
+          spentAmount: 0, // Reset spent amount to 0 for the new budget
+          budget: { id: savedBudget.id }
+        });
+      });
+      
+      await categoryRepo.save(newCategories);
+      
+      // Attach categories to the response
+      savedBudget.categories = await categoryRepo.find({
+        where: { budget: { id: savedBudget.id } }
+      });
+    }
+    
+    res.status(201).json(savedBudget);
   } catch (error) {
     next(error);
   }

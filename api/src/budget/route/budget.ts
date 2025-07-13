@@ -8,6 +8,7 @@ import {
   deleteBudget,
   pinBudget,
   unpinBudget,
+  duplicateBudget,
 } from "@/budget/controller/budgetController";
 import { asyncHandler } from "@/util/asyncHandler";
 import { authMiddleware } from "@/auth/middleware/authMiddleware";
@@ -20,4 +21,5 @@ router.put("/:id", authMiddleware, asyncHandler(updateBudget));
 router.delete("/:id", authMiddleware, asyncHandler(deleteBudget));
 router.put("/:id/pin", authMiddleware, asyncHandler(pinBudget));
 router.put("/:id/unpin", authMiddleware, asyncHandler(unpinBudget));
+router.post("/:id/duplicate", authMiddleware, asyncHandler(duplicateBudget));
 export default router;

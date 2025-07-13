@@ -33,4 +33,4 @@
 
 - [x] As a user, I want the home page to only display budget options when I'm logged in so that I know when I need to authenticate.
 
-- [ ] As a user, I want to duplciate a budget so that I can create a new budget based on an existing one.
+- [x] As a user, I want to duplicate a budget so that I can create a new budget based on an existing one.

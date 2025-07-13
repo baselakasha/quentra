@@ -66,6 +66,13 @@ export class BudgetService {
         catchError(this.handleError)
       );
   }
+  
+  duplicateBudget(id: string): Observable<Budget> {
+    return this.http.post<Budget>(`${this.apiUrl}/${id}/duplicate`, {})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   // Utility method to calculate budget summary
   calculateBudgetSummary(budget: Budget): BudgetSummary {
