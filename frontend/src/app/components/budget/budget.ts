@@ -1,22 +1,25 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotebookComponent } from '../notebook/notebook';
+import { BudgetModalComponent } from '../budget-modal/budget-modal';
 import { BudgetService } from '../../services/budget.service';
 import { CategoryService } from '../../services/category.service';
-import { Budget, Category } from '../../types/budget.types';
+import { Budget, Category, UpdateBudgetRequest } from '../../types/budget.types';
 
 @Component({
   selector: 'app-budget',
   standalone: true,
-  imports: [CommonModule, FormsModule, NotebookComponent],
+  imports: [CommonModule, FormsModule, NotebookComponent, BudgetModalComponent],
   templateUrl: './budget.html',
   styleUrl: './budget.scss'
 })
 export class BudgetComponent {
   @Input() budget!: Budget;
   @Output() budgetDeleted = new EventEmitter<string>();
+  @Output() budgetUpdated = new EventEmitter<Budget>();
   @Output() error = new EventEmitter<string>();
+  @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
   
   // Properties for category form
   newCategoryName: string = '';
@@ -138,6 +141,29 @@ export class BudgetComponent {
       error: (error) => {
         this.error.emit('Failed to update category');
         console.error('Error updating category:', error);
+      }
+    });
+  }
+
+  // Edit budget handler
+  editBudget() {
+    this.budgetModal.openForEdit(this.budget);
+  }
+
+  // Handle budget update from modal
+  onBudgetUpdated(event: {id: string, data: UpdateBudgetRequest}) {
+    this.budgetService.updateBudget(event.id, event.data).subscribe({
+      next: (updatedBudget) => {
+        // Update local budget with returned values
+        Object.assign(this.budget, updatedBudget);
+        this.budgetModal.finishLoading(true);
+        this.budgetUpdated.emit(updatedBudget);
+        console.log('Budget updated:', updatedBudget);
+      },
+      error: (error) => {
+        this.budgetModal.setErrorMessage('Failed to update budget');
+        this.error.emit('Failed to update budget');
+        console.error('Error updating budget:', error);
       }
     });
   }

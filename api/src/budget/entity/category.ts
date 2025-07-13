@@ -14,7 +14,9 @@ export class Category {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @ManyToOne(() => Budget, (budget) => budget.categories)
+  @ManyToOne(() => Budget, (budget) => budget.categories, {
+    onDelete: "CASCADE"
+  })
   budget!: Budget;
 
   @Column()

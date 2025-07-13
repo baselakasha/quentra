@@ -33,6 +33,7 @@ export class Budget {
 
   @OneToMany(() => Category, (category) => category.budget, {
     cascade: true,
+    onDelete: "CASCADE"
   })
   categories!: Category[];
 

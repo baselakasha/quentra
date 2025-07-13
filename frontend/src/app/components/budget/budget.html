@@ -1,9 +1,29 @@
 <app-notebook
-  [title]="budget.name"
   [showSidePunches]="false"
   [centerContent]="false"
   [fullWidth]="true"
 >
+  <div class="budget-header columns">
+    <div class="column">
+      <h1 class="title is-2 has-text-white">Budget: {{ budget.name }}</h1>
+    </div>
+    <div class="column has-text-right-tablet">
+      <div class="budget-actions">
+        <button class="button is-light mr-2" (click)="editBudget()">
+          <span class="icon is-small">
+            <i class="fas fa-edit"></i>
+          </span>
+          <span>Edit Budget</span>
+        </button>
+        <button class="button is-dark" (click)="deleteBudget()">
+          <span class="icon is-small">
+            <i class="fas fa-trash"></i>
+          </span>
+          <span>Delete Budget</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="budget-content columns">
     <div class="column is-7">
       <table class="table">
@@ -41,28 +61,50 @@
             <td>
               {{getProgressPercentage(category) | number:'1.0-0'}}%
               <div class="progress-container">
-                <div class="progress-bar" 
-                     [ngClass]="{
+                <div
+                  class="progress-bar"
+                  [ngClass]="{
                        'warning': getProgressPercentage(category) > 75 && getProgressPercentage(category) <= 100, 
                        'danger': getProgressPercentage(category) > 100
                      }"
-                     [style.width.%]="getProgressPercentage(category) > 100 ? 100 : getProgressPercentage(category)">
-                </div>
+                  [style.width.%]="getProgressPercentage(category) > 100 ? 100 : getProgressPercentage(category)"
+                ></div>
               </div>
             </td>
           </tr>
           <tr>
             <td>
-              <input class="input" type="text" placeholder="Category Name" [(ngModel)]="newCategoryName" />
+              <input
+                class="input"
+                type="text"
+                placeholder="Category Name"
+                [(ngModel)]="newCategoryName"
+              />
             </td>
             <td>
-              <input class="input" type="number" placeholder="Planned Amount" [(ngModel)]="newCategoryPlannedAmount" min="0" step="0.01" />
+              <input
+                class="input"
+                type="number"
+                placeholder="Planned Amount"
+                [(ngModel)]="newCategoryPlannedAmount"
+                min="0"
+                step="0.01"
+              />
             </td>
             <td>
-              <input class="input" type="number" placeholder="Actual Spending" [(ngModel)]="newCategorySpentAmount" min="0" step="0.01" />
+              <input
+                class="input"
+                type="number"
+                placeholder="Actual Spending"
+                [(ngModel)]="newCategorySpentAmount"
+                min="0"
+                step="0.01"
+              />
             </td>
             <td>
-              <button class="button is-primary" (click)="addCategory()">Add</button>
+              <button class="button is-primary" (click)="addCategory()">
+                Add
+              </button>
             </td>
           </tr>
           <tr class="has-text-weight-bold" [ngClass]="getBudgetHealthClass()">
@@ -76,13 +118,14 @@
             <td class="has-text-weight-bold">
               {{ getTotalPercentage() | number:'1.0-0' }}%
               <div class="progress-container">
-                <div class="progress-bar" 
-                     [ngClass]="{
+                <div
+                  class="progress-bar"
+                  [ngClass]="{
                        'warning': getTotalPercentage() > 75 && getTotalPercentage() <= 100, 
                        'danger': getTotalPercentage() > 100
                      }"
-                     [style.width.%]="getTotalPercentage() > 100 ? 100 : getTotalPercentage()">
-                </div>
+                  [style.width.%]="getTotalPercentage() > 100 ? 100 : getTotalPercentage()"
+                ></div>
               </div>
             </td>
           </tr>
@@ -96,15 +139,23 @@
         <p>Total Spent: £{{ getTotalSpent() | number:'1.2-2' }}</p>
         <p>Remaining: £{{ getRemainingBudget() | number:'1.2-2' }}</p>
         <div class="progress-container mt-3">
-          <div class="progress-bar" 
-               [ngClass]="{
+          <div
+            class="progress-bar"
+            [ngClass]="{
                  'warning': (getTotalSpent() / budget.monthlyIncome) * 100 > 75 && (getTotalSpent() / budget.monthlyIncome) * 100 <= 100, 
                  'danger': (getTotalSpent() / budget.monthlyIncome) * 100 > 100
                }"
-               [style.width.%]="(getTotalSpent() / budget.monthlyIncome) * 100 > 100 ? 100 : (getTotalSpent() / budget.monthlyIncome) * 100">
-          </div>
+            [style.width.%]="(getTotalSpent() / budget.monthlyIncome) * 100 > 100 ? 100 : (getTotalSpent() / budget.monthlyIncome) * 100"
+          ></div>
         </div>
       </div>
     </div>
   </div>
 </app-notebook>
+
+<!-- Budget Edit Modal -->
+<app-budget-modal
+  (budgetUpdated)="onBudgetUpdated($event)"
+  (modalClosed)="error.emit('')"
+>
+</app-budget-modal>

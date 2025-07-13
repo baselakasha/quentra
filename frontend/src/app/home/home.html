@@ -46,6 +46,7 @@
         *ngFor="let budget of budgets"
         [budget]="budget"
         (budgetDeleted)="onBudgetDeleted($event)"
+        (budgetUpdated)="onBudgetUpdated($event)"
         (error)="onError($event)"
       ></app-budget>
     </div>

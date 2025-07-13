@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CreateBudgetRequest } from '../../types/budget.types';
+import { CreateBudgetRequest, Budget, UpdateBudgetRequest } from '../../types/budget.types';
 
 @Component({
   selector: 'app-budget-modal',
@@ -12,6 +12,7 @@ import { CreateBudgetRequest } from '../../types/budget.types';
 })
 export class BudgetModalComponent {
   @Output() budgetCreated = new EventEmitter<CreateBudgetRequest>();
+  @Output() budgetUpdated = new EventEmitter<{id: string, data: UpdateBudgetRequest}>();
   @Output() modalClosed = new EventEmitter<void>();
   
   isActive = false;
@@ -19,6 +20,8 @@ export class BudgetModalComponent {
   formSubmitted = false;
   title = 'Create New Budget';
   errorMessage = '';
+  editMode = false;
+  editBudgetId = '';
   
   budgetData: CreateBudgetRequest = this.getDefaultBudgetData();
   
@@ -26,8 +29,27 @@ export class BudgetModalComponent {
     this.isActive = true;
     this.formSubmitted = false;
     this.errorMessage = '';
+    this.editMode = false;
     // Reset to default data
     this.budgetData = this.getDefaultBudgetData();
+    this.title = 'Create New Budget';
+  }
+  
+  openForEdit(budget: Budget) {
+    this.isActive = true;
+    this.formSubmitted = false;
+    this.errorMessage = '';
+    this.editMode = true;
+    this.editBudgetId = budget.id;
+    this.title = 'Edit Budget';
+    
+    // Set the form data with the existing budget values
+    this.budgetData = {
+      name: budget.name,
+      startDate: budget.startDate,
+      endDate: budget.endDate,
+      monthlyIncome: budget.monthlyIncome
+    };
   }
   
   close() {
@@ -51,7 +73,17 @@ export class BudgetModalComponent {
     
     this.errorMessage = '';
     this.isLoading = true;
-    this.budgetCreated.emit({...this.budgetData}); // Send a copy of the data
+    
+    if (this.editMode) {
+      // Emit update event with budget ID and data
+      this.budgetUpdated.emit({
+        id: this.editBudgetId,
+        data: {...this.budgetData}
+      });
+    } else {
+      // Emit create event with budget data
+      this.budgetCreated.emit({...this.budgetData});
+    }
   }
   
   resetForm() {
@@ -59,6 +91,8 @@ export class BudgetModalComponent {
     this.formSubmitted = false;
     this.isLoading = false;
     this.errorMessage = '';
+    this.editMode = false;
+    this.editBudgetId = '';
   }
   
   getDefaultBudgetData(): CreateBudgetRequest {

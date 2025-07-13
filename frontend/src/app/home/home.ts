@@ -130,6 +130,15 @@ export class Home implements OnInit {
     console.log('Budget removed from list');
   }
   
+  onBudgetUpdated(updatedBudget: Budget) {
+    // Find and update the budget in the local array
+    const index = this.budgets.findIndex(b => b.id === updatedBudget.id);
+    if (index !== -1) {
+      this.budgets[index] = { ...this.budgets[index], ...updatedBudget };
+      this.showSuccessMessage(`Budget "${updatedBudget.name}" updated successfully!`);
+    }
+  }
+  
   onError(errorMessage: string) {
     this.error = errorMessage;
   }

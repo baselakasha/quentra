@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Budget } from "../entity/budget";
+import { Category } from "../entity/category";
 
 import AppDataSource  from "@/config/ormconfig";
 
@@ -108,13 +109,29 @@ export const deleteBudget = async (
 
     const budget = await budgetRepo.findOne({
       where: { id: budgetId, user: { id: userId } },
+      relations: ["categories"]
     });
 
     if (!budget) {
       return res.status(404).json({ error: "Budget not found" });
     }
 
-    await budgetRepo.remove(budget);
+    // Delete the budget with its categories in a transaction
+    await AppDataSource.transaction(async (transactionalEntityManager) => {
+      // If there are categories, delete them first
+      if (budget.categories && budget.categories.length > 0) {
+        await transactionalEntityManager
+          .createQueryBuilder()
+          .delete()
+          .from(Category)
+          .where("budgetId = :budgetId", { budgetId })
+          .execute();
+      }
+      
+      // Then delete the budget
+      await transactionalEntityManager.remove(budget);
+    });
+
     res.status(204).send();
   } catch (error) {
     next(error);
