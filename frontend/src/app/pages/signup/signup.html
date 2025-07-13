@@ -1,82 +1,94 @@
-<app-notebook title="Sign Up" [fixedHeight]="true" [centerContent]="true">
-  <div class="mb-4 has-text-white">
-    Already have an account?
-    <a routerLink="/login" class="has-text-white" style="text-decoration: underline;">Login</a>
-  </div>
+<app-notebook
+  class="mt-5"
+  title="Sign Up"
+  [fixedHeight]="true"
+  [centerContent]="true"
+>
+  <div class="login-form-container">
+    <div class="mb-4 has-text-white text-center">
+      Already have an account?
+      <a
+        routerLink="/login"
+        class="has-text-white"
+        style="text-decoration: underline"
+        >Login</a
+      >
+    </div>
 
-  <!-- Success Message -->
-  @if (successMessage) {
+    <!-- Success Message -->
+    @if (successMessage) {
     <div class="notification is-success mb-4">{{ successMessage }}</div>
-  }
+    }
 
-  <!-- Error Message -->
-  @if (errorMessage) {
+    <!-- Error Message -->
+    @if (errorMessage) {
     <div class="notification is-danger mb-4">{{ errorMessage }}</div>
-  }
+    }
 
-  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-    <div class="field mt-4">
-      <label class="label has-text-white">Full Name</label>
-      <div class="control">
-        <input
-          class="input"
-          [class.is-danger]="getFieldError('fullName')"
-          type="text"
-          formControlName="fullName"
-          placeholder="Enter your full name"
-          required
-        />
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+      <div class="field mt-4">
+        <label class="label has-text-white">Full Name</label>
+        <div class="control">
+          <input
+            class="input"
+            [class.is-danger]="getFieldError('fullName')"
+            type="text"
+            formControlName="fullName"
+            placeholder="Enter your full name"
+            required
+          />
+        </div>
+        @if (getFieldError('fullName')) {
+        <p class="help is-danger">{{ getFieldError('fullName') }}</p>
+        }
       </div>
-      @if (getFieldError('fullName')) {
-      <p class="help is-danger">{{ getFieldError('fullName') }}</p>
-      }
-    </div>
 
-    <div class="field mt-4">
-      <label class="label has-text-white">Username</label>
-      <div class="control">
-        <input
-          class="input"
-          [class.is-danger]="getFieldError('username')"
-          type="text"
-          formControlName="username"
-          placeholder="Enter your username"
-          required
-        />
+      <div class="field mt-4">
+        <label class="label has-text-white">Username</label>
+        <div class="control">
+          <input
+            class="input"
+            [class.is-danger]="getFieldError('username')"
+            type="text"
+            formControlName="username"
+            placeholder="Enter your username"
+            required
+          />
+        </div>
+        @if (getFieldError('username')) {
+        <p class="help is-danger">{{ getFieldError('username') }}</p>
+        }
       </div>
-      @if (getFieldError('username')) {
-      <p class="help is-danger">{{ getFieldError('username') }}</p>
-      }
-    </div>
 
-    <div class="field mt-4">
-      <label class="label has-text-white">Password</label>
-      <div class="control">
-        <input
-          class="input"
-          [class.is-danger]="getFieldError('password')"
-          type="password"
-          formControlName="password"
-          placeholder="Enter your password"
-          required
-        />
+      <div class="field mt-4">
+        <label class="label has-text-white">Password</label>
+        <div class="control">
+          <input
+            class="input"
+            [class.is-danger]="getFieldError('password')"
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        @if (getFieldError('password')) {
+        <p class="help is-danger">{{ getFieldError('password') }}</p>
+        }
       </div>
-      @if (getFieldError('password')) {
-      <p class="help is-danger">{{ getFieldError('password') }}</p>
-      }
-    </div>
 
-    <div class="field mt-5">
-      <div class="control">
-        <button
-          type="submit"
-          class="button is-black"
-          [class.is-loading]="isLoading"
-          [disabled]="isLoading"
-        >
-          @if (isLoading) { Creating Account... } @else { Sign Up }
-        </button>
+      <div class="field mt-5">
+        <div class="control">
+          <button
+            type="submit"
+            class="button is-black"
+            [class.is-loading]="isLoading"
+            [disabled]="isLoading"
+          >
+            @if (isLoading) { Creating Account... } @else { Sign Up }
+          </button>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </app-notebook>

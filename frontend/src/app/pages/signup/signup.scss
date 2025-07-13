@@ -1,0 +1,49 @@
+// Custom styles for the signup page
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.signup-page-wrapper {
+  position: relative;
+  display: block;
+}
+
+.signup-page-container {
+  position: relative;
+  width: 100%;
+  display: block;
+  
+  // Make sure this style is applied on different screen sizes
+  @media screen and (max-width: 768px) {
+    margin-top: 2rem;
+  }
+  
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    margin-top: 3rem;
+  }
+  
+  @media screen and (min-width: 1025px) {
+    margin-top: 4rem;
+  }
+}
+
+// Ensure the notebook component inherits margins
+.signup-notebook {
+  display: block;
+  margin-top: 2rem;
+}
+
+.login-form-container {
+  width: 100%;
+  
+  form {
+    width: 100%;
+  }
+}
+
+// Text center utility for signup link
+.text-center {
+  text-align: center;
+}

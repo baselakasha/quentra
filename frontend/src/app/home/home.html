@@ -18,38 +18,62 @@
     <p>{{ successMessage }}</p>
   </div>
 
-  <div class="columns is-multiline my-5">
-    <div class="column">
-      <h2 class="title is-3">Your Budgets</h2>
+  <!-- Not logged in message -->
+  <div *ngIf="!isLoggedIn" class="not-logged-in-container has-text-centered py-6">
+    <div class="notification is-info mb-4">
+      <p>Please log in to manage your budgets</p>
     </div>
-    <div class="column has-text-right-tablet">
-      <div class="add-budget-btn">
-        <button class="button is-primary" (click)="createNewBudget()">
-          <span class="icon">
-            <i class="fas fa-plus"></i>
-          </span>
-          <span>Create New Budget</span>
-        </button>
+    <div class="buttons is-centered">
+      <button class="button is-primary" (click)="navigateToLogin()">
+        <span class="icon">
+          <i class="fas fa-sign-in-alt"></i>
+        </span>
+        <span>Log In</span>
+      </button>
+      <button class="button is-link" (click)="navigateToSignup()">
+        <span class="icon">
+          <i class="fas fa-user-plus"></i>
+        </span>
+        <span>Sign Up</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Budgets section (only shown when logged in) -->
+  <div *ngIf="isLoggedIn">
+    <div class="columns is-multiline my-5">
+      <div class="column">
+        <h2 class="title is-3">Your Budgets</h2>
+      </div>
+      <div class="column has-text-right-tablet">
+        <div class="add-budget-btn">
+          <button class="button is-primary" (click)="createNewBudget()">
+            <span class="icon">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span>Create New Budget</span>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div *ngIf="budgets.length === 0 && !loading" class="has-text-centered py-6">
-    <div class="notification is-warning mb-4">
-      <p>No budgets found. Create your first budget!</p>
+    <div *ngIf="budgets.length === 0 && !loading" class="has-text-centered py-6">
+      <div class="notification is-warning mb-4">
+        <p>No budgets found. Create your first budget!</p>
+      </div>
     </div>
-  </div>
 
-  <div class="budget-list" *ngIf="budgets.length > 0">
-    <div class="budgets-container">
-      <app-budget
-        *ngFor="let budget of budgets"
-        [budget]="budget"
-        (budgetDeleted)="onBudgetDeleted($event)"
-        (budgetUpdated)="onBudgetUpdated($event)"
-        (budgetPinned)="onBudgetPinned($event)"
-        (error)="onError($event)"
-      ></app-budget>
+    <div class="budget-list" *ngIf="budgets.length > 0">
+      <div class="budgets-container">
+        <app-budget
+          *ngFor="let budget of budgets"
+          [budget]="budget"
+          (budgetDeleted)="onBudgetDeleted($event)"
+          (budgetUpdated)="onBudgetUpdated($event)"
+          (budgetPinned)="onBudgetPinned($event)"
+          (error)="onError($event)"
+        ></app-budget>
+      </div>
     </div>
   </div>
 </div>

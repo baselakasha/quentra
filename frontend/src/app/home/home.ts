@@ -6,6 +6,9 @@ import { BudgetModalComponent } from '../components/budget-modal/budget-modal';
 import { BudgetService } from '../services/budget.service';
 import { Budget, CreateBudgetRequest } from '../types/budget.types';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { EventService } from '../services/event.service';
 
 @Component({
   selector: 'app-home',
@@ -20,20 +23,46 @@ export class Home implements OnInit {
   error: string | null = null;
   successMessage: string | null = null;
   budgetSubscription: Subscription | null = null;
+  authStateSubscription: Subscription | null = null;
+  isLoggedIn = false;
 
   @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
 
-  constructor(private budgetService: BudgetService) {}
+  constructor(
+    private budgetService: BudgetService,
+    private authService: AuthService,
+    private eventService: EventService,
+    public router: Router
+  ) {}
 
   ngOnInit() {
-    this.loadBudgets();
+    this.checkAuthenticationStatus();
+    
+    // Subscribe to auth state changes
+    this.authStateSubscription = this.eventService.authStateChanged$.subscribe(() => {
+      this.checkAuthenticationStatus();
+    });
+  }
+  
+  checkAuthenticationStatus() {
+    this.isLoggedIn = this.authService.isAuthenticated();
+    
+    if (this.isLoggedIn) {
+      this.loadBudgets();
+    } else {
+      // Clear budgets when logged out
+      this.budgets = [];
+    }
   }
 
   ngOnDestroy() {
     this.budgetSubscription?.unsubscribe();
+    this.authStateSubscription?.unsubscribe();
   }
 
   loadBudgets() {
+    if (!this.isLoggedIn) return;
+    
     this.loading = true;
     this.error = null;
     
@@ -70,6 +99,13 @@ export class Home implements OnInit {
     });
   }
 
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
+  
+  navigateToSignup() {
+    this.router.navigate(['/signup']);
+  }
   
   createNewBudget() {
     // Open the modal instead of directly creating a budget
