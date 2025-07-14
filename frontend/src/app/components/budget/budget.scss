@@ -690,3 +690,79 @@ tr.cdk-drag {
     }
   }
 }
+
+// Editable category names
+.editable-category-name {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    &::after {
+      content: "\f044"; // Edit icon
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      margin-left: 0.5rem;
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+  }
+}
+
+.category-name-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  
+  .input {
+    height: 2rem;
+    flex: 1;
+  }
+  
+  .button {
+    height: 2rem;
+    width: 2rem;
+    min-width: 2rem;
+    max-width: 2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .icon {
+      font-size: 0.8rem;
+      height: 0.8rem;
+      width: 0.8rem;
+    }
+  }
+}
+
+// Mobile-specific styles for category name editing
+.mobile-cards {
+  .card-header {
+    .category-name-edit-container {
+      flex: 1;
+      padding: 0.25rem 0;
+      
+      .input {
+        height: 1.85rem;
+      }
+      
+      .button {
+        height: 1.85rem;
+        width: 1.85rem;
+        min-width: 1.85rem;
+        max-width: 1.85rem;
+        padding: 0;
+        
+        .icon {
+          font-size: 0.75rem;
+          height: 0.75rem;
+          width: 0.75rem;
+        }
+      }
+    }
+  }
+}

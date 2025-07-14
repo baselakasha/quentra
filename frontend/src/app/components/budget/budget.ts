@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotebookComponent } from '../notebook/notebook';
@@ -49,12 +49,17 @@ export class BudgetComponent implements AfterViewInit {
   @Output() budgetDuplicated = new EventEmitter<Budget>();
   @Output() error = new EventEmitter<string>();
   @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
+  @ViewChild('editNameInput') editNameInput!: ElementRef<HTMLInputElement>;
   
   isExpanded: boolean = false; // Track expanded/collapsed state
   newCategoryName: string = '';
   newCategoryPlannedAmount: number = 0;
   newCategorySpentAmount: number = 0;
 
+  // Category name editing
+  editingCategoryId: string | null = null;
+  editedCategoryName: string = '';
+  
   constructor(
     private categoryService: CategoryService,
     private budgetService: BudgetService,
@@ -469,5 +474,61 @@ export class BudgetComponent implements AfterViewInit {
       // Create a new array reference with the same items to trigger change detection
       this._budget.categories = [...this._budget.categories];
     }
+  }
+
+  // Start editing a category name
+  startEditingCategoryName(category: Category) {
+    this.editingCategoryId = category.id;
+    this.editedCategoryName = category.name;
+    
+    // Focus the input field after a short delay to allow the DOM to update
+    setTimeout(() => {
+      if (this.editNameInput) {
+        this.editNameInput.nativeElement.focus();
+        this.editNameInput.nativeElement.select();
+      }
+    }, 10);
+  }
+  
+  // Cancel editing a category name
+  cancelEditingCategoryName() {
+    this.editingCategoryId = null;
+    this.editedCategoryName = '';
+  }
+  
+  // Save the edited category name
+  saveEditedCategoryName(category: Category) {
+    if (!this.editedCategoryName || this.editedCategoryName.trim() === '') {
+      this.notification.warning('Category name cannot be empty');
+      return;
+    }
+    
+    if (this.editedCategoryName === category.name) {
+      // No change, just cancel editing
+      this.cancelEditingCategoryName();
+      return;
+    }
+    
+    const updatedCategory = {
+      ...category,
+      name: this.editedCategoryName.trim()
+    };
+    
+    this.categoryService.updateCategory(category.id, { name: this.editedCategoryName.trim() }).subscribe({
+      next: (result) => {
+        // Update the category name in the local array
+        if (this.budget.categories) {
+          const index = this.budget.categories.findIndex(cat => cat.id === category.id);
+          if (index !== -1) {
+            this.budget.categories[index].name = result.name || this.editedCategoryName.trim();
+          }
+        }
+        this.cancelEditingCategoryName();
+      },
+      error: (err) => {
+        this.notification.error('Failed to update category name');
+        console.error('Error updating category name:', err);
+      }
+    });
   }
 }

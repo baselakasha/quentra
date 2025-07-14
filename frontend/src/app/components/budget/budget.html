@@ -103,7 +103,29 @@
                   <i class="fas fa-grip-vertical"></i>
                 </span>
               </td>
-              <td>{{ category.name }}</td>
+              <td>
+                <!-- Category name (editable on click) -->
+                <div *ngIf="editingCategoryId !== category.id" class="editable-category-name" (click)="startEditingCategoryName(category)">
+                  {{ category.name }}
+                </div>
+                
+                <!-- Editing mode for category name -->
+                <div *ngIf="editingCategoryId === category.id" class="category-name-edit-container">
+                  <input
+                    class="input"
+                    type="text"
+                    [(ngModel)]="editedCategoryName"
+                    (keyup.enter)="saveEditedCategoryName(category)"
+                    (keyup.escape)="cancelEditingCategoryName()"
+                    #editNameInput
+                  />
+                  <button class="button is-small is-primary" (click)="saveEditedCategoryName(category)">
+                    <span class="icon is-small">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </button>
+                </div>
+              </td>
               <td>
                 <input
                   class="input"
@@ -205,7 +227,27 @@
       <div class="mobile-cards is-hidden-tablet">
         <div class="category-card" *ngFor="let category of budget.categories || []; let i = index">
           <div class="card-header">
-            <p class="card-header-title">{{ category.name }}</p>
+            <!-- Category name (editable on click) -->
+            <div *ngIf="editingCategoryId !== category.id" class="card-header-title editable-category-name" (click)="startEditingCategoryName(category)">
+              {{ category.name }}
+            </div>
+            
+            <!-- Editing mode for category name -->
+            <div *ngIf="editingCategoryId === category.id" class="category-name-edit-container card-header-title">
+              <input
+                class="input"
+                type="text"
+                [(ngModel)]="editedCategoryName"
+                (keyup.enter)="saveEditedCategoryName(category)"
+                (keyup.escape)="cancelEditingCategoryName()"
+              />
+              <button class="button is-small is-primary" (click)="saveEditedCategoryName(category)">
+                <span class="icon is-small">
+                  <i class="fas fa-check"></i>
+                </span>
+              </button>
+            </div>
+            
             <!-- Reordering buttons for mobile -->
             <div class="category-order-buttons">
               <button 
