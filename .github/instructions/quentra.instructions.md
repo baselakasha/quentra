@@ -1,20 +1,98 @@
----
-applyTo: '**'
----
-# Project
-Quentra
-# Project Description
-Quentra is a personal finance management application that helps users track their expenses, manage budgets, and gain insights into their financial habits.
-# Project stack
-Quentra has a backend rest api in the /api folder and a frontend in the /frontend folder. The backend is built with Typescript, Node.js and Express, while the frontend is developed using Angular.
+# Quentra - AI Coding Agent Instructions
 
-# Guidelines
-- Do not add unecessary comments to the code.
-- Do not add explain your changes through code.
-- Only add comments when necessary to explain complex logic.
+## Project Overview
+Quentra is a personal finance management application with:
+- Backend: TypeScript, Node.js, Express, TypeORM, SQLite
+- Frontend: Angular 20+, RxJS, Bulma CSS
 
-# Typescript guidelines
-- Use Typescript for all new code.
-- Use interfaces for data structures and type definitions
+
+## General Guidelines
+- Follow TypeScript best practices
+- Do not add unecessary comments; code should be self-explanatory
+
+## Architecture
+
+### Backend (`/api`)
+- RESTful API with modular organization by domain (auth, budget)
+- Each module contains controllers, entities, routes, and tests
+- Uses TypeORM with SQLite (configurable via environment)
+- JWT-based authentication
+
+### Frontend (`/frontend`)
+- Angular standalone components architecture
+- Services for API communication
+- Environment-based configuration
+- Bulma CSS framework for styling
+
+## Key Patterns
+
+### Backend Patterns
+- Environment configuration via `.env` file and `config.ts`
+- Controller-route-service pattern
+- Error handling with `asyncHandler` utility
+- TypeORM for database operations
+
+Example controller method:
+```typescript
+// From budgetController.ts
+createBudget = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user!.id;
+  const budgetData = { ...req.body, userId };
+  const budget = await this.budgetRepository.save(budgetData);
+  return res.status(201).json(budget);
+});
+```
+
+### Frontend Patterns
+- Standalone Angular components with imports specified in the component decorator
+- Services for API communication using Angular HttpClient
+- Environment configuration via `/environments` files and ConfigService
+- RxJS for async operations
+
+Component pattern:
+```typescript
+@Component({
+  selector: 'app-dropdown',
+  templateUrl: './dropdown.html',
+  styleUrls: ['./dropdown.scss'],
+  standalone: true,
+  imports: [CommonModule]
+})
+```
+
+Service pattern:
+```typescript
+// API endpoints access via ConfigService
+return this.http.get<Budget[]>(this.configService.getFullApiUrl(this.apiEndpoint))
+```
+
+## Development Workflow
+
+### Backend
+- `npm run dev` - Start development server with hot reload
+- `npm test` - Run tests
+- `npm run build` - Build for production
+
+### Frontend  
+- `npm start` - Start development server
+- `npm run build` - Build for production
+- `npm test` - Run tests
+
+## TypeScript Guidelines
+- Use interfaces for data structures (see `types/budget.types.ts`)
 - Prefer immutable data (const, readonly)
 - Use optional chaining (?.) and nullish coalescing (??) operators
+
+## Component Guidelines
+- Create standalone components and specify imports in the component decorator
+- Use Angular's reactive forms for form handling
+- Follow the pattern for dropdown components created in `components/dropdown`
+
+## Key Integration Points
+- Authentication via JWT stored in localStorage
+- API endpoints accessed through services using ConfigService
+- Forms/inputs for creating and updating data
+
+## Debugging
+- Backend logs to console during development
+- Frontend has error handling in each service call

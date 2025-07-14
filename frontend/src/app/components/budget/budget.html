@@ -40,44 +40,34 @@
           <span>Unpin</span>
         </button>
         
-        <!-- Hamburger dropdown menu -->
-        <div class="dropdown is-right" [class.is-active]="isDropdownActive">
-          <div class="dropdown-trigger">
-            <button 
-              class="button is-light" 
-              aria-haspopup="true" 
-              aria-controls="budget-dropdown-menu"
-              (click)="toggleDropdown($event)"
-            >
-              <span class="icon is-small">
-                <i class="fas fa-ellipsis-v"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="budget-dropdown-menu" role="menu">
-            <div class="dropdown-content">
-              <a class="dropdown-item" (click)="editBudget(); $event.stopImmediatePropagation()">
-                <span class="icon is-small mr-2">
-                  <i class="fas fa-edit"></i>
-                </span>
-                <span>Edit Budget</span>
-              </a>
-              <a class="dropdown-item" (click)="duplicateBudget(); $event.stopImmediatePropagation()">
-                <span class="icon is-small mr-2">
-                  <i class="fas fa-copy"></i>
-                </span>
-                <span>Duplicate</span>
-              </a>
-              <hr class="dropdown-divider">
-              <a class="dropdown-item has-text-danger" (click)="deleteBudget(); $event.stopImmediatePropagation()">
-                <span class="icon is-small mr-2">
-                  <i class="fas fa-trash"></i>
-                </span>
-                <span>Delete Budget</span>
-              </a>
-            </div>
-          </div>
-        </div>
+        <!-- Dropdown menu using the reusable component -->
+        <app-dropdown 
+          id="budget"
+          icon="fas fa-ellipsis-v"
+          buttonClass="is-light"
+          [alignRight]="true"
+        >
+          <app-dropdown-item
+            label="Edit Budget"
+            icon="fas fa-edit"
+            (selected)="editBudget()"
+          ></app-dropdown-item>
+          
+          <app-dropdown-item
+            label="Duplicate"
+            icon="fas fa-copy"
+            (selected)="duplicateBudget()"
+          ></app-dropdown-item>
+          
+          <hr class="dropdown-divider">
+          
+          <app-dropdown-item
+            label="Delete Budget"
+            icon="fas fa-trash"
+            [isDanger]="true"
+            (selected)="deleteBudget()"
+          ></app-dropdown-item>
+        </app-dropdown>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotebookComponent } from '../notebook/notebook';
@@ -6,11 +6,20 @@ import { BudgetModalComponent } from '../budget-modal/budget-modal';
 import { BudgetService } from '../../services/budget.service';
 import { CategoryService } from '../../services/category.service';
 import { Budget, Category, UpdateBudgetRequest } from '../../types/budget.types';
+import { DropdownComponent } from '../dropdown';
+import { DropdownItemComponent } from '../dropdown-item';
 
 @Component({
   selector: 'app-budget',
   standalone: true,
-  imports: [CommonModule, FormsModule, NotebookComponent, BudgetModalComponent],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    NotebookComponent, 
+    BudgetModalComponent,
+    DropdownComponent,
+    DropdownItemComponent
+  ],
   templateUrl: './budget.html',
   styleUrl: './budget.scss'
 })
@@ -26,62 +35,11 @@ export class BudgetComponent {
   newCategoryName: string = '';
   newCategoryPlannedAmount: number = 0;
   newCategorySpentAmount: number = 0;
-  isDropdownActive: boolean = false;
 
   constructor(
     private categoryService: CategoryService,
     private budgetService: BudgetService
   ) {}
-
-  toggleDropdown(event?: MouseEvent) {
-    if (event) {
-      event.stopImmediatePropagation();
-    }
-    this.isDropdownActive = !this.isDropdownActive;
-    
-    if (this.isDropdownActive && event) {
-      setTimeout(() => this.adjustDropdownPosition(), 0);
-    }
-  }
-  
-  adjustDropdownPosition() {
-    const dropdownMenu = document.getElementById('budget-dropdown-menu');
-    if (!dropdownMenu) return;
-    
-    const dropdownRect = dropdownMenu.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    
-    if (dropdownRect.right > viewportWidth) {
-      dropdownMenu.parentElement?.classList.add('dropdown-left-aligned');
-      dropdownMenu.parentElement?.classList.remove('dropdown-right-aligned');
-    } else {
-      dropdownMenu.parentElement?.classList.add('dropdown-right-aligned');
-      dropdownMenu.parentElement?.classList.remove('dropdown-left-aligned');
-    }
-  }
-  
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    if (this.isDropdownActive) {
-      this.adjustDropdownPosition();
-    }
-  }
-  
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    if (!this.isDropdownActive) return;
-    
-    const dropdownElement = document.getElementById('budget-dropdown-menu');
-    const dropdownTrigger = document.querySelector('.dropdown-trigger button');
-    const clickedElement = event.target as HTMLElement;
-    
-    const isClickInsideDropdown = dropdownElement?.contains(clickedElement);
-    const isClickOnTrigger = dropdownTrigger?.contains(clickedElement);
-    
-    if (!isClickInsideDropdown && !isClickOnTrigger) {
-      this.isDropdownActive = false;
-    }
-  }
   
   getTotalPlanned(): number {
     if (!this.budget.categories || this.budget.categories.length === 0) return 0;
@@ -240,7 +198,6 @@ export class BudgetComponent {
 
   // Edit budget handler
   editBudget() {
-    this.isDropdownActive = false;
     this.budgetModal.openForEdit(this.budget);
   }
   
@@ -274,7 +231,6 @@ export class BudgetComponent {
   }
   
   duplicateBudget() {
-    this.isDropdownActive = false;
     this.budgetService.duplicateBudget(this.budget.id).subscribe({
       next: (newBudget) => {
         // Emit a special event for the parent component to handle
@@ -306,7 +262,6 @@ export class BudgetComponent {
   }
 
   deleteBudget() {
-    this.isDropdownActive = false;
     if (confirm('Are you sure you want to delete this budget?')) {
       this.budgetService.deleteBudget(this.budget.id).subscribe({
         next: () => {

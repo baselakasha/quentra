@@ -1,0 +1,15 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+  
+  &.is-active {
+    .dropdown-menu {
+      display: block;
+    }
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  z-index: 20;
+}

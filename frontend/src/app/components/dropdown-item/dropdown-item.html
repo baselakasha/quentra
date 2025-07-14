@@ -1,0 +1,10 @@
+<a 
+  class="dropdown-item" 
+  [ngClass]="{'has-text-danger': isDanger}" 
+  (click)="onClick($event)"
+>
+  <span class="icon is-small" *ngIf="icon">
+    <i [class]="icon"></i>
+  </span>
+  <span>{{ label }}</span>
+</a>

@@ -1,0 +1,21 @@
+<div class="dropdown" [class.is-active]="isActive" [class.is-right]="alignRight">
+  <div class="dropdown-trigger">
+    <button 
+      class="button" 
+      [ngClass]="buttonClass"
+      aria-haspopup="true" 
+      [attr.aria-controls]="id + '-dropdown-menu'"
+      (click)="toggle($event)"
+    >
+      <span class="icon is-small" *ngIf="icon">
+        <i [class]="icon"></i>
+      </span>
+      <span *ngIf="label">{{ label }}</span>
+    </button>
+  </div>
+  <div class="dropdown-menu" [id]="id + '-dropdown-menu'" role="menu" (click)="$event.stopPropagation()">
+    <div class="dropdown-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
