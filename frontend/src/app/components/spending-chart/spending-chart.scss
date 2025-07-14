@@ -1,0 +1,31 @@
+// Spending Chart Styles
+.spending-chart-container {
+  margin-top: 2rem;
+  padding: 1rem 0;
+  
+  .subtitle {
+    margin-bottom: 1rem;
+  }
+  
+  .chart-wrapper {
+    height: 300px;
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+    
+    canvas {
+      max-width: 100%;
+    }
+  }
+}
+
+// Responsive styles for the chart
+@media screen and (max-width: 768px) {
+  .spending-chart-container {
+    margin-top: 1.5rem;
+    
+    .chart-wrapper {
+      height: 250px;
+    }
+  }
+}

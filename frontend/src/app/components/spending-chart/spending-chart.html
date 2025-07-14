@@ -1,0 +1,9 @@
+<div class="spending-chart-container" *ngIf="categories && categories.length > 0">
+  <h3 class="subtitle is-5 has-text-white">Spending Distribution</h3>
+  <div class="chart-wrapper">
+    <canvas #spendingChart width="300" height="300"></canvas>
+  </div>
+</div>
+<div class="spending-chart-container" *ngIf="!categories || categories.length === 0">
+  <p class="is-italic">Add categories to see spending distribution chart</p>
+</div>

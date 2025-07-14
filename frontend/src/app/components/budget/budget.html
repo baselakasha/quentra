@@ -343,6 +343,8 @@
             [style.width.%]="(getTotalSpent() / budget.monthlyIncome) * 100 > 100 ? 100 : (getTotalSpent() / budget.monthlyIncome) * 100"
           ></div>
         </div>
+
+        <app-spending-chart [categories]="budget.categories || []"></app-spending-chart>
       </div>
     </div>
   </div>

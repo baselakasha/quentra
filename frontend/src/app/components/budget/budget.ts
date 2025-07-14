@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotebookComponent } from '../notebook/notebook';
@@ -8,6 +8,7 @@ import { CategoryService } from '../../services/category.service';
 import { Budget, Category, UpdateBudgetRequest } from '../../types/budget.types';
 import { DropdownComponent } from '../dropdown';
 import { DropdownItemComponent } from '../dropdown-item';
+import { SpendingChartComponent } from '../spending-chart/spending-chart';
 
 @Component({
   selector: 'app-budget',
@@ -18,13 +19,21 @@ import { DropdownItemComponent } from '../dropdown-item';
     NotebookComponent, 
     BudgetModalComponent,
     DropdownComponent,
-    DropdownItemComponent
+    DropdownItemComponent,
+    SpendingChartComponent
   ],
   templateUrl: './budget.html',
   styleUrl: './budget.scss'
 })
-export class BudgetComponent {
-  @Input() budget!: Budget;
+export class BudgetComponent implements AfterViewInit {
+  @Input() set budget(value: Budget) {
+    this._budget = value;
+  }
+  get budget(): Budget {
+    return this._budget;
+  }
+  
+  private _budget!: Budget;
   @Output() budgetDeleted = new EventEmitter<string>();
   @Output() budgetUpdated = new EventEmitter<Budget>();
   @Output() budgetPinned = new EventEmitter<Budget>();
@@ -40,6 +49,10 @@ export class BudgetComponent {
     private categoryService: CategoryService,
     private budgetService: BudgetService
   ) {}
+  
+  ngAfterViewInit() {
+    // Component initialization
+  }
   
   getTotalPlanned(): number {
     if (!this.budget.categories || this.budget.categories.length === 0) return 0;
@@ -157,7 +170,8 @@ export class BudgetComponent {
         this.newCategoryPlannedAmount = 0;
         this.newCategorySpentAmount = 0;
         
-
+        // Refresh categories reference to trigger change detection
+        this.refreshCategoriesReference();
       },
       error: (error) => {
         this.error.emit('Failed to create category');
@@ -187,7 +201,9 @@ export class BudgetComponent {
           plannedAmount: Number(updatedCategory.plannedAmount) || plannedAmount,
           spentAmount: Number(updatedCategory.spentAmount) || spentAmount
         });
-
+        
+        // Refresh categories reference to trigger change detection
+        this.refreshCategoriesReference();
       },
       error: (error) => {
         this.error.emit('Failed to update category');
@@ -251,7 +267,9 @@ export class BudgetComponent {
         Object.assign(this.budget, updatedBudget);
         this.budgetModal.finishLoading(true);
         this.budgetUpdated.emit(updatedBudget);
-
+        
+        // Refresh categories reference to trigger change detection
+        this.refreshCategoriesReference();
       },
       error: (error) => {
         this.budgetModal.setErrorMessage('Failed to update budget');
@@ -273,6 +291,14 @@ export class BudgetComponent {
           console.error('Error deleting budget:', error);
         }
       });
+    }
+  }
+
+  // Helper method to trigger category updates for proper change detection
+  private refreshCategoriesReference() {
+    if (this._budget && this._budget.categories) {
+      // Create a new array reference with the same items to trigger change detection
+      this._budget.categories = [...this._budget.categories];
     }
   }
 }
