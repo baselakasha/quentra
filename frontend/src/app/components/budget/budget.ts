@@ -10,6 +10,7 @@ import { DropdownComponent } from '../dropdown';
 import { DropdownItemComponent } from '../dropdown-item';
 import { SpendingChartComponent } from '../spending-chart/spending-chart';
 import { CollapsibleContainerComponent } from '../collapsible-container/collapsible-container';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-budget',
@@ -54,7 +55,8 @@ export class BudgetComponent implements AfterViewInit {
 
   constructor(
     private categoryService: CategoryService,
-    private budgetService: BudgetService
+    private budgetService: BudgetService,
+    private notification: NotificationService
   ) {}
   
   ngAfterViewInit() {
@@ -148,7 +150,7 @@ export class BudgetComponent implements AfterViewInit {
   // Action methods
   addCategory() {
     if (!this.newCategoryName || this.newCategoryName.trim() === '') {
-      this.error.emit('Category name is required');
+      this.notification.warning('Category name is required');
       return;
     }
     
@@ -183,9 +185,11 @@ export class BudgetComponent implements AfterViewInit {
         
         // Refresh categories reference to trigger change detection
         this.refreshCategoriesReference();
+        
+        this.notification.toast('Category added successfully');
       },
       error: (error) => {
-        this.error.emit('Failed to create category');
+        this.notification.error('Failed to create category');
         console.error('Error creating category:', error);
       }
     });
@@ -215,9 +219,11 @@ export class BudgetComponent implements AfterViewInit {
         
         // Refresh categories reference to trigger change detection
         this.refreshCategoriesReference();
+        
+        // We don't show a toast here to avoid too many notifications when updating categories
       },
       error: (error) => {
-        this.error.emit('Failed to update category');
+        this.notification.error('Failed to update category');
         console.error('Error updating category:', error);
       }
     });
@@ -236,9 +242,10 @@ export class BudgetComponent implements AfterViewInit {
         this.budgetPinned.emit(updatedBudget);
         // Expand the budget when pinned
         this.isExpanded = true;
+        this.notification.toast('Budget pinned', 'success');
       },
       error: (error) => {
-        this.error.emit('Failed to pin budget');
+        this.notification.error('Failed to pin budget');
         console.error('Error pinning budget:', error);
       }
     });
@@ -252,9 +259,10 @@ export class BudgetComponent implements AfterViewInit {
         this.budgetPinned.emit(updatedBudget);
         // Optional: collapse the budget when unpinned
         // this.isExpanded = false;
+        this.notification.toast('Budget unpinned', 'info');
       },
       error: (err) => {
-        this.error.emit('Failed to unpin budget');
+        this.notification.error('Failed to unpin budget');
         console.error('Error unpinning budget:', err);
       }
     });
@@ -265,9 +273,10 @@ export class BudgetComponent implements AfterViewInit {
       next: (newBudget) => {
         // Emit a special event for the parent component to handle
         this.budgetDuplicated.emit(newBudget);
+        this.notification.success('Budget duplicated successfully');
       },
       error: (err) => {
-        this.error.emit('Failed to duplicate budget');
+        this.notification.error('Failed to duplicate budget');
         console.error('Error duplicating budget:', err);
       }
     });
@@ -292,24 +301,34 @@ export class BudgetComponent implements AfterViewInit {
         
         // Refresh categories reference to trigger change detection
         this.refreshCategoriesReference();
+        
+        this.notification.toast('Budget updated successfully', 'success');
       },
       error: (error) => {
         this.budgetModal.setErrorMessage('Failed to update budget');
-        this.error.emit('Failed to update budget');
+        this.notification.error('Failed to update budget');
         console.error('Error updating budget:', error);
       }
     });
   }
 
-  deleteBudget() {
-    if (confirm('Are you sure you want to delete this budget?')) {
+  async deleteBudget() {
+    const confirmed = await this.notification.confirm({
+      title: 'Delete Budget',
+      text: 'Are you sure you want to delete this budget? This action cannot be undone.',
+      confirmButtonText: 'Yes, delete it',
+      cancelButtonText: 'Cancel',
+      icon: 'warning'
+    });
+    
+    if (confirmed) {
       this.budgetService.deleteBudget(this.budget.id).subscribe({
         next: () => {
           this.budgetDeleted.emit(this.budget.id);
-
+          this.notification.toast('Budget deleted successfully', 'success');
         },
         error: (error) => {
-          this.error.emit('Failed to delete budget');
+          this.notification.error('Failed to delete budget', 'Error');
           console.error('Error deleting budget:', error);
         }
       });

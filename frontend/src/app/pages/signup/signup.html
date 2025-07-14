@@ -15,15 +15,7 @@
       >
     </div>
 
-    <!-- Success Message -->
-    @if (successMessage) {
-    <div class="notification is-success mb-4">{{ successMessage }}</div>
-    }
-
-    <!-- Error Message -->
-    @if (errorMessage) {
-    <div class="notification is-danger mb-4">{{ errorMessage }}</div>
-    }
+    <!-- Notifications are now handled by SweetAlert2 -->
 
     <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
       <div class="field mt-4">

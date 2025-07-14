@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { EventService } from '../services/event.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +33,7 @@ export class Home implements OnInit {
     private budgetService: BudgetService,
     private authService: AuthService,
     private eventService: EventService,
+    private notification: NotificationService,
     public router: Router
   ) {}
 
@@ -154,12 +156,11 @@ export class Home implements OnInit {
       error: (error) => {
         // Show specific error message if available
         const errorMessage = error.error?.message || 'Failed to create new budget';
-        this.error = errorMessage;
         console.error('Error creating new budget:', error);
         this.budgetModal.finishLoading(false); // Keep modal open on error
         
-        // Set error in modal
-        this.budgetModal.setErrorMessage(errorMessage);
+        // Use notification service instead of setting error in state
+        this.notification.error(errorMessage, 'Budget Creation Failed');
       }
     });
   }
@@ -197,15 +198,13 @@ export class Home implements OnInit {
   }
   
   onError(errorMessage: string) {
-    this.error = errorMessage;
+    if (errorMessage) {
+      this.notification.error(errorMessage);
+    }
   }
   
   showSuccessMessage(message: string) {
-    this.successMessage = message;
-    
-    // Auto-hide success message after 5 seconds
-    setTimeout(() => {
-      this.successMessage = null;
-    }, 5000);
+    // Replace inline success message with SweetAlert2 toast
+    this.notification.toast(message, 'success');
   }
 }

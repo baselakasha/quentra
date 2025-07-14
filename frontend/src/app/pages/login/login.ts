@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { NotebookComponent } from '../../components/notebook/notebook';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -25,23 +26,23 @@ export class Login {
   });
 
   isLoading = false;
-  errorMessage = '';
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notification: NotificationService
   ) {}
 
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      this.errorMessage = '';
 
       const { username, password } = this.loginForm.value;
 
       this.authService.login({ username, password }).subscribe({
         next: (response) => {
           this.isLoading = false;
+          this.notification.toast('Logged in successfully!', 'success');
           this.authService.saveToken(response.token);
           // Use setTimeout to ensure the event is processed after token is saved
           setTimeout(() => {
@@ -50,11 +51,13 @@ export class Login {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.error?.error || 'Invalid credentials';
+          const errorMessage = error.error?.error || 'Invalid credentials';
+          this.notification.error(errorMessage, 'Login Failed');
         }
       });
     } else {
       this.markFormGroupTouched();
+      this.notification.warning('Please fill in all required fields correctly.');
     }
   }
 

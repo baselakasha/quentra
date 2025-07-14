@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { NotebookComponent } from '../../components/notebook/notebook';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-signup',
@@ -30,26 +31,23 @@ export class Signup {
   });
 
   isLoading = false;
-  errorMessage = '';
-  successMessage = '';
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notification: NotificationService
   ) {}
 
   onSubmit(): void {
     if (this.signUpForm.valid) {
       this.isLoading = true;
-      this.errorMessage = '';
-      this.successMessage = '';
 
       const { username, password, fullName } = this.signUpForm.value;
 
       this.authService.signup({ username, password, fullName }).subscribe({
         next: (response) => {
           this.isLoading = false;
-          this.successMessage = 'Account created successfully!';
+          this.notification.success('Account created successfully!');
           this.authService.saveToken(response.token);
           
           // Redirect to home or dashboard after successful signup
@@ -59,11 +57,13 @@ export class Signup {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.error?.error || 'An error occurred during signup';
+          const errorMessage = error.error?.error || 'An error occurred during signup';
+          this.notification.error(errorMessage);
         }
       });
     } else {
       this.markFormGroupTouched();
+      this.notification.warning('Please fill in all required fields correctly.');
     }
   }
 

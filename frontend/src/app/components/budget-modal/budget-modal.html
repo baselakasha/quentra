@@ -6,9 +6,7 @@
       <button class="delete" aria-label="close" (click)="close()"></button>
     </header>
     <section class="modal-card-body">
-      <div *ngIf="errorMessage" class="notification is-danger">
-        {{ errorMessage }}
-      </div>
+      <!-- Notifications are now handled by SweetAlert2 -->
 
       <div class="field">
         <label class="label">Budget Name</label>

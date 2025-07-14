@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CreateBudgetRequest, Budget, UpdateBudgetRequest } from '../../types/budget.types';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-budget-modal',
@@ -24,6 +25,8 @@ export class BudgetModalComponent {
   editBudgetId = '';
   
   budgetData: CreateBudgetRequest = this.getDefaultBudgetData();
+  
+  constructor(private notification: NotificationService) {}
   
   open() {
     this.isActive = true;
@@ -62,12 +65,12 @@ export class BudgetModalComponent {
     this.formSubmitted = true;
     
     if (!this.isValid()) {
-      this.errorMessage = 'Please fix the errors in the form before submitting.';
+      this.notification.warning('Please fix the errors in the form before submitting.');
       return;
     }
     
     if (this.endDateBeforeStartDate()) {
-      this.errorMessage = 'End date must be after start date.';
+      this.notification.warning('End date must be after start date.');
       return;
     }
     
@@ -129,12 +132,12 @@ export class BudgetModalComponent {
     if (success) {
       this.close();
     } else {
-      this.errorMessage = 'There was an error creating the budget. Please try again.';
+      this.notification.error('There was an error creating the budget. Please try again.');
     }
   }
   
   setErrorMessage(message: string) {
-    this.errorMessage = message;
+    this.notification.error(message);
     this.isLoading = false;
   }
 }

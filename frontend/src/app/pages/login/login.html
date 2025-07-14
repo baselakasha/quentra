@@ -5,10 +5,7 @@
       <a routerLink="/signup" class="has-text-white" style="text-decoration: underline;">Sign up</a>
     </div>
 
-    <!-- Error Message -->
-    @if (errorMessage) {
-      <div class="notification is-danger mb-4">{{ errorMessage }}</div>
-    }
+    <!-- Notifications are now handled by SweetAlert2 -->
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="field">

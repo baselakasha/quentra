@@ -8,15 +8,7 @@
     <p>Loading budgets...</p>
   </div>
 
-  <div *ngIf="error" class="notification is-danger">
-    <button class="delete" (click)="error = null"></button>
-    <p>{{ error }}</p>
-  </div>
-
-  <div *ngIf="successMessage" class="notification is-success">
-    <button class="delete" (click)="successMessage = null"></button>
-    <p>{{ successMessage }}</p>
-  </div>
+  <!-- Notifications are now handled by SweetAlert2 -->
 
   <!-- Not logged in message -->
   <div *ngIf="!isLoggedIn" class="not-logged-in-container has-text-centered py-6">
