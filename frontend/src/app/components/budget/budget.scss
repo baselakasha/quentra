@@ -466,3 +466,68 @@
     }
   }
 }
+
+// Collapsible budget styles
+.budget-title-container {
+  display: flex;
+  align-items: center;
+  
+  .toggle-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    
+    i {
+      font-size: 1rem;
+      transition: transform 0.3s ease;
+    }
+  }
+}
+
+.budget-collapsible {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+  
+  &.expanded {
+    max-height: 5000px; // Large enough to fit all content
+    transition: max-height 0.5s ease-in;
+  }
+}
+
+// Style for the collapsed notebook
+app-notebook.collapsed {
+  margin-bottom: 1rem;
+  
+  .budget-header {
+    margin-bottom: 0;
+  }
+}
+
+// Fade-in animation for content
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

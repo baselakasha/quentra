@@ -1,0 +1,35 @@
+<div class="collapsible-container" [ngClass]="{'is-expanded': isExpanded, 'is-pinned': isPinned}">
+  <div class="collapsible-header" [ngClass]="headerClass">
+    <div class="collapsible-header-left">
+      <button *ngIf="showToggleIcon" class="toggle-button" (click)="toggle()" [attr.aria-expanded]="isExpanded" aria-label="Toggle container">
+        <i class="fas" [ngClass]="isExpanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+      </button>
+      
+      <!-- Custom header content -->
+      <div class="header-content">
+        <ng-container *ngIf="headerContent; else defaultHeader">
+          <ng-container *ngTemplateOutlet="headerContent"></ng-container>
+        </ng-container>
+        <ng-template #defaultHeader>
+          <h3 class="title">{{ title }}</h3>
+        </ng-template>
+      </div>
+    </div>
+    
+    <!-- Header actions -->
+    <div class="collapsible-header-actions">
+      <ng-container *ngIf="headerActions">
+        <ng-container *ngTemplateOutlet="headerActions"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+  
+  <!-- Collapsible body -->
+  <div class="collapsible-body" [ngClass]="{'expanded': isExpanded, bodyClass}">
+    <div class="collapsible-body-content">
+      <ng-container *ngIf="bodyContent">
+        <ng-container *ngTemplateOutlet="bodyContent"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { Budget, Category, UpdateBudgetRequest } from '../../types/budget.types'
 import { DropdownComponent } from '../dropdown';
 import { DropdownItemComponent } from '../dropdown-item';
 import { SpendingChartComponent } from '../spending-chart/spending-chart';
+import { CollapsibleContainerComponent } from '../collapsible-container/collapsible-container';
 
 @Component({
   selector: 'app-budget',
@@ -20,7 +21,8 @@ import { SpendingChartComponent } from '../spending-chart/spending-chart';
     BudgetModalComponent,
     DropdownComponent,
     DropdownItemComponent,
-    SpendingChartComponent
+    SpendingChartComponent,
+    CollapsibleContainerComponent
   ],
   templateUrl: './budget.html',
   styleUrl: './budget.scss'
@@ -28,6 +30,10 @@ import { SpendingChartComponent } from '../spending-chart/spending-chart';
 export class BudgetComponent implements AfterViewInit {
   @Input() set budget(value: Budget) {
     this._budget = value;
+    // Set initial expanded state based on whether the budget is pinned
+    if (value && this.isExpanded === undefined) {
+      this.isExpanded = !!value.isPinned;
+    }
   }
   get budget(): Budget {
     return this._budget;
@@ -41,6 +47,7 @@ export class BudgetComponent implements AfterViewInit {
   @Output() error = new EventEmitter<string>();
   @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
   
+  isExpanded: boolean = false; // Track expanded/collapsed state
   newCategoryName: string = '';
   newCategoryPlannedAmount: number = 0;
   newCategorySpentAmount: number = 0;
@@ -52,6 +59,10 @@ export class BudgetComponent implements AfterViewInit {
   
   ngAfterViewInit() {
     // Component initialization
+    // Set initial expanded state based on whether the budget is pinned
+    if (this._budget) {
+      this.isExpanded = !!this._budget.isPinned;
+    }
   }
   
   getTotalPlanned(): number {
@@ -223,7 +234,8 @@ export class BudgetComponent implements AfterViewInit {
       next: (updatedBudget) => {
         Object.assign(this.budget, updatedBudget);
         this.budgetPinned.emit(updatedBudget);
-
+        // Expand the budget when pinned
+        this.isExpanded = true;
       },
       error: (error) => {
         this.error.emit('Failed to pin budget');
@@ -238,6 +250,8 @@ export class BudgetComponent implements AfterViewInit {
       next: (updatedBudget) => {
         this.budget.isPinned = false;
         this.budgetPinned.emit(updatedBudget);
+        // Optional: collapse the budget when unpinned
+        // this.isExpanded = false;
       },
       error: (err) => {
         this.error.emit('Failed to unpin budget');
@@ -263,10 +277,18 @@ export class BudgetComponent implements AfterViewInit {
   onBudgetUpdated(event: {id: string, data: UpdateBudgetRequest}) {
     this.budgetService.updateBudget(event.id, event.data).subscribe({
       next: (updatedBudget) => {
+        // Check if pinned status changed
+        const wasPinned = this.budget.isPinned;
+        
         // Update local budget with returned values
         Object.assign(this.budget, updatedBudget);
         this.budgetModal.finishLoading(true);
         this.budgetUpdated.emit(updatedBudget);
+        
+        // If budget was newly pinned, expand it
+        if (!wasPinned && updatedBudget.isPinned) {
+          this.isExpanded = true;
+        }
         
         // Refresh categories reference to trigger change detection
         this.refreshCategoriesReference();
@@ -294,6 +316,17 @@ export class BudgetComponent implements AfterViewInit {
     }
   }
 
+  // Toggle expanded/collapsed state
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
+    
+    // If expanding the budget and it's not already expanded, refresh data 
+    // to ensure we're showing the latest information
+    if (this.isExpanded) {
+      this.refreshCategoriesReference();
+    }
+  }
+  
   // Helper method to trigger category updates for proper change detection
   private refreshCategoriesReference() {
     if (this._budget && this._budget.categories) {

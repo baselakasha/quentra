@@ -3,8 +3,13 @@
   [centerContent]="false"
   [fullWidth]="true"
 >
-  <div class="budget-header columns">
-    <div class="column">
+  <app-collapsible-container
+    [isExpanded]="isExpanded"
+    [isPinned]="budget.isPinned || false"
+    (toggleExpand)="toggleExpand()"
+  >
+    <!-- Header Content -->
+    <ng-template #headerContent>
       <span class="icon-text title is-3">
         <span *ngIf="budget.isPinned" class="icon has-text-white">
           <i class="fas fa-thumbtack"></i>
@@ -13,8 +18,10 @@
           {{ budget.name }}
         </span>
       </span>
-    </div>
-    <div class="column has-text-right-tablet">
+    </ng-template>
+    
+    <!-- Header Actions -->
+    <ng-template #headerActions>
       <div class="budget-actions">
         <!-- Pin/Unpin button remains visible because it's used frequently -->
         <button 
@@ -38,6 +45,17 @@
             <i class="fas fa-thumbtack fa-rotate-90"></i>
           </span>
           <span>Unpin</span>
+        </button>
+        
+        <!-- Expand/Collapse button for smaller screens -->
+        <button 
+          class="button is-light mr-2 is-hidden-desktop" 
+          (click)="toggleExpand()" 
+          title="{{ isExpanded ? 'Collapse budget' : 'Expand budget' }}"
+        >
+          <span class="icon is-small">
+            <i class="fas" [ngClass]="isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+          </span>
         </button>
         
         <!-- Dropdown menu using the reusable component -->
@@ -69,8 +87,11 @@
           ></app-dropdown-item>
         </app-dropdown>
       </div>
-    </div>
-  </div>  <div class="budget-content columns is-mobile is-multiline">
+    </ng-template>
+    
+    <!-- Body Content -->
+    <ng-template #bodyContent>
+    <div class="budget-content columns is-mobile is-multiline fade-in">
     <div class="column is-7-desktop is-12-tablet is-12-mobile">
       <!-- Desktop view: Table -->
       <div class="table-view is-hidden-mobile">
@@ -348,6 +369,8 @@
       </div>
     </div>
   </div>
+    </ng-template>
+  </app-collapsible-container>
 </app-notebook>
 
 <!-- Budget Edit Modal -->

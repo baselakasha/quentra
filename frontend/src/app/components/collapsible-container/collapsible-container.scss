@@ -1,0 +1,107 @@
+.collapsible-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  
+  &.is-pinned {
+    .collapsible-header {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+  
+  .collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+    
+    &-left {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    
+    &-actions {
+      display: flex;
+      align-items: center;
+    }
+    
+    .toggle-button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+      transition: transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+      
+      i {
+        font-size: 1rem;
+        transition: transform 0.3s ease;
+      }
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      
+      .title {
+        margin: 0;
+        color: white;
+      }
+    }
+  }
+  
+  .collapsible-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    padding: 0 1rem;
+    
+    &.expanded {
+      max-height: 5000px; // Large enough to fit any content
+      transition: max-height 0.5s ease-in;
+    }
+    
+    &-content {
+      padding: 1rem 0;
+    }
+  }
+}
+
+// Responsive styles
+@media screen and (max-width: 768px) {
+  .collapsible-container {
+    .collapsible-header {
+      padding: 0.5rem;
+      
+      .toggle-button {
+        padding: 0.25rem;
+      }
+    }
+    
+    .collapsible-body {
+      padding: 0 0.5rem;
+      
+      &-content {
+        padding: 0.5rem 0;
+      }
+    }
+  }
+}
