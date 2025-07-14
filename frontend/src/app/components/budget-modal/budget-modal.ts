@@ -23,6 +23,7 @@ export class BudgetModalComponent {
   errorMessage = '';
   editMode = false;
   editBudgetId = '';
+  hasMonthlyIncome = false;
   
   budgetData: CreateBudgetRequest = this.getDefaultBudgetData();
   
@@ -35,7 +36,15 @@ export class BudgetModalComponent {
     this.editMode = false;
     // Reset to default data
     this.budgetData = this.getDefaultBudgetData();
+    this.hasMonthlyIncome = false; // Explicitly ensure checkbox is unchecked
     this.title = 'Create New Budget';
+    
+    // Ensure any dependent HTML is updated immediately
+    setTimeout(() => {
+      // Force detection of hasMonthlyIncome changes
+      this.hasMonthlyIncome = false;
+      this.budgetData.monthlyIncome = null;
+    }, 0);
   }
   
   openForEdit(budget: Budget) {
@@ -46,13 +55,32 @@ export class BudgetModalComponent {
     this.editBudgetId = budget.id;
     this.title = 'Edit Budget';
     
+    // Check if budget has monthly income defined
+    this.hasMonthlyIncome = budget.monthlyIncome !== null && 
+                           budget.monthlyIncome !== undefined && 
+                           budget.monthlyIncome > 0;
+    
     // Set the form data with the existing budget values
     this.budgetData = {
       name: budget.name,
       startDate: budget.startDate,
       endDate: budget.endDate,
-      monthlyIncome: budget.monthlyIncome
+      monthlyIncome: this.hasMonthlyIncome ? budget.monthlyIncome : null
     };
+  }
+  
+  toggleMonthlyIncome(): void {
+    console.log('Monthly income checkbox toggled:', this.hasMonthlyIncome);
+    
+    if (!this.hasMonthlyIncome) {
+      // When unchecking, clear the monthly income
+      this.budgetData.monthlyIncome = null;
+      console.log('Monthly income set to null');
+    } else {
+      // Default to 0 when enabling monthly income
+      this.budgetData.monthlyIncome = 0;
+      console.log('Monthly income initialized to 0');
+    }
   }
   
   close() {
@@ -77,15 +105,31 @@ export class BudgetModalComponent {
     this.errorMessage = '';
     this.isLoading = true;
     
+    // Prepare budget data with proper monthlyIncome handling
+    const budgetToSave = {
+      ...this.budgetData,
+      // Convert to number or use null based on checkbox
+      monthlyIncome: this.hasMonthlyIncome ? Number(this.budgetData.monthlyIncome) || 0 : null
+    };
+    
     if (this.editMode) {
+      // For update requests, we need to ensure we're using the right type
+      const updateData: UpdateBudgetRequest = {
+        name: budgetToSave.name,
+        startDate: budgetToSave.startDate,
+        endDate: budgetToSave.endDate,
+        // Convert null to undefined for UpdateBudgetRequest
+        monthlyIncome: budgetToSave.monthlyIncome === null ? undefined : budgetToSave.monthlyIncome
+      };
+      
       // Emit update event with budget ID and data
       this.budgetUpdated.emit({
         id: this.editBudgetId,
-        data: {...this.budgetData}
+        data: updateData
       });
     } else {
       // Emit create event with budget data
-      this.budgetCreated.emit({...this.budgetData});
+      this.budgetCreated.emit(budgetToSave);
     }
   }
   
@@ -96,6 +140,7 @@ export class BudgetModalComponent {
     this.errorMessage = '';
     this.editMode = false;
     this.editBudgetId = '';
+    this.hasMonthlyIncome = false;
   }
   
   getDefaultBudgetData(): CreateBudgetRequest {
@@ -107,7 +152,7 @@ export class BudgetModalComponent {
       name: '',
       startDate: today.toISOString().split('T')[0],
       endDate: endOfMonth.toISOString().split('T')[0],
-      monthlyIncome: 0
+      monthlyIncome: null // Default to null (no income defined)
     };
   }
   
@@ -121,7 +166,11 @@ export class BudgetModalComponent {
       !!this.budgetData.name &&
       !!this.budgetData.startDate &&
       !!this.budgetData.endDate &&
-      this.budgetData.monthlyIncome >= 0 &&
+      // Monthly income is only required if the checkbox is checked
+      (!this.hasMonthlyIncome || 
+        (this.budgetData.monthlyIncome !== null && 
+         this.budgetData.monthlyIncome !== undefined && 
+         Number(this.budgetData.monthlyIncome) >= 0)) &&
       !this.endDateBeforeStartDate()
     );
   }

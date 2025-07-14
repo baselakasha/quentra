@@ -337,22 +337,22 @@
     <div class="column is-5-desktop is-12-tablet is-12-mobile">
       <div class="budget-info has-text-white">
         <h2 class="title is-4 has-text-white">Budget Overview</h2>
-        <p>Monthly Income: £{{ budget.monthlyIncome | number:'1.2-2' }}</p>
+        <p *ngIf="hasMonthlyIncome()">Monthly Income: £{{ budget.monthlyIncome | number:'1.2-2' }}</p>
         <p>Start Date: {{ budget.startDate | date:'mediumDate' }}</p>
         <p>End Date: {{ budget.endDate | date:'mediumDate' }}</p>
         <p *ngIf="!hasBudgetStarted()" class="days-upcoming">Budget starts in {{ getDaysUntilStart() }} days</p>
         <p *ngIf="hasBudgetStarted() && getDaysLeft() > 0" class="days-left">Days Left: {{ getDaysLeft() }}</p>
         <p *ngIf="getDaysLeft() <= 0" class="days-expired">Budget Period Ended</p>
         <p>Total Spent: £{{ getTotalSpent() | number:'1.2-2' }}</p>
-        <p>Remaining: £{{ getRemainingBudget() | number:'1.2-2' }}</p>
-        <div class="progress-container mt-3">
+        <p *ngIf="hasMonthlyIncome()">Remaining: £{{ getRemainingBudget() | number:'1.2-2' }}</p>
+        <div *ngIf="hasMonthlyIncome()" class="progress-container mt-3">
           <div
             class="progress-bar"
             [ngClass]="{
-                 'warning': (getTotalSpent() / budget.monthlyIncome) * 100 > 75 && (getTotalSpent() / budget.monthlyIncome) * 100 <= 100, 
-                 'danger': (getTotalSpent() / budget.monthlyIncome) * 100 > 100
+                 'warning': getMonthlyIncomePercentage() > 75 && getMonthlyIncomePercentage() <= 100, 
+                 'danger': getMonthlyIncomePercentage() > 100
                }"
-            [style.width.%]="(getTotalSpent() / budget.monthlyIncome) * 100 > 100 ? 100 : (getTotalSpent() / budget.monthlyIncome) * 100"
+            [style.width.%]="getMonthlyIncomePercentage() > 100 ? 100 : getMonthlyIncomePercentage()"
           ></div>
         </div>
 

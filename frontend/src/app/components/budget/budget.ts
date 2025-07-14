@@ -78,7 +78,25 @@ export class BudgetComponent implements AfterViewInit {
   }
 
   getRemainingBudget(): number {
+    // If no monthly income is defined, don't calculate remaining budget
+    if (!this.budget.monthlyIncome) return 0;
     return this.budget.monthlyIncome - this.getTotalSpent();
+  }
+  
+  // Check if budget has monthly income defined
+  hasMonthlyIncome(): boolean {
+    return this.budget.monthlyIncome !== null && 
+           this.budget.monthlyIncome !== undefined && 
+           this.budget.monthlyIncome > 0;
+  }
+  
+  // Get monthly income percentage safely
+  getMonthlyIncomePercentage(): number {
+    if (!this.hasMonthlyIncome() || this.budget.monthlyIncome === 0) {
+      return 0;
+    }
+    // Non-null assertion is safe here because hasMonthlyIncome() ensures it's not null
+    return (this.getTotalSpent() / (this.budget.monthlyIncome as number)) * 100;
   }
   
   getDaysLeft(): number {

@@ -72,8 +72,12 @@ export class Home implements OnInit {
       next: (budgets) => {
         // Ensure categories have proper default values with explicit number conversion
         this.budgets = budgets.map(budget => {
-          // Ensure monthlyIncome is a number
-          budget.monthlyIncome = Number(budget.monthlyIncome) || 0;
+          // Handle monthly income
+          if (budget.monthlyIncome !== null && budget.monthlyIncome !== undefined) {
+            budget.monthlyIncome = Number(budget.monthlyIncome);
+          } else {
+            budget.monthlyIncome = null;
+          }
           
           if (budget.categories) {
             budget.categories = budget.categories.map(category => {
@@ -136,13 +140,16 @@ export class Home implements OnInit {
       return;
     }
     
-    // Ensure monthly income is a number
-    budgetData.monthlyIncome = Number(budgetData.monthlyIncome) || 0;
+    // Monthly income is handled by the checkbox now - no need to modify it here
     
     this.budgetService.createBudget(budgetData).subscribe({
       next: (budget) => {
-        // Format any numeric values
-        budget.monthlyIncome = Number(budget.monthlyIncome) || 0;
+        // Format numeric values correctly
+        if (budget.monthlyIncome !== null && budget.monthlyIncome !== undefined) {
+          budget.monthlyIncome = Number(budget.monthlyIncome);
+        } else {
+          budget.monthlyIncome = null;
+        }
         
         // Add the new budget to the list
         this.budgets.push(budget);

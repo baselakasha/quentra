@@ -11,7 +11,7 @@ export interface Budget {
   name: string;
   startDate: string;
   endDate: string;
-  monthlyIncome: number;
+  monthlyIncome?: number | null;
   isPinned?: boolean;
   categories?: Category[];
   user?: User;
@@ -33,14 +33,14 @@ export interface CreateBudgetRequest {
   name: string;
   startDate: string;
   endDate: string;
-  monthlyIncome: number;
+  monthlyIncome?: number | null;
 }
 
 export interface UpdateBudgetRequest {
   name?: string;
   startDate?: string;
   endDate?: string;
-  monthlyIncome?: number;
+  monthlyIncome?: number | null;
 }
 
 export interface CreateCategoryRequest {

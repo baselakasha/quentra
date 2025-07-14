@@ -6,8 +6,6 @@
       <button class="delete" aria-label="close" (click)="close()"></button>
     </header>
     <section class="modal-card-body">
-      <!-- Notifications are now handled by SweetAlert2 -->
-
       <div class="field">
         <label class="label">Budget Name</label>
         <div class="control">
@@ -73,6 +71,20 @@
       </div>
 
       <div class="field">
+        <div class="monthly-income-toggle">
+          <label class="checkbox">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="hasMonthlyIncome" 
+              (change)="toggleMonthlyIncome()"
+            >
+            <span>Include monthly income for this budget</span>
+          </label>
+        </div>
+        <p class="help">Uncheck for project budgets or travel trips with no monthly income</p>
+      </div>
+
+      <div class="field" *ngIf="hasMonthlyIncome">
         <label class="label">Monthly Income</label>
         <div class="control has-icons-left">
           <span class="icon is-small is-left">
@@ -85,13 +97,13 @@
             placeholder="0.00"
             min="0"
             step="0.01"
-            required
             #monthlyIncome="ngModel"
-            [ngClass]="{'is-danger': monthlyIncome.invalid && (monthlyIncome.dirty || monthlyIncome.touched || formSubmitted)}"
+            [ngClass]="{'is-danger': hasMonthlyIncome && monthlyIncome.invalid && (monthlyIncome.dirty || monthlyIncome.touched || formSubmitted)}"
+            [required]="hasMonthlyIncome"
           />
         </div>
         <p
-          *ngIf="monthlyIncome.invalid && (monthlyIncome.dirty || monthlyIncome.touched || formSubmitted)"
+          *ngIf="hasMonthlyIncome && monthlyIncome.invalid && (monthlyIncome.dirty || monthlyIncome.touched || formSubmitted)"
           class="help is-danger"
         >
           Monthly income must be a positive number

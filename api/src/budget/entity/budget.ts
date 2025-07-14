@@ -28,8 +28,8 @@ export class Budget {
   @Column({ type: "date" })
   endDate!: Date;
 
-  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
-  monthlyIncome!: number;
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0, nullable: true })
+  monthlyIncome!: number | null;
 
   @Column({ default: false })
   isPinned!: boolean;

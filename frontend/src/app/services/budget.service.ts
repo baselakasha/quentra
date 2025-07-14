@@ -80,19 +80,22 @@ export class BudgetService {
 
   // Utility method to calculate budget summary
   calculateBudgetSummary(budget: Budget): BudgetSummary {
+    // Use 0 as default if monthlyIncome is null or undefined
+    const monthlyIncome = budget.monthlyIncome ?? 0;
+    
     if (!budget.categories || budget.categories.length === 0) {
       return {
         totalPlanned: 0,
         totalSpent: 0,
-        remainingBudget: budget.monthlyIncome,
+        remainingBudget: monthlyIncome,
         percentageSpent: 0
       };
     }
 
     const totalPlanned = budget.categories.reduce((sum, cat) => sum + cat.plannedAmount, 0);
     const totalSpent = budget.categories.reduce((sum, cat) => sum + cat.spentAmount, 0);
-    const remainingBudget = budget.monthlyIncome - totalSpent;
-    const percentageSpent = budget.monthlyIncome > 0 ? (totalSpent / budget.monthlyIncome) * 100 : 0;
+    const remainingBudget = monthlyIncome - totalSpent;
+    const percentageSpent = monthlyIncome > 0 ? (totalSpent / monthlyIncome) * 100 : 0;
 
     return {
       totalPlanned,
