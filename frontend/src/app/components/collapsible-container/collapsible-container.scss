@@ -11,6 +11,53 @@
     }
   }
   
+  &.is-mobile {
+    .collapsible-header {
+      position: relative;
+      
+      // Entire header clickable on mobile
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+      }
+      
+      .toggle-button {
+        display: none; // Hide toggle button on mobile
+      }
+      
+      .mobile-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem;
+        margin-left: 0.5rem;
+        z-index: 2;
+        position: relative;
+        
+        i {
+          font-size: 0.875rem;
+          transition: transform 0.3s ease;
+        }
+      }
+      
+      &-left, &-actions {
+        z-index: 2;
+        position: relative;
+      }
+    }
+    
+    &.compact-mobile {
+      .collapsible-header {
+        padding: 0.5rem;
+      }
+    }
+  }
+  
   .collapsible-header {
     display: flex;
     justify-content: space-between;
@@ -27,6 +74,7 @@
       display: flex;
       align-items: center;
       flex: 1;
+      min-width: 0; // Allow content to shrink if needed
     }
     
     &-actions {
@@ -60,6 +108,7 @@
     .header-content {
       display: flex;
       align-items: center;
+      min-width: 0; // Allow content to shrink if needed
       
       .title {
         margin: 0;
@@ -90,9 +139,47 @@
   .collapsible-container {
     .collapsible-header {
       padding: 0.5rem;
+      flex-wrap: wrap; // Allow wrapping on small screens
+      
+      &-left {
+        min-width: 0; // Allow content to shrink
+        
+        .header-content {
+          min-width: 0; // Allow content to shrink
+          
+          // Make sure title can wrap and doesn't overflow
+          .title, span, h3 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            font-size: 1.25rem !important; // Smaller font size on mobile
+          }
+        }
+      }
+      
+      &-actions {
+        margin-left: 0.5rem;
+        flex-shrink: 0; // Don't allow actions to shrink
+        
+        // Improved mobile button layout
+        button {
+          padding: 0.35rem !important;
+          height: auto !important;
+          
+          .icon {
+            margin: 0 !important;
+          }
+          
+          span:not(.icon) {
+            display: none; // Hide text on small buttons for mobile
+          }
+        }
+      }
       
       .toggle-button {
         padding: 0.25rem;
+        margin-right: 0.35rem;
       }
     }
     

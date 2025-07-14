@@ -1,7 +1,12 @@
-<div class="collapsible-container" [ngClass]="{'is-expanded': isExpanded, 'is-pinned': isPinned}">
-  <div class="collapsible-header" [ngClass]="headerClass">
+<div class="collapsible-container" [ngClass]="{
+  'is-expanded': isExpanded, 
+  'is-pinned': isPinned,
+  'is-mobile': isMobile,
+  'compact-mobile': isMobile && compactMobile
+}">
+  <div class="collapsible-header" [ngClass]="headerClass" (click)="isMobile && toggle()">
     <div class="collapsible-header-left">
-      <button *ngIf="showToggleIcon" class="toggle-button" (click)="toggle()" [attr.aria-expanded]="isExpanded" aria-label="Toggle container">
+      <button *ngIf="showToggleIcon && !isMobile" class="toggle-button" (click)="toggle(); $event.stopPropagation();" [attr.aria-expanded]="isExpanded" aria-label="Toggle container">
         <i class="fas" [ngClass]="isExpanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
       </button>
       
@@ -14,6 +19,11 @@
           <h3 class="title">{{ title }}</h3>
         </ng-template>
       </div>
+    </div>
+    
+    <!-- Mobile indicator for expand/collapse -->
+    <div *ngIf="isMobile" class="mobile-indicator">
+      <i class="fas" [ngClass]="isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
     </div>
     
     <!-- Header actions -->

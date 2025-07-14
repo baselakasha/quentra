@@ -9,10 +9,26 @@
       align-items: center;
       justify-content: center;
       height: auto;
+      flex-shrink: 0; // Don't allow icon to shrink
     }
     
     span.has-text-white {
       line-height: 1.2;
+    }
+  }
+}
+
+.budget-title {
+  min-width: 0; // Allow title to shrink
+  
+  @media screen and (max-width: 768px) {
+    font-size: 1.25rem !important;
+    
+    .budget-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px; // Limit width on mobile
     }
   }
 }
@@ -22,6 +38,21 @@
   align-items: center;
   justify-content: flex-end;
   position: relative;
+  
+  .mobile-compact-button {
+    @media screen and (max-width: 768px) {
+      padding: 0.35rem !important;
+      height: auto !important;
+      
+      .icon {
+        margin: 0 !important;
+      }
+      
+      .button-text {
+        display: none; // Hide text on mobile
+      }
+    }
+  }
   
   @media screen and (max-width: 768px) {
     .dropdown.is-right {

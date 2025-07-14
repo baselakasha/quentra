@@ -6,15 +6,16 @@
   <app-collapsible-container
     [isExpanded]="isExpanded"
     [isPinned]="budget.isPinned || false"
+    [compactMobile]="true"
     (toggleExpand)="toggleExpand()"
   >
     <!-- Header Content -->
     <ng-template #headerContent>
-      <span class="icon-text title is-3">
+      <span class="icon-text title is-3 budget-title">
         <span *ngIf="budget.isPinned" class="icon has-text-white">
           <i class="fas fa-thumbtack"></i>
         </span>
-        <span class="has-text-white">
+        <span class="has-text-white budget-name">
           {{ budget.name }}
         </span>
       </span>
@@ -26,44 +27,34 @@
         <!-- Pin/Unpin button remains visible because it's used frequently -->
         <button 
           *ngIf="!budget.isPinned" 
-          class="button is-primary mr-2" 
-          (click)="pinBudget()" 
+          class="button is-primary mr-2 mobile-compact-button" 
+          (click)="pinBudget(); $event.stopPropagation()" 
           title="Pin this budget to the top"
         >
           <span class="icon is-small">
             <i class="fas fa-thumbtack"></i>
           </span>
-          <span>Pin</span>
+          <span class="button-text">Pin</span>
         </button>
         <button 
           *ngIf="budget.isPinned" 
-          class="button is-primary mr-2" 
-          (click)="unpinBudget()" 
+          class="button is-primary mr-2 mobile-compact-button" 
+          (click)="unpinBudget(); $event.stopPropagation()" 
           title="Unpin this budget"
         >
           <span class="icon is-small">
             <i class="fas fa-thumbtack fa-rotate-90"></i>
           </span>
-          <span>Unpin</span>
-        </button>
-        
-        <!-- Expand/Collapse button for smaller screens -->
-        <button 
-          class="button is-light mr-2 is-hidden-desktop" 
-          (click)="toggleExpand()" 
-          title="{{ isExpanded ? 'Collapse budget' : 'Expand budget' }}"
-        >
-          <span class="icon is-small">
-            <i class="fas" [ngClass]="isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-          </span>
+          <span class="button-text">Unpin</span>
         </button>
         
         <!-- Dropdown menu using the reusable component -->
         <app-dropdown 
           id="budget"
           icon="fas fa-ellipsis-v"
-          buttonClass="is-light"
+          buttonClass="is-light mobile-compact-button"
           [alignRight]="true"
+          (click)="$event.stopPropagation()"
         >
           <app-dropdown-item
             label="Edit Budget"
