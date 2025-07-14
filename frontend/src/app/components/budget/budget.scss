@@ -654,3 +654,39 @@ app-notebook.collapsed {
 tr.cdk-drag {
   display: table-row;
 }
+
+// Mobile category reordering
+.category-card {
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .card-header-title {
+      flex: 1;
+    }
+    
+    .category-order-buttons {
+      display: flex;
+      gap: 0.25rem;
+      padding-right: 0.5rem;
+      
+      .button {
+        height: 1.75rem;
+        width: 1.75rem;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        .icon {
+          font-size: 0.75rem;
+        }
+        
+        &:disabled {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+}

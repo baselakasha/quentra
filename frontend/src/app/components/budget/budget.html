@@ -203,9 +203,32 @@
       
       <!-- Mobile view: Cards -->
       <div class="mobile-cards is-hidden-tablet">
-        <div class="category-card" *ngFor="let category of budget.categories">
+        <div class="category-card" *ngFor="let category of budget.categories || []; let i = index">
           <div class="card-header">
             <p class="card-header-title">{{ category.name }}</p>
+            <!-- Reordering buttons for mobile -->
+            <div class="category-order-buttons">
+              <button 
+                class="button is-small" 
+                [disabled]="i === 0" 
+                (click)="moveCategory(i, i-1)"
+                title="Move up"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-arrow-up"></i>
+                </span>
+              </button>
+              <button 
+                class="button is-small" 
+                [disabled]="i === (budget.categories?.length || 0) - 1" 
+                (click)="moveCategory(i, i+1)"
+                title="Move down"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-arrow-down"></i>
+                </span>
+              </button>
+            </div>
           </div>
           <div class="card-content">
             <div class="field">

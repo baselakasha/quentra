@@ -426,6 +426,43 @@ export class BudgetComponent implements AfterViewInit {
     });
   }
   
+  // Move a category up or down in the mobile view
+  moveCategory(fromIndex: number, toIndex: number) {
+    if (!this.budget.categories || 
+        this.budget.categories.length === 0 ||
+        fromIndex === toIndex ||
+        fromIndex < 0 || 
+        toIndex < 0 || 
+        fromIndex >= this.budget.categories.length || 
+        toIndex >= this.budget.categories.length) {
+      return; // Invalid indices or no change
+    }
+    
+    // Update the array order locally using the same logic as dropCategory
+    moveItemInArray(this.budget.categories, fromIndex, toIndex);
+    
+    // Update order property for each category
+    this.budget.categories.forEach((category, index) => {
+      category.order = index;
+    });
+    
+    // Save the new order to the backend
+    const orderUpdates = this.budget.categories.map(cat => ({
+      id: cat.id,
+      order: cat.order
+    }));
+    
+    this.categoryService.updateCategoriesOrder(orderUpdates).subscribe({
+      next: () => {
+        // No notification for successful reordering
+      },
+      error: (err) => {
+        this.notification.error('Failed to update category order');
+        console.error('Error updating category order:', err);
+      }
+    });
+  }
+  
   // Helper method to trigger category updates for proper change detection
   private refreshCategoriesReference() {
     if (this._budget && this._budget.categories) {
