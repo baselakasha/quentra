@@ -562,3 +562,46 @@ app-notebook.collapsed {
     transform: translateY(0);
   }
 }
+
+.savings-info {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  
+  .title {
+    margin-bottom: 0.75rem;
+  }
+  
+  .saving-percentage {
+    font-weight: bold;
+    
+    &.good {
+      color: #48c774;
+    }
+    
+    &.warning {
+      color: #ffdd57;
+    }
+    
+    &.danger {
+      color: #f14668;
+    }
+  }
+  
+  .progress-container {
+    .savings-bar {
+      &.good {
+        background-color: #48c774;
+      }
+      
+      &.warning {
+        background-color: #ffdd57;
+      }
+      
+      &.danger {
+        background-color: #f14668;
+      }
+    }
+  }
+}

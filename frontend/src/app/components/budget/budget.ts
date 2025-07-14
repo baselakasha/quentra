@@ -99,6 +99,29 @@ export class BudgetComponent implements AfterViewInit {
     return (this.getTotalSpent() / (this.budget.monthlyIncome as number)) * 100;
   }
   
+  // Calculate the savings amount (income - spent)
+  getSavings(): number {
+    if (!this.hasMonthlyIncome()) return 0;
+    return (this.budget.monthlyIncome as number) - this.getTotalSpent();
+  }
+  
+  // Calculate savings as a percentage of income
+  getSavingsPercentage(): number {
+    if (!this.hasMonthlyIncome() || this.budget.monthlyIncome === 0) {
+      return 0;
+    }
+    // Non-null assertion is safe here because hasMonthlyIncome() ensures it's not null
+    return (this.getSavings() / (this.budget.monthlyIncome as number)) * 100;
+  }
+  
+  // Get class for savings percentage display
+  getSavingsHealthClass(): string {
+    const percentage = this.getSavingsPercentage();
+    if (percentage < 10) return 'danger';
+    if (percentage < 20) return 'warning';
+    return 'good';
+  }
+  
   getDaysLeft(): number {
     if (!this.budget.endDate) return 0;
     

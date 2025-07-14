@@ -345,6 +345,8 @@
         <p *ngIf="getDaysLeft() <= 0" class="days-expired">Budget Period Ended</p>
         <p>Total Spent: £{{ getTotalSpent() | number:'1.2-2' }}</p>
         <p *ngIf="hasMonthlyIncome()">Remaining: £{{ getRemainingBudget() | number:'1.2-2' }}</p>
+        
+        <!-- Income Usage Progress Bar -->
         <div *ngIf="hasMonthlyIncome()" class="progress-container mt-3">
           <div
             class="progress-bar"
@@ -354,6 +356,23 @@
                }"
             [style.width.%]="getMonthlyIncomePercentage() > 100 ? 100 : getMonthlyIncomePercentage()"
           ></div>
+        </div>
+        
+        <!-- Savings Information (only shown when there's monthly income) -->
+        <div *ngIf="hasMonthlyIncome()" class="savings-info mt-4">
+          <h3 class="title is-5 has-text-white">Savings</h3>
+          <p>Amount: £{{ getSavings() | number:'1.2-2' }}</p>
+          <p class="saving-percentage" [ngClass]="getSavingsHealthClass()">
+            Saving: {{ getSavingsPercentage() | number:'1.0-0' }}% of income
+          </p>
+          <!-- Savings Progress Bar -->
+          <div class="progress-container mt-2">
+            <div
+              class="progress-bar savings-bar"
+              [ngClass]="getSavingsHealthClass()"
+              [style.width.%]="getSavingsPercentage()"
+            ></div>
+          </div>
         </div>
 
         <app-spending-chart [categories]="budget.categories || []"></app-spending-chart>
