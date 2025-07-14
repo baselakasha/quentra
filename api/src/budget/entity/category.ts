@@ -27,4 +27,7 @@ export class Category {
 
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   spentAmount!: number;
+  
+  @Column({ type: "int", default: 0 })
+  order!: number;
 }

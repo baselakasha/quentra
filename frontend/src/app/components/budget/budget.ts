@@ -11,6 +11,7 @@ import { DropdownItemComponent } from '../dropdown-item';
 import { SpendingChartComponent } from '../spending-chart/spending-chart';
 import { CollapsibleContainerComponent } from '../collapsible-container/collapsible-container';
 import { NotificationService } from '../../services/notification.service';
+import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-budget',
@@ -23,7 +24,8 @@ import { NotificationService } from '../../services/notification.service';
     DropdownComponent,
     DropdownItemComponent,
     SpendingChartComponent,
-    CollapsibleContainerComponent
+    CollapsibleContainerComponent,
+    DragDropModule
   ],
   templateUrl: './budget.html',
   styleUrl: './budget.scss'
@@ -385,6 +387,43 @@ export class BudgetComponent implements AfterViewInit {
     if (this.isExpanded) {
       this.refreshCategoriesReference();
     }
+  }
+  
+  // Handle drag and drop of categories
+  dropCategory(event: CdkDragDrop<Category[]>) {
+    if (event.previousIndex === event.currentIndex) {
+      return; // No change in order
+    }
+    
+    if (!this.budget.categories || this.budget.categories.length === 0) {
+      return; // No categories to reorder
+    }
+    
+    // Update the array order locally
+    moveItemInArray(this.budget.categories, event.previousIndex, event.currentIndex);
+    
+    // Update order property for each category
+    this.budget.categories.forEach((category, index) => {
+      category.order = index;
+    });
+    
+    // Save the new order to the backend
+    const orderUpdates = this.budget.categories.map(cat => ({
+      id: cat.id,
+      order: cat.order
+    }));
+    
+    this.categoryService.updateCategoriesOrder(orderUpdates).subscribe({
+      next: () => {
+        // No notification for successful reordering to avoid constant notifications
+      },
+      error: (err) => {
+        this.notification.error('Failed to update category order');
+        console.error('Error updating category order:', err);
+        // If the API call fails, we might want to revert the local change
+        // But that's complex and may cause UI flicker, so we don't do it here
+      }
+    });
   }
   
   // Helper method to trigger category updates for proper change detection

@@ -22,6 +22,7 @@ export interface Category {
   name: string;
   plannedAmount: number;
   spentAmount: number;
+  order?: number;
   budget?: {
     id: string;
     name: string;

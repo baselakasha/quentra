@@ -89,14 +89,20 @@
         <table class="table">
           <thead>
             <tr>
+              <th class="drag-handle-column"></th>
               <th>Category</th>
               <th>Planned Spending</th>
               <th>Actual Spending</th>
               <th>Percentage of Planned Spending</th>
             </tr>
           </thead>
-          <tbody>
-            <tr *ngFor="let category of budget.categories">
+          <tbody cdkDropList (cdkDropListDropped)="dropCategory($event)">
+            <tr *ngFor="let category of budget.categories" cdkDrag>
+              <td class="drag-handle-column">
+                <span class="drag-handle" cdkDragHandle>
+                  <i class="fas fa-grip-vertical"></i>
+                </span>
+              </td>
               <td>{{ category.name }}</td>
               <td>
                 <input
@@ -133,6 +139,7 @@
               </td>
             </tr>
           <tr>
+            <td class="drag-handle-column"></td>
             <td>
               <input
                 class="input"
@@ -168,6 +175,7 @@
             </td>
           </tr>
           <tr class="has-text-weight-bold" [ngClass]="getBudgetHealthClass()">
+            <td class="drag-handle-column"></td>
             <td class="has-text-weight-bold">Totals</td>
             <td class="has-text-weight-bold">
               £{{ getTotalPlanned() | number:'1.2-2' }}

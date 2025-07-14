@@ -46,6 +46,13 @@ export const getBudgets = async (
         startDate: "DESC" // Then sort by start date (newest first)
       }
     });
+    
+    // Order categories within each budget
+    budgets.forEach(budget => {
+      if (budget.categories) {
+        budget.categories.sort((a, b) => a.order - b.order);
+      }
+    });
 
     res.status(200).json(budgets);
   } catch (error) {
@@ -69,6 +76,11 @@ export const getBudgetById = async (
 
     if (!budget) {
       return res.status(404).json({ error: "Budget not found" });
+    }
+    
+    // Order categories by their order field
+    if (budget.categories) {
+      budget.categories.sort((a, b) => a.order - b.order);
     }
 
     res.status(200).json(budget);

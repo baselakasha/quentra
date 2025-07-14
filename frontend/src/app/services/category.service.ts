@@ -60,6 +60,16 @@ export class CategoryService {
     return this.updateCategory(id, { plannedAmount });
   }
 
+  // Update the order of categories
+  updateCategoriesOrder(categories: Pick<Category, 'id' | 'order'>[]): Observable<void> {
+    return this.http.put<void>(
+      this.configService.getFullApiUrl(`${this.apiEndpoint}/order`), 
+      { categories }
+    ).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   // Utility method to calculate category with additional fields
   calculateCategoryWithCalculations(category: Category): CategoryWithCalculations {
     const remainingAmount = category.plannedAmount - category.spentAmount;

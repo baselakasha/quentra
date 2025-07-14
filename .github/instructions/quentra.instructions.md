@@ -69,14 +69,14 @@ return this.http.get<Budget[]>(this.configService.getFullApiUrl(this.apiEndpoint
 ## Development Workflow
 
 ### Backend
-- `npm run dev` - Start development server with hot reload
-- `npm test` - Run tests
-- `npm run build` - Build for production
+- `yarn dev` - Start development server with hot reload
+- `yarn test` - Run tests
+- `yarn build` - Build for production
 
 ### Frontend  
-- `npm start` - Start development server
-- `npm run build` - Build for production
-- `npm test` - Run tests
+- `yarn dev` - Start development server
+- `yarn test` - Run tests
+- `yarn build` - Build for production
 
 ## TypeScript Guidelines
 - Use interfaces for data structures (see `types/budget.types.ts`)
