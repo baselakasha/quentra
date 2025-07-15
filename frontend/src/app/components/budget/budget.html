@@ -434,10 +434,25 @@
         <!-- Savings Information (only shown when there's monthly income) -->
         <div *ngIf="hasMonthlyIncome()" class="savings-info mt-4">
           <h3 class="title is-5 has-text-white">Savings</h3>
-          <p>Amount: £{{ getSavings() | number:'1.2-2' }}</p>
-          <p class="saving-percentage" [ngClass]="getSavingsHealthClass()">
-            Saving: {{ getSavingsPercentage() | number:'1.0-0' }}% of income
-          </p>
+          
+          <!-- Planned Savings -->
+          <div class="columns is-mobile">
+            <div class="column">
+              <p class="heading">Planned</p>
+              <p>£{{ getPlannedSavings() | number:'1.2-2' }}</p>
+              <p class="saving-percentage">
+                {{ getPlannedSavingsPercentage() | number:'1.0-0' }}% of income
+              </p>
+            </div>
+            <div class="column">
+              <p class="heading">Actual</p>
+              <p>£{{ getSavings() | number:'1.2-2' }}</p>
+              <p class="saving-percentage" [ngClass]="getSavingsHealthClass()">
+                {{ getSavingsPercentage() | number:'1.0-0' }}% of income
+              </p>
+            </div>
+          </div>
+          
           <!-- Savings Progress Bar -->
           <div class="progress-container mt-2">
             <div

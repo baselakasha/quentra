@@ -112,6 +112,20 @@ export class BudgetComponent implements AfterViewInit {
     return (this.budget.monthlyIncome as number) - this.getTotalSpent();
   }
   
+  // Calculate planned savings amount (income - planned)
+  getPlannedSavings(): number {
+    if (!this.hasMonthlyIncome()) return 0;
+    return (this.budget.monthlyIncome as number) - this.getTotalPlanned();
+  }
+  
+  // Calculate planned savings as a percentage of income
+  getPlannedSavingsPercentage(): number {
+    if (!this.hasMonthlyIncome() || this.budget.monthlyIncome === 0) {
+      return 0;
+    }
+    return (this.getPlannedSavings() / (this.budget.monthlyIncome as number)) * 100;
+  }
+  
   // Calculate savings as a percentage of income
   getSavingsPercentage(): number {
     if (!this.hasMonthlyIncome() || this.budget.monthlyIncome === 0) {

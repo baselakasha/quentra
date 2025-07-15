@@ -573,6 +573,24 @@ app-notebook.collapsed {
     margin-bottom: 0.75rem;
   }
   
+  .columns {
+    margin: 0 -0.75rem;
+    
+    .column {
+      .heading {
+        font-size: 0.9rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 0.5rem;
+      }
+      
+      p {
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+  
   .saving-percentage {
     font-weight: bold;
     
