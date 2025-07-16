@@ -1,24 +1,84 @@
+// Variables
+$white: #ffffff;
+$white-transparent-09: rgba(255, 255, 255, 0.09);
+$white-transparent-15: rgba(255, 255, 255, 0.15);
+$white-transparent-70: rgba(255, 255, 255, 0.7);
+$white-transparent-10: rgba(255, 255, 255, 0.1);
+$black-transparent-10: rgba(0, 0, 0, 0.1);
+$black-transparent-30: rgba(0, 0, 0, 0.3);
+$blue-transparent-20: rgba(50, 115, 220, 0.2);
+$blue-transparent-50: rgba(50, 115, 220, 0.5);
+$blue-transparent-80: rgba(50, 115, 220, 0.8);
+$green-transparent-10: rgba(72, 199, 116, 0.1);
+$green-transparent-30: rgba(72, 199, 116, 0.3);
+$yellow-transparent-10: rgba(255, 221, 87, 0.1);
+$yellow-transparent-30: rgba(255, 221, 87, 0.3);
+$red-transparent-10: rgba(241, 70, 104, 0.1);
+$red-transparent-30: rgba(241, 70, 104, 0.3);
+
+$green: #48c774;
+$yellow: #ffdd57;
+$red: #ef476f;
+$blue: #3273dc;
+
+$border-radius: 1rem;
+$box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+$border: 1px solid $white-transparent-10;
+
+// Mixins
+@mixin white-text {
+  color: $white !important;
+  * {
+    color: $white !important;
+  }
+}
+
+@mixin glass-panel {
+  background-color: $white-transparent-09 !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: $box-shadow !important;
+  border-radius: $border-radius !important;
+  border: $border !important;
+}
+
+@mixin status-colors {
+  &.is-success {
+    background-color: $green-transparent-30 !important;
+  }
+  
+  &.is-warning {
+    background-color: $yellow-transparent-30 !important;
+  }
+  
+  &.is-danger {
+    background-color: $red-transparent-30 !important;
+  }
+}
+
+// Main container
 .statistics-container {
   max-width: 1200px !important;
   margin: 0 auto !important;
   padding: 1rem !important;
   
+  // Typography
   .title {
     margin-bottom: 0.5rem !important;
-    color: white !important;
+    color: $white !important;
   }
   
   .subtitle {
     margin-bottom: 2rem !important;
-    color: rgba(255, 255, 255, 0.7) !important;
+    color: $white-transparent-70 !important;
   }
   
+  // Loading spinner
   .loader {
     height: 80px !important;
     width: 80px !important;
     margin: 2rem auto !important;
-    border: 5px solid rgba(255, 255, 255, 0.1) !important;
-    border-top: 5px solid #3273dc !important;
+    border: 5px solid $white-transparent-10 !important;
+    border-top: 5px solid $blue !important;
     border-radius: 50% !important;
     animation: spin 1s linear infinite !important;
   }
@@ -28,39 +88,41 @@
     100% { transform: rotate(360deg); }
   }
   
-  // Notification for no budgets
+  // Notification
   .notification.is-info {
-    background-color: rgba(50, 115, 220, 0.2) !important;
-    color: white !important;
-    border-radius: 1rem !important;
-    border: 1px solid rgba(50, 115, 220, 0.5) !important;
+    background-color: $blue-transparent-20 !important;
+    color: $white !important;
+    border-radius: $border-radius !important;
+    border: 1px solid $blue-transparent-50 !important;
   }
   
-  // Sorting controls
+  // Sort controls
   .field.is-grouped {
     .tags {
-      .tag.is-clickable {
-        cursor: pointer !important;
-        background-color: rgba(255, 255, 255, 0.09) !important;
-        color: white !important;
-        backdrop-filter: blur(4px);
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-        
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.15) !important;
+      .tag {
+        &.is-clickable {
+          cursor: pointer !important;
+          background-color: $white-transparent-09 !important;
+          color: $white !important;
+          backdrop-filter: blur(4px);
+          border: $border !important;
+          box-shadow: $box-shadow !important;
+          
+          &:hover {
+            background-color: $white-transparent-15 !important;
+          }
+          
+          &.is-selected {
+            background-color: $blue-transparent-50 !important;
+            color: $white !important;
+            border-color: $blue-transparent-80 !important;
+          }
         }
         
-        &.is-selected {
-          background-color: rgba(50, 115, 220, 0.5) !important;
-          color: white !important;
-          border-color: rgba(50, 115, 220, 0.8) !important;
+        &.is-dark {
+          background-color: $black-transparent-30 !important;
+          color: $white !important;
         }
-      }
-      
-      .tag.is-dark {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        color: white !important;
       }
     }
   }
@@ -72,92 +134,79 @@
     .icon {
       cursor: pointer;
       margin: 0 0.2rem;
-      color: rgba(255, 255, 255, 0.7);
+      color: $white-transparent-70;
       
       &:hover {
-        color: #ffffff;
+        color: $white;
       }
     }
   }
   
+  // Table container
   .statistics-table-container.table-container {
     width: 100% !important;
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
-    border-radius: 1rem !important;
+    border-radius: $border-radius !important;
     margin-bottom: 2rem !important;
     max-width: 100% !important;
     background-color: transparent !important;
     
+    // Table styling
     table.table.statistics-table {
       width: 100% !important;
-      background-color: rgba(255, 255, 255, 0.09) !important;
-      color: white !important;
-      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2) !important;
-      backdrop-filter: blur(4px) !important;
-      border-radius: 1rem !important;
+      @include glass-panel;
+      @include white-text;
       border-collapse: separate !important;
       border-spacing: 0 !important;
       
-      * {
-        color: white !important;
-      }
-      
+      // Table header
       thead th {
-        color: white !important;
         font-weight: 600 !important;
         padding: 0.75rem !important;
         position: relative;
         padding-right: 2rem !important;
         white-space: nowrap;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        background-color: rgba(0, 0, 0, 0.1) !important;
+        border-bottom: 1px solid $white-transparent-10 !important;
+        background-color: $black-transparent-10 !important;
       }
       
-      tbody tr td:first-child {
-        font-weight: bold !important;
-      }
-      
-      tbody td {
-        color: white !important;
-        padding: 0.5rem 0.75rem !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        vertical-align: middle !important;
-      }
-      
-      tbody tr:last-child td {
-        border-bottom: none !important;
-      }
-      
-      tbody tr {
-        &.is-success {
-          background-color: rgba(72, 199, 116, 0.1) !important;
+      // Table body
+      tbody {
+        tr td:first-child {
+          font-weight: bold !important;
         }
         
-        &.is-warning {
-          background-color: rgba(255, 221, 87, 0.1) !important;
+        td {
+          padding: 0.5rem 0.75rem !important;
+          border-bottom: 1px solid $white-transparent-10 !important;
+          vertical-align: middle !important;
         }
         
-        &.is-danger {
-          background-color: rgba(241, 70, 104, 0.1) !important;
+        tr:last-child td {
+          border-bottom: none !important;
+        }
+        
+        tr {
+          &.is-success {
+            background-color: $green-transparent-10 !important;
+          }
+          
+          &.is-warning {
+            background-color: $yellow-transparent-10 !important;
+          }
+          
+          &.is-danger {
+            background-color: $red-transparent-10 !important;
+          }
         }
       }
       
+      // Tags in table
       .tag {
         font-size: 0.75rem !important;
-        background-color: rgba(255, 255, 255, 0.15) !important;
-        
-        &.is-success {
-          background-color: rgba(72, 199, 116, 0.3) !important;
-        }
-        
-        &.is-warning {
-          background-color: rgba(255, 221, 87, 0.3) !important;
-        }
-        
-        &.is-danger {
-          background-color: rgba(241, 70, 104, 0.3) !important;
-        }
+        background-color: $white-transparent-15 !important;
+        @include status-colors;
       }
     }
   }
@@ -168,58 +217,40 @@
     
     .card {
       margin-bottom: 1.5rem !important;
-      border-radius: 1rem !important;
-      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      background-color: rgba(255, 255, 255, 0.09) !important;
-      backdrop-filter: blur(4px) !important;
+      @include glass-panel;
+      @include white-text;
       overflow: hidden !important;
       
-      * {
-        color: white !important;
-      }
-      
       &.is-success {
-        border-color: #48c774 !important;
+        border-color: $green !important;
       }
       
       &.is-warning {
-        border-color: #ffdd57 !important;
+        border-color: $yellow !important;
       }
       
       &.is-danger {
-        border-color: #ef476f !important;
+        border-color: $red !important;
       }
       
+      // Card header
       .card-header {
         box-shadow: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        background-color: rgba(0, 0, 0, 0.1) !important;
+        border-bottom: 1px solid $white-transparent-10 !important;
+        background-color: $black-transparent-10 !important;
         
         .card-header-title {
           padding: 0.75rem 1rem !important;
-          color: white !important;
           font-weight: 600 !important;
         }
       }
       
+      // Card content
       .card-content {
         padding: 1rem !important;
-        color: white !important;
-        
-        .content {
-          color: white !important;
-          
-          p {
-            color: white !important;
-          }
-          
-          strong {
-            color: white !important;
-          }
-        }
       }
       
+      // Layout in cards
       .columns {
         margin-bottom: 0.5rem !important;
         
@@ -228,34 +259,25 @@
         }
       }
       
+      // Heading in cards
       .heading {
         font-size: 0.75rem !important;
         font-weight: 600 !important;
         text-transform: uppercase !important;
         letter-spacing: 0.05em !important;
-        color: rgba(255, 255, 255, 0.7) !important;
+        color: $white-transparent-70 !important;
         margin-bottom: 0.25rem !important;
       }
       
+      // Tags in cards
       .tag {
-        background-color: rgba(255, 255, 255, 0.15) !important;
-        
-        &.is-success {
-          background-color: rgba(72, 199, 116, 0.3) !important;
-        }
-        
-        &.is-warning {
-          background-color: rgba(255, 221, 87, 0.3) !important;
-        }
-        
-        &.is-danger {
-          background-color: rgba(241, 70, 104, 0.3) !important;
-        }
+        background-color: $white-transparent-15 !important;
+        @include status-colors;
       }
     }
   }
   
-  // Fade-in animation for content
+  // Animations
   .table-container, .is-hidden-tablet {
     animation: fadeIn 0.4s ease-in-out;
   }
@@ -272,85 +294,33 @@
   }
 }
 
-// Override notebook styling
-:host ::ng-deep app-notebook {
-  .table-container {
-    background-color: transparent !important;
-  }
-  
-  .is-hidden-tablet {
-    padding: 1rem !important;
-    
-    .card {
-      margin-bottom: 1.5rem !important;
-      border-radius: 1rem !important;
-      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      background-color: rgba(255, 255, 255, 0.09) !important;
-      backdrop-filter: blur(4px) !important;
-      overflow: hidden !important;
-      
-      * {
-        color: white !important;
-      }
-    }
-  }
-  
-  table.statistics-table {
-    background-color: rgba(255, 255, 255, 0.09) !important;
-    color: white !important;
-    border-radius: 1rem !important;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2) !important;
-    backdrop-filter: blur(4px) !important;
-    width: 100% !important;
-    
-    th, td {
-      color: white !important;
-    }
-    
-    thead th {
-      color: white !important;
-      font-weight: 600 !important;
-    }
-    
-    tbody td {
-      color: white !important;
-    }
-    
-    strong {
-      color: white !important;
-    }
-    
-    .tag {
-      color: white !important;
-    }
-  }
-}
-
+// Deep selectors for Angular component styling
 :host ::ng-deep {
-  .is-hidden-tablet {
-    .card {
-      background-color: rgba(255, 255, 255, 0.09) !important;
-      color: white !important;
-      border-radius: 1rem !important;
-      backdrop-filter: blur(4px) !important;
-      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2) !important;
+  app-notebook {
+    // Ensure notebook doesn't interfere with our styles
+    .table-container {
+      background-color: transparent !important;
+    }
+    
+    // Ensure table styles work inside notebook
+    table.statistics-table {
+      @include glass-panel;
+      @include white-text;
+      width: 100% !important;
+    }
+    
+    // Ensure card styles work inside notebook
+    .is-hidden-tablet .card {
+      @include glass-panel;
+      @include white-text;
       
       .card-header {
-        background-color: rgba(0, 0, 0, 0.1) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-      }
-      
-      .tag {
-        color: white !important;
+        background-color: $black-transparent-10 !important;
+        border-bottom: 1px solid $white-transparent-10 !important;
       }
       
       .heading {
-        color: rgba(255, 255, 255, 0.7) !important;
-      }
-      
-      p, strong, span, div {
-        color: white !important;
+        color: $white-transparent-70 !important;
       }
     }
   }
