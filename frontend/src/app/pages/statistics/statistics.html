@@ -3,29 +3,46 @@
   [showSidePunches]="false"
   [centerContent]="false"
 >
-  <div class="columns ">
+  <div class="columns is-multiline">
     <div class="column">
       <section class="section">
         <h1 class="title is-2 has-text-white">Budget Statistics</h1>
-        
+
         <!-- Sort controls -->
-        <div *ngIf="!loading && budgets.length > 0" class="field is-grouped is-grouped-multiline mb-4">
+        <div
+          *ngIf="!loading && budgets.length > 0"
+          class="field is-grouped is-grouped-multiline mb-4"
+        >
           <div class="control">
             <div class="tags has-addons">
               <span class="tag is-dark">Sort By</span>
-              <span class="tag is-light is-clickable" (click)="sortBudgets('name')" [class.is-selected]="sortField === 'name'">
+              <span
+                class="tag is-light is-clickable"
+                (click)="sortBudgets('name')"
+                [class.is-selected]="sortField === 'name'"
+              >
                 Name <i [class]="getSortIconClass('name')" class="ml-2"></i>
               </span>
-              <span class="tag is-light is-clickable" (click)="sortBudgets('startDate')" [class.is-selected]="sortField === 'startDate'">
-                Start Date <i [class]="getSortIconClass('startDate')" class="ml-2"></i>
+              <span
+                class="tag is-light is-clickable"
+                (click)="sortBudgets('startDate')"
+                [class.is-selected]="sortField === 'startDate'"
+              >
+                Start Date
+                <i [class]="getSortIconClass('startDate')" class="ml-2"></i>
               </span>
-              <span class="tag is-light is-clickable" (click)="sortBudgets('endDate')" [class.is-selected]="sortField === 'endDate'">
-                End Date <i [class]="getSortIconClass('endDate')" class="ml-2"></i>
+              <span
+                class="tag is-light is-clickable"
+                (click)="sortBudgets('endDate')"
+                [class.is-selected]="sortField === 'endDate'"
+              >
+                End Date
+                <i [class]="getSortIconClass('endDate')" class="ml-2"></i>
               </span>
             </div>
           </div>
         </div>
-        
+
         <!-- Loading indicator -->
         <div *ngIf="loading" class="has-text-centered">
           <div class="loader"></div>
@@ -43,21 +60,30 @@
         </div>
 
         <!-- Budgets table -->
-        <div *ngIf="!loading && budgets.length > 0" class="table-container statistics-table-container">
+        <div
+          *ngIf="!loading && budgets.length > 0"
+          class="table-container statistics-table-container"
+        >
           <!-- Desktop view: Table -->
-          <table
-            class="table is-fullwidth is-hidden-mobile statistics-table"
-          >
+          <table class="table is-fullwidth is-hidden-mobile statistics-table">
             <thead>
               <tr>
                 <th>Budget Name</th>
                 <th>
                   Date Range
                   <div class="sort-icons">
-                    <span class="icon is-small is-clickable" (click)="sortBudgets('startDate')" title="Sort by start date">
+                    <span
+                      class="icon is-small is-clickable"
+                      (click)="sortBudgets('startDate')"
+                      title="Sort by start date"
+                    >
                       <i [class]="getSortIconClass('startDate')"></i>
                     </span>
-                    <span class="icon is-small is-clickable" (click)="sortBudgets('endDate')" title="Sort by end date">
+                    <span
+                      class="icon is-small is-clickable"
+                      (click)="sortBudgets('endDate')"
+                      title="Sort by end date"
+                    >
                       <i [class]="getSortIconClass('endDate')"></i>
                     </span>
                   </div>
@@ -102,8 +128,12 @@
                 </td>
                 <td *ngIf="!hasMonthlyIncome(budget)">N/A</td>
                 <td *ngIf="hasMonthlyIncome(budget)">
-                  <span class="tag" [ngClass]="getSpendingPercentageClass(budget)">
-                    {{ (getTotalSpent(budget) / budget.monthlyIncome! * 100) | number:'1.0-0' }}%
+                  <span
+                    class="tag"
+                    [ngClass]="getSpendingPercentageClass(budget)"
+                  >
+                    {{ (getTotalSpent(budget) / budget.monthlyIncome! * 100) |
+                    number:'1.0-0' }}%
                   </span>
                 </td>
                 <td *ngIf="!hasMonthlyIncome(budget)">N/A</td>
@@ -113,8 +143,6 @@
 
           <!-- Mobile view: Cards -->
           <div class="is-hidden-tablet">
-           
-            
             <div *ngFor="let budget of budgets" class="card mb-4">
               <header class="card-header">
                 <p class="card-header-title">{{ budget.name }}</p>
@@ -176,10 +204,19 @@
                   </div>
 
                   <p class="has-text-centered mt-3">
-                    <span *ngIf="hasMonthlyIncome(budget)" class="tag is-medium" [ngClass]="getSpendingPercentageClass(budget)">
-                      Spending: {{ (getTotalSpent(budget) / budget.monthlyIncome! * 100) | number:'1.0-0' }}% of income
+                    <span
+                      *ngIf="hasMonthlyIncome(budget)"
+                      class="tag is-medium"
+                      [ngClass]="getSpendingPercentageClass(budget)"
+                    >
+                      Spending: {{ (getTotalSpent(budget) /
+                      budget.monthlyIncome! * 100) | number:'1.0-0' }}% of
+                      income
                     </span>
-                    <span *ngIf="!hasMonthlyIncome(budget)" class="tag is-black is-medium ">
+                    <span
+                      *ngIf="!hasMonthlyIncome(budget)"
+                      class="tag is-black is-medium"
+                    >
                       N/A
                     </span>
                   </p>
@@ -190,6 +227,61 @@
         </div>
       </section>
     </div>
-    <div class="column"></div>
+    <div class="column">
+      <section class="section">
+        <!-- Line Chart -->
+        <app-budget-chart *ngIf="!loading && budgets.length > 0" [budgets]="budgets" [loading]="loading"></app-budget-chart>
+
+        <!-- Summary totals -->
+        <div *ngIf="!loading && budgets.length > 0" class="summary-container mt-5">
+          <div class="columns is-multiline">
+            <!-- Total Income -->
+            <div class="column is-4">
+              <div class="summary-card p-3">
+                <p class="heading">Total Monthly Income</p>
+                <p class="title is-5 has-text-white">£{{ getTotalIncome() | number:'1.2-2' }}</p>
+              </div>
+            </div>
+            
+            <!-- Spending -->
+            <div class="column is-4">
+              <div class="summary-card p-3">
+                <p class="heading">Total Spending</p>
+                <div class="columns is-mobile is-gapless">
+                  <div class="column">
+                    <p class="title is-6 has-text-white">Planned: £{{ getTotalPlannedSpending() | number:'1.2-2' }}</p>
+                  </div>
+                  <div class="column">
+                    <p class="title is-6 has-text-white">Actual: £{{ getTotalSpending() | number:'1.2-2' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Savings -->
+            <div class="column is-4">
+              <div class="summary-card p-3">
+                <p class="heading">Total Savings</p>
+                <div class="columns is-mobile is-gapless">
+                  <div class="column">
+                    <p class="title is-6 has-text-white">
+                      Planned: £{{ getTotalPlannedSavings() | number:'1.2-2' }}
+                    </p>
+                  </div>
+                  <div class="column">
+                    <p class="title is-6 has-text-white">
+                      Actual: £{{ getTotalSavings() | number:'1.2-2' }}
+                      <span class="tag ml-1" [ngClass]="getOverallSavingsHealthClass()">
+                        {{ getOverallSavingsPercentage() | number:'1.0-0' }}%
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 </app-notebook>

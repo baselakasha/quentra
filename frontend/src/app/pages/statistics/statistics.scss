@@ -55,6 +55,13 @@ $border: 1px solid $white-transparent-10;
   }
 }
 
+@mixin summary-card {
+  @include glass-panel;
+  padding: 1rem !important;
+  height: 100% !important;
+  @include white-text;
+}
+
 // Main container
 .statistics-container {
   max-width: 1200px !important;
@@ -142,6 +149,35 @@ $border: 1px solid $white-transparent-10;
     }
   }
   
+  // Summary container
+  .summary-container {
+    width: 100% !important;
+    margin-top: 1rem !important;
+    
+    .summary-card {
+      @include summary-card;
+      
+      .heading {
+        font-size: 0.75rem !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        color: $white-transparent-70 !important;
+        margin-bottom: 0.5rem !important;
+      }
+      
+      .title {
+        margin-bottom: 0 !important;
+      }
+      
+      .tag {
+        font-size: 0.75rem !important;
+        background-color: $white-transparent-15 !important;
+        @include status-colors;
+      }
+    }
+  }
+  
   // Table container
   .statistics-table-container.table-container {
     width: 100% !important;
@@ -155,11 +191,12 @@ $border: 1px solid $white-transparent-10;
     // Table styling
     table.table.statistics-table {
       width: 100% !important;
-      @include glass-panel;
-      @include white-text;
-      border-collapse: separate !important;
+    border-collapse: separate !important;
       border-spacing: 0 !important;
       
+      @include glass-panel;
+      @include white-text;
+
       // Table header
       thead th {
         font-weight: 600 !important;
@@ -217,9 +254,9 @@ $border: 1px solid $white-transparent-10;
     
     .card {
       margin-bottom: 1.5rem !important;
+      overflow: hidden !important;
       @include glass-panel;
       @include white-text;
-      overflow: hidden !important;
       
       &.is-success {
         border-color: $green !important;
@@ -302,11 +339,21 @@ $border: 1px solid $white-transparent-10;
       background-color: transparent !important;
     }
     
+    // Summary cards
+    .summary-container {
+      .summary-card {
+        @include glass-panel;
+        @include white-text;
+      }
+    }
+    
     // Ensure table styles work inside notebook
     table.statistics-table {
+      width: 100% !important;
       @include glass-panel;
       @include white-text;
-      width: 100% !important;
+      border: none !important;
+
     }
     
     // Ensure card styles work inside notebook

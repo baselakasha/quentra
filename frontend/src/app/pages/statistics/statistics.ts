@@ -4,11 +4,12 @@ import { Budget, BudgetSummary } from '../../types/budget.types';
 import { BudgetService } from '../../services/budget.service';
 import { NotificationService } from '../../services/notification.service';
 import { NotebookComponent } from '../../components/notebook/notebook';
+import { BudgetChartComponent } from '../../components/budget-chart/budget-chart';
 
 @Component({
   selector: 'app-statistics',
   standalone: true,
-  imports: [CommonModule, NotebookComponent],
+  imports: [CommonModule, NotebookComponent, BudgetChartComponent],
   templateUrl: './statistics.html',
   styleUrl: './statistics.scss'
 })
@@ -158,5 +159,52 @@ export class Statistics implements OnInit {
     const endDate = new Date(budget.endDate);
     
     return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+  }
+  
+  // Calculate total income across all budgets
+  getTotalIncome(): number {
+    return this.budgets
+      .filter(budget => this.hasMonthlyIncome(budget))
+      .reduce((sum, budget) => sum + (budget.monthlyIncome as number), 0);
+  }
+  
+  // Calculate total spending across all budgets
+  getTotalSpending(): number {
+    return this.budgets.reduce((sum, budget) => sum + this.getTotalSpent(budget), 0);
+  }
+  
+  // Calculate total savings across all budgets
+  getTotalSavings(): number {
+    return this.budgets
+      .filter(budget => this.hasMonthlyIncome(budget))
+      .reduce((sum, budget) => sum + this.getSavings(budget), 0);
+  }
+  
+  // Calculate total planned spending across all budgets
+  getTotalPlannedSpending(): number {
+    return this.budgets.reduce((sum, budget) => sum + this.getTotalPlanned(budget), 0);
+  }
+  
+  // Calculate total planned savings across all budgets
+  getTotalPlannedSavings(): number {
+    return this.budgets
+      .filter(budget => this.hasMonthlyIncome(budget))
+      .reduce((sum, budget) => sum + this.getPlannedSavings(budget), 0);
+  }
+  
+  // Get overall savings percentage
+  getOverallSavingsPercentage(): number {
+    const totalIncome = this.getTotalIncome();
+    if (totalIncome === 0) return 0;
+    return (this.getTotalSavings() / totalIncome) * 100;
+  }
+  
+  // Get class for overall savings health
+  getOverallSavingsHealthClass(): string {
+    const percentage = this.getOverallSavingsPercentage();
+    
+    if (percentage < 10) return 'is-danger';
+    if (percentage < 20) return 'is-warning';
+    return 'is-success';
   }
 }

@@ -1,0 +1,49 @@
+// Variables
+$white: #ffffff;
+$white-transparent-09: rgba(255, 255, 255, 0.09);
+$white-transparent-10: rgba(255, 255, 255, 0.1);
+$white-transparent-15: rgba(255, 255, 255, 0.15);
+$white-transparent-70: rgba(255, 255, 255, 0.7);
+$black-transparent-10: rgba(0, 0, 0, 0.1);
+$black-transparent-30: rgba(0, 0, 0, 0.3);
+$blue-transparent-20: rgba(50, 115, 220, 0.2);
+$blue-transparent-50: rgba(50, 115, 220, 0.5);
+$blue-transparent-80: rgba(50, 115, 220, 0.8);
+$green-transparent-10: rgba(72, 199, 116, 0.1);
+$green-transparent-30: rgba(72, 199, 116, 0.3);
+$yellow-transparent-10: rgba(255, 221, 87, 0.1);
+$yellow-transparent-30: rgba(255, 221, 87, 0.3);
+$red-transparent-10: rgba(241, 70, 104, 0.1);
+$red-transparent-30: rgba(241, 70, 104, 0.3);
+
+$green: #48c774;
+$yellow: #ffdd57;
+$red: #ef476f;
+$blue: #3273dc;
+
+$border-radius: 1rem;
+$box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+$border: 1px solid $white-transparent-10;
+
+// Chart container styling
+.chart-container {
+  background-color: $white-transparent-09 !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: $box-shadow !important;
+  border-radius: $border-radius !important;
+  border: $border !important;
+  padding: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  
+  .chart-wrapper {
+    position: relative !important;
+    height: 400px !important;
+    width: 100% !important;
+    
+    canvas {
+      background-color: rgba(0, 0, 0, 0.1) !important;
+      border-radius: 1rem !important;
+      padding: 1rem !important;
+    }
+  }
+}

@@ -9,6 +9,8 @@ Quentra is a personal finance management application with:
 ## General Guidelines
 - Follow TypeScript best practices
 - Do not add unecessary comments; code should be self-explanatory
+- DO not explain your changes in comments.
+- Avoid using `any` type; use specific types or interfaces
 
 ## Architecture
 
