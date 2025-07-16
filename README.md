@@ -4,7 +4,7 @@
 </a>
   
 
-<h1>Quentra - Budget Managment Web Application</h1>
+<h1>Quentra - Budget Management Web Application</h1>
 
 ![](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
