@@ -1,4 +1,39 @@
 <div class="chart-container">
+  <div class="chart-controls">
+    <app-dropdown 
+      [label]="getSelectedBudgetsLabel()" 
+      [buttonClass]="'is-small budget-selector-button'"
+      [icon]="'fas fa-chart-line'"
+      [alignRight]="true"
+      id="budget-selector">
+      <div class="budget-dropdown-content">
+        <div class="search-and-select">
+          <div class="search-box">
+            <input type="text" 
+                  class="input is-small" 
+                  placeholder="Search budgets..." 
+                  [(ngModel)]="searchTerm"
+                  (input)="filterBudgets()">
+          </div>
+          <div class="select-all-action">
+            <label class="checkbox select-all">
+              <input type="checkbox" [checked]="areAllBudgetsSelected()" (change)="toggleAllBudgets()">
+              Select All
+            </label>
+          </div>
+        </div>
+        <div class="checkboxes-container">
+          <label class="checkbox budget-checkbox" *ngFor="let budget of filteredBudgets">
+            <input type="checkbox" 
+                  [checked]="budget.id !== undefined && selectedBudgets[budget.id]" 
+                  (change)="toggleBudgetSelection(budget.id); $event.stopPropagation()">
+            {{ budget.name }}
+          </label>
+        </div>
+      </div>
+    </app-dropdown>
+  </div>
+  
   <div class="chart-wrapper">
     <canvas id="budgetChart"></canvas>
   </div>

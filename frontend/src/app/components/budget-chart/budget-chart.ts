@@ -1,12 +1,15 @@
 import { Component, Input, OnInit, AfterViewInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Budget } from '../../types/budget.types';
 import Chart from 'chart.js/auto';
+import { DropdownComponent } from '../dropdown';
+import { DropdownItemComponent } from '../dropdown-item';
 
 @Component({
   selector: 'app-budget-chart',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, DropdownComponent, DropdownItemComponent],
   templateUrl: './budget-chart.html',
   styleUrl: './budget-chart.scss'
 })
@@ -15,26 +18,65 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
   @Input() loading: boolean = true;
   
   chart: Chart | null = null;
+  selectedBudgets: Record<string, boolean> = {};
+  searchTerm: string = '';
+  filteredBudgets: Budget[] = [];
   
   constructor() {}
   
   ngOnInit(): void {
     this.setChartDefaults();
+    this.filterBudgets();
+  }
+  
+  // Filter budgets based on search term
+  filterBudgets(): void {
+    if (!this.searchTerm.trim()) {
+      this.filteredBudgets = [...this.budgets];
+    } else {
+      const searchTermLower = this.searchTerm.toLowerCase();
+      this.filteredBudgets = this.budgets.filter(budget => 
+        budget.name.toLowerCase().includes(searchTermLower)
+      );
+    }
+  }
+  
+  initializeSelectedBudgets(): void {
+    // Reset selected budgets
+    this.selectedBudgets = {};
+    
+    // Select all budgets by default
+    this.budgets.forEach(budget => {
+      if (budget.id !== undefined) {
+        this.selectedBudgets[budget.id] = true;
+      }
+    });
+    
+    // Initialize filtered budgets
+    this.filteredBudgets = [...this.budgets];
   }
   
   ngAfterViewInit(): void {
     // Initialize chart after the view is initialized and data is loaded
     if (!this.loading && this.budgets.length > 0) {
+      this.initializeSelectedBudgets();
       this.createChart();
     }
   }
   
   ngOnChanges(changes: SimpleChanges): void {
-    // When budgets data changes, recreate the chart
-    if (changes['budgets'] && !changes['budgets'].firstChange) {
-      setTimeout(() => {
-        this.createChart();
-      }, 100);
+    // When budgets data changes, update selections and recreate the chart
+    if (changes['budgets']) {
+      if (this.budgets.length > 0) {
+        this.initializeSelectedBudgets();
+        this.filterBudgets(); // Update filtered budgets
+      }
+      
+      if (!changes['budgets'].firstChange) {
+        setTimeout(() => {
+          this.createChart();
+        }, 100);
+      }
     }
     
     // When loading state changes to false, create the chart
@@ -71,15 +113,26 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // Prepare data for the chart - only showing individual budgets, no totals
-    const labels = this.budgets.map(budget => budget.name);
+    // Filter budgets based on selection
+    const filteredBudgets = this.budgets.filter(budget => 
+      budget.id !== undefined && this.selectedBudgets[budget.id]
+    );
     
-    const incomeData = this.budgets.map(budget => 
+    if (filteredBudgets.length === 0) {
+      // No budgets selected, clear the chart
+      this.chart = null;
+      return;
+    }
+    
+    // Prepare data for the chart - only showing selected budgets
+    const labels = filteredBudgets.map(budget => budget.name);
+    
+    const incomeData = filteredBudgets.map(budget => 
       this.hasMonthlyIncome(budget) ? budget.monthlyIncome! : 0
     );
     
-    const spendingData = this.budgets.map(budget => this.getTotalSpent(budget));
-    const savingsData = this.budgets.map(budget => this.getSavings(budget));
+    const spendingData = filteredBudgets.map(budget => this.getTotalSpent(budget));
+    const savingsData = filteredBudgets.map(budget => this.getSavings(budget));
     
     // Create the chart
     this.chart = new Chart(ctx, {
@@ -191,5 +244,50 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
   getSavings(budget: Budget): number {
     if (!this.hasMonthlyIncome(budget)) return 0;
     return budget.monthlyIncome! - this.getTotalSpent(budget);
+  }
+  
+  // Toggle budget selection
+  toggleBudgetSelection(budgetId: string | undefined): void {
+    if (budgetId === undefined) return;
+    
+    this.selectedBudgets[budgetId] = !this.selectedBudgets[budgetId];
+    
+    // Update chart with new selection
+    this.createChart();
+  }
+  
+  // Check if all budgets are selected
+  areAllBudgetsSelected(): boolean {
+    return this.budgets.every(budget => 
+      budget.id !== undefined && this.selectedBudgets[budget.id]
+    );
+  }
+  
+  // Toggle all budgets selection
+  toggleAllBudgets(): void {
+    const selectAll = !this.areAllBudgetsSelected();
+    
+    this.budgets.forEach(budget => {
+      if (budget.id !== undefined) {
+        this.selectedBudgets[budget.id] = selectAll;
+      }
+    });
+    
+    // Update chart with new selection
+    this.createChart();
+  }
+  
+  // Get a label showing how many budgets are selected
+  getSelectedBudgetsLabel(): string {
+    const selectedCount = Object.values(this.selectedBudgets).filter(v => v).length;
+    const totalCount = this.budgets.length;
+    
+    if (selectedCount === 0) {
+      return 'No budgets selected';
+    } else if (selectedCount === totalCount) {
+      return 'All budgets';
+    } else {
+      return `${selectedCount} of ${totalCount} budgets`;
+    }
   }
 }

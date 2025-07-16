@@ -34,6 +34,154 @@ $border: 1px solid $white-transparent-10;
   border: $border !important;
   padding: 1.5rem !important;
   margin-bottom: 1.5rem !important;
+  position: relative !important;
+  overflow: visible !important;
+  
+  // Chart controls
+  .chart-controls {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-bottom: 1rem !important;
+    position: relative !important;
+    
+    ::ng-deep {
+      // Dropdown button styling
+      .budget-selector-button {
+        background-color: $white-transparent-10 !important;
+        color: $white !important;
+        border: $border !important;
+        border-radius: 0.5rem !important;
+        
+        &:hover {
+          background-color: $white-transparent-15 !important;
+        }
+        
+        .icon {
+          margin-right: 0.3rem !important;
+        }
+      }
+      
+      // Position dropdown to ensure it doesn't go outside the viewport
+      .dropdown.is-active {
+        position: static !important;
+      }
+      
+      // Dropdown menu styling
+      .dropdown-menu {
+        width: 350px !important;
+        padding: 0 !important;
+        border-radius: 0.5rem !important;
+        background-color: transparent !important;
+        position: absolute !important;
+        top: 100% !important;
+        right: 0 !important;
+        left: auto !important;
+        z-index: 20 !important;
+        
+        .dropdown-content {
+          background-color: $white-transparent-15 !important;
+          backdrop-filter: blur(10px) !important;
+          border-radius: 0.5rem !important;
+          border: $border !important;
+          padding: 0 !important;
+          color: $white !important;
+        }
+      }
+    }
+  }
+  
+  // Budget dropdown content
+  .budget-dropdown-content {
+    padding: 1rem !important;
+    max-width: 100% !important;
+    
+    .search-and-select {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      margin-bottom: 1rem !important;
+      
+      .search-box {
+        flex: 1 !important;
+        margin-right: 1rem !important;
+        
+        .input {
+          background-color: $white-transparent-10 !important;
+          border: $border !important;
+          color: $white !important;
+          
+          &::placeholder {
+            color: $white-transparent-70 !important;
+          }
+          
+          &:focus {
+            border-color: $blue-transparent-50 !important;
+            box-shadow: 0 0 0 0.125em $blue-transparent-20 !important;
+          }
+        }
+      }
+      
+      .select-all-action {
+        white-space: nowrap !important;
+        
+        .checkbox.select-all {
+          color: $white !important;
+          font-size: 0.9rem !important;
+          
+          input[type="checkbox"] {
+            margin-right: 0.5rem !important;
+          }
+        }
+      }
+    }
+    
+    .checkboxes-container {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 0.75rem !important;
+      max-height: 200px !important;
+      overflow-y: auto !important;
+      padding-right: 0.5rem !important;
+      
+      // Scrollbar styling
+      &::-webkit-scrollbar {
+        width: 6px !important;
+      }
+      
+      &::-webkit-scrollbar-track {
+        background: $black-transparent-10 !important;
+        border-radius: 3px !important;
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        background: $white-transparent-15 !important;
+        border-radius: 3px !important;
+      }
+      
+      &::-webkit-scrollbar-thumb:hover {
+        background: $white-transparent-70 !important;
+      }
+      
+      .budget-checkbox {
+        display: flex !important;
+        align-items: center !important;
+        padding: 0.35rem 0.75rem !important;
+        border-radius: 1rem !important;
+        background-color: $white-transparent-10 !important;
+        color: $white !important;
+        transition: background-color 0.2s ease !important;
+        
+        &:hover {
+          background-color: $white-transparent-15 !important;
+        }
+        
+        input[type="checkbox"] {
+          margin-right: 0.5rem !important;
+        }
+      }
+    }
+  }
   
   .chart-wrapper {
     position: relative !important;
