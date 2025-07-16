@@ -1,8 +1,7 @@
 
 <div align="center">
-<img width="92" height="90" alt="icons" src="https://github.com/user-attachments/assets/ff10c16f-399d-4978-bfed-a0eef54a631e" />
-</a>
   
+<img width="92" height="90" alt="logo" src="https://github.com/user-attachments/assets/1775d395-56c5-4711-9d86-db34451303c7" />
 
 <h1>Quentra - Budget Management Web Application</h1>
 
