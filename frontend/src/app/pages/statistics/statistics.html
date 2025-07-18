@@ -102,7 +102,7 @@
                 <td><strong>{{ budget.name }}</strong></td>
                 <td>{{ getDateRange(budget) }}</td>
                 <td>
-                  {{ hasMonthlyIncome(budget) ? ('£' + (budget.monthlyIncome |
+                  {{ hasMonthlyIncome(budget) ? ('£' + (toNumber(budget.monthlyIncome) |
                   number:'1.2-2')) : 'Not set' }}
                 </td>
                 <td>£{{ getTotalPlanned(budget) | number:'1.2-2' }}</td>
@@ -113,7 +113,7 @@
                     class="tag ml-1"
                     [ngClass]="getSavingsHealthClass(budget)"
                   >
-                    {{ getPlannedSavings(budget) / budget.monthlyIncome! * 100 |
+                    {{ getPlannedSavings(budget) / toNumber(budget.monthlyIncome) * 100 |
                     number:'1.0-0' }}%
                   </span>
                 </td>
@@ -133,7 +133,7 @@
                     class="tag"
                     [ngClass]="getSpendingPercentageClass(budget)"
                   >
-                    {{ (getTotalSpent(budget) / budget.monthlyIncome! * 100) |
+                    {{ (getTotalSpent(budget) / toNumber(budget.monthlyIncome) * 100) |
                     number:'1.0-0' }}%
                   </span>
                 </td>
@@ -157,7 +157,7 @@
                       <p class="heading">Monthly Income</p>
                       <p>
                         {{ hasMonthlyIncome(budget) ? ('£' +
-                        (budget.monthlyIncome | number:'1.2-2')) : 'Not set' }}
+                        (toNumber(budget.monthlyIncome) | number:'1.2-2')) : 'Not set' }}
                       </p>
                     </div>
                   </div>
@@ -185,7 +185,7 @@
                           class="tag ml-1"
                           [ngClass]="getSavingsHealthClass(budget)"
                         >
-                          {{ getPlannedSavings(budget) / budget.monthlyIncome! *
+                          {{ getPlannedSavings(budget) / toNumber(budget.monthlyIncome) *
                           100 | number:'1.0-0' }}%
                         </span>
                       </p>
@@ -211,7 +211,7 @@
                       [ngClass]="getSpendingPercentageClass(budget)"
                     >
                       Spending: {{ (getTotalSpent(budget) /
-                      budget.monthlyIncome! * 100) | number:'1.0-0' }}% of
+                      toNumber(budget.monthlyIncome) * 100) | number:'1.0-0' }}% of
                       income
                     </span>
                     <span
