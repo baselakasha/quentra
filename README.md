@@ -13,7 +13,15 @@
 ![](https://img.shields.io/badge/typeorm-FE0803?style=for-the-badge&logo=typeorm&logoColor=white)
 ![](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
 
-<img src="https://github.com/user-attachments/assets/8b56bb83-3cbe-456c-abcf-7e7fa328780b" width="80%" />
+<img src="https://github.com/user-attachments/assets/d44e4f9f-9ae7-45d0-9a5e-5e0117433520" width="80%" />
 
+Manage your monthly household budget, a holiday, a project or any budget using an intuitive web app.
 
 </div>
+
+## Implementation
+The backend is a RESTful API built using TypeScript, Node.js, Express.js, and TypeOrm, while the frontend is built using Angular 
+
+Testing was done using Jest. 
+
+Continuous Integration (CI) is done using GitHub Actions. 
