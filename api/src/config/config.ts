@@ -12,8 +12,19 @@ const config = {
   nodeEnv: process.env.NODE_ENV || "development",
   jwtSecret: process.env.JWT_SECRET || "fallback-secret-key-for-development",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1d",
-  dbType: process.env.DB_TYPE || "sqlite",
-  dbName: process.env.DB_NAME || "db.sqlite",
+  
+  // Database configuration
+  databaseType: process.env.DATABASE_TYPE || "postgres",
+  databaseHost: process.env.DATABASE_HOST || "localhost",
+  databasePort: parseInt(process.env.DATABASE_PORT || "5432", 10),
+  databaseName: process.env.DATABASE_NAME || "quentra",
+  databaseUsername: process.env.DATABASE_USERNAME || "quentra",
+  databasePassword: process.env.DATABASE_PASSWORD || "quentra_password",
+  
+  // For compatibility with existing code that might use these properties
+  dbType: process.env.DATABASE_TYPE || "postgres",
+  dbName: process.env.DATABASE_NAME || "quentra",
+  
   corsOrigin: process.env.CORS_ORIGIN || "http://localhost:4200",
 };
 

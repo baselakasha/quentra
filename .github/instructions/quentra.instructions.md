@@ -2,8 +2,8 @@
 
 ## Project Overview
 Quentra is a personal finance management application with:
-- Backend: TypeScript, Node.js, Express, TypeORM, SQLite
-- Frontend: Angular 20+, RxJS, Bulma CSS
+- Backend: TypeScript, Node.js, Express, TypeORM, SQLite for development, Yarn
+- Frontend: Angular 20+, RxJS, Bulma CSS, Yarn
 
 
 ## General Guidelines
@@ -11,6 +11,7 @@ Quentra is a personal finance management application with:
 - Do not add unecessary comments; code should be self-explanatory
 - DO not explain your changes in comments.
 - Avoid using `any` type; use specific types or interfaces
+- Use yarn for package management
 
 ## Architecture
 

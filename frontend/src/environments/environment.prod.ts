@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://api.quentra.com/api', // Replace with your production API URL
+  apiUrl: '/api', // Using relative path for API proxy in production
   appName: 'Quentra',
   version: '1.0.0',
 };

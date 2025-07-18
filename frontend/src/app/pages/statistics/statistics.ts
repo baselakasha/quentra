@@ -49,40 +49,58 @@ export class Statistics implements OnInit {
   // Calculate total planned spending for a budget
   getTotalPlanned(budget: Budget): number {
     if (!budget.categories || budget.categories.length === 0) return 0;
-    return budget.categories.reduce((sum, cat) => sum + cat.plannedAmount, 0);
+    return budget.categories.reduce((sum, cat) => sum + this.toNumber(cat.plannedAmount), 0);
   }
 
   // Calculate total actual spending for a budget
   getTotalSpent(budget: Budget): number {
     if (!budget.categories || budget.categories.length === 0) return 0;
-    return budget.categories.reduce((sum, cat) => sum + cat.spentAmount, 0);
+    return budget.categories.reduce((sum, cat) => sum + this.toNumber(cat.spentAmount), 0);
   }
   
   // Calculate actual savings (income - spent)
   getSavings(budget: Budget): number {
     if (!this.hasMonthlyIncome(budget)) return 0;
-    return (budget.monthlyIncome as number) - this.getTotalSpent(budget);
+    return this.toNumber(budget.monthlyIncome) - this.getTotalSpent(budget);
   }
   
   // Calculate planned savings (income - planned)
   getPlannedSavings(budget: Budget): number {
     if (!this.hasMonthlyIncome(budget)) return 0;
-    return (budget.monthlyIncome as number) - this.getTotalPlanned(budget);
+    return this.toNumber(budget.monthlyIncome) - this.getTotalPlanned(budget);
   }
   
   // Calculate savings as percentage of income
   getSavingsPercentage(budget: Budget): number {
-    if (!this.hasMonthlyIncome(budget) || budget.monthlyIncome === 0) {
+    if (!this.hasMonthlyIncome(budget) || this.toNumber(budget.monthlyIncome) === 0) {
       return 0;
     }
-    return (this.getSavings(budget) / (budget.monthlyIncome as number)) * 100;
+    return (this.getSavings(budget) / this.toNumber(budget.monthlyIncome)) * 100;
   }
   
   // Check if budget has monthly income defined
   hasMonthlyIncome(budget: Budget): boolean {
     return budget.monthlyIncome !== null && 
            budget.monthlyIncome !== undefined && 
-           budget.monthlyIncome > 0;
+           this.toNumber(budget.monthlyIncome) > 0;
+  }
+  
+  // Helper method to convert any value to a number
+  toNumber(value: any): number {
+    if (value === null || value === undefined) return 0;
+    // If it's already a number, return it
+    if (typeof value === 'number') return value;
+    // If it's a string, try to parse it
+    if (typeof value === 'string') {
+      // Remove any non-numeric characters except for dots and minus signs
+      const cleanedValue = value.replace(/[^0-9.-]/g, '');
+      // If multiple dots exist, keep only the first one
+      const parts = cleanedValue.split('.');
+      const sanitizedValue = parts[0] + (parts.length > 1 ? '.' + parts.slice(1).join('') : '');
+      return parseFloat(sanitizedValue) || 0;
+    }
+    // Default fallback
+    return 0;
   }
   
   // Get class for savings health
@@ -100,7 +118,7 @@ export class Statistics implements OnInit {
   getSpendingPercentageClass(budget: Budget): string {
     if (!this.hasMonthlyIncome(budget)) return '';
     
-    const spendingPercentage = (this.getTotalSpent(budget) / (budget.monthlyIncome as number)) * 100;
+    const spendingPercentage = (this.getTotalSpent(budget) / this.toNumber(budget.monthlyIncome)) * 100;
     
     if (spendingPercentage > 90) return 'is-danger';
     if (spendingPercentage > 75) return 'is-warning';
@@ -165,7 +183,7 @@ export class Statistics implements OnInit {
   getTotalIncome(): number {
     return this.budgets
       .filter(budget => this.hasMonthlyIncome(budget))
-      .reduce((sum, budget) => sum + (budget.monthlyIncome as number), 0);
+      .reduce((sum, budget) => sum + this.toNumber(budget.monthlyIncome), 0);
   }
   
   // Calculate total spending across all budgets

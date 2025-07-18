@@ -17,6 +17,11 @@ app.use("/api/auth", authRouter);
 app.use("/api/budget", budgetRouter);
 app.use("/api/category", categoryRouter);
 
+// Health check endpoint for Docker
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 app.get("/", (req, res) => {
   res.send("Hello, World! Test");
 });
