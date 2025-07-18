@@ -6,7 +6,7 @@
 >
   <div class="columns is-multiline">
     <div class="column">
-      <section class="section">
+      <section>
         <h1 class="title is-2 has-text-white">Budget Statistics</h1>
 
         <!-- Sort controls -->
@@ -228,8 +228,8 @@
         </div>
       </section>
     </div>
-    <div class="column">
-      <section class="section">
+    <div class="column is-12 ">
+      <section>
         <!-- Line Chart -->
         <app-budget-chart *ngIf="!loading && budgets.length > 0" [budgets]="budgets" [loading]="loading"></app-budget-chart>
 
