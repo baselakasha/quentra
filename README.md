@@ -74,24 +74,6 @@ We provide a convenient script to manage development and production environments
 ./compose.sh [dev|prod] logs -f
 ```
 
-### Development Environment
-
-The development environment:
-- Uses hot-reloading for both frontend and backend
-- Mounts local directories as volumes for real-time code changes
-- Exposes ports for direct access:
-  - Frontend: http://localhost:4200
-  - API: http://localhost:3000
-  - PostgreSQL: localhost:5432
-
-### Production Environment
-
-The production environment:
-- Uses optimized production builds
-- Has proper Nginx configuration for the frontend
-- Routes API requests through Nginx
-- Only exposes port 80 to access the application
-- Available at: http://localhost
 
 ### Environment Variables
 
