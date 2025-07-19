@@ -41,32 +41,14 @@ Quentra can be deployed using Docker and Docker Compose in both development and 
 We provide a convenient script to manage development and production environments:
 
 ```bash
-# Start development environment
-./compose.sh dev up -d
+# Start 
+./compose.sh [dev|prod] up -d
 
-# Start production environment
-./compose.sh prod up -d
-
-# Run tests in Docker
+# Run tests
 ./compose.sh test run
 
-# Stop development environment
-./compose.sh dev down
-
-# Stop production environment
-./compose.sh prod down
-
-# View logs for development
-./compose.sh dev logs -f
-
-# View logs for production
-./compose.sh prod logs -f
-
-# Build development images
-./compose.sh dev build
-
-# Build production images
-./compose.sh prod build
+# View logs 
+./compose.sh [dev|prod] logs -f
 ```
 
 ### Development Environment
