@@ -1,10 +1,14 @@
-FROM node:20-alpine as builder
+FROM node:22-alpine AS builder
+
+# Set build argument with default value
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /app
 
 # Install dependencies
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 # Copy source code
 COPY . .
@@ -13,7 +17,11 @@ COPY . .
 RUN yarn build
 
 # Production stage
-FROM node:20-alpine
+FROM node:22-alpine
+
+# Set environment variable
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /app
 

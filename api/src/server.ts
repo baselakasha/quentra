@@ -1,3 +1,5 @@
+// Register module aliases first
+import "./register-aliases";
 import "reflect-metadata";
 import AppDataSource from "./config/ormconfig";
 import app from "./app";
