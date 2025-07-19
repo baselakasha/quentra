@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  # API Test service with in-memory SQLite
+  api-test:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.test
+    platform: linux/amd64  # Using amd64 for GitHub Actions compatibility
+    container_name: quentra-api-test
+    environment:
+      NODE_ENV: testing
+      DATABASE_TYPE: sqlite
+      JWT_SECRET: test_secret_key
+      JWT_EXPIRES_IN: 1h

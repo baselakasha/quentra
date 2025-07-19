@@ -46,6 +46,9 @@ We provide a convenient script to manage development and production environments
 # Start production environment
 ./compose.sh prod up -d
 
+# Run tests in Docker
+./compose.sh test run
+
 # Stop development environment
 ./compose.sh dev down
 
