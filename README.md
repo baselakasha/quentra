@@ -23,6 +23,9 @@ Manage your monthly household budget, a holiday, a project or any budget using a
 </div>
 
 ## Features 
+
+View list of user stories: [User Stories](./docs/user_stories.md)
+
 ### Flexible Budget Management
 - **Multiple Budget Types**: Create specialized budgets for household expenses, vacations, projects, or any financial goal
 - **Budget Duplication**: Save time by cloning existing budgets as templates for new ones
