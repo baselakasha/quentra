@@ -13,10 +13,28 @@ show_usage() {
   echo "  ./compose.sh prod down  # Stop production environment"
   echo "  ./compose.sh test down  # Stop test environment"
   echo ""
-  echo "Available commands are standard docker-compose commands:"
+  echo "Available commands are standard docker compose commands:"
   echo "  up, down, build, logs, ps, run, etc."
   exit 1
 }
+
+# Function to detect Docker Compose command
+detect_docker_compose_cmd() {
+  # Check if docker compose V2 is available
+  if docker compose version &>/dev/null; then
+    echo "docker compose"
+  # Check if docker-compose V1 is available
+  elif docker-compose --version &>/dev/null; then
+    echo "docker-compose"
+  else
+    echo "Error: Neither 'docker compose' (V2) nor 'docker-compose' (V1) was found."
+    echo "Please install Docker Compose and try again."
+    exit 1
+  fi
+}
+
+# Store the appropriate docker compose command
+DOCKER_COMPOSE_CMD=$(detect_docker_compose_cmd)
 
 # Check if environment argument is provided
 if [ -z "$1" ]; then
@@ -48,10 +66,10 @@ fi
 # Special case for 'test run' to execute tests
 if [ "$COMPOSE_FILE" == "docker-compose.test.yml" ] && [ "$1" == "run" ]; then
   echo "Running tests in container..."
-  docker-compose -f $COMPOSE_FILE up --build --abort-on-container-exit --exit-code-from api-test
+  $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up --build --abort-on-container-exit --exit-code-from api-test
   exit $?
 fi
 
 # Execute docker-compose with the appropriate file and remaining arguments
-echo "Running: docker-compose -f $COMPOSE_FILE $@"
-docker-compose -f $COMPOSE_FILE "$@"
+echo "Running: $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE $@"
+$DOCKER_COMPOSE_CMD -f $COMPOSE_FILE "$@"
