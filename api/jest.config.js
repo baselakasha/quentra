@@ -8,7 +8,7 @@ module.exports = {
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js'],
   testMatch: ['**/*.test.ts', '**/*.spec.ts'], // Match test files with .test.ts or .spec.ts
-  setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['<rootDir>/src/tests/env-setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@util/(.*)$': '<rootDir>/src/utils/$1',

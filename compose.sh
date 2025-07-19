@@ -2,16 +2,19 @@
 
 # Helper function to display usage
 show_usage() {
-  echo "Usage: ./compose.sh [dev|prod] [command]"
+  echo "Usage: ./compose.sh [dev|prod|test] [command]"
   echo ""
   echo "Examples:"
   echo "  ./compose.sh dev up     # Start development environment"
   echo "  ./compose.sh prod up    # Start production environment"
+  echo "  ./compose.sh test up    # Start test environment"
+  echo "  ./compose.sh test run   # Run tests in container"
   echo "  ./compose.sh dev down   # Stop development environment"
   echo "  ./compose.sh prod down  # Stop production environment"
+  echo "  ./compose.sh test down  # Stop test environment"
   echo ""
   echo "Available commands are standard docker-compose commands:"
-  echo "  up, down, build, logs, ps, etc."
+  echo "  up, down, build, logs, ps, run, etc."
   exit 1
 }
 
@@ -28,8 +31,11 @@ if [ "$1" == "dev" ]; then
 elif [ "$1" == "prod" ]; then
   COMPOSE_FILE="docker-compose.prod.yml"
   shift
+elif [ "$1" == "test" ]; then
+  COMPOSE_FILE="docker-compose.test.yml"
+  shift
 else
-  echo "Error: Invalid environment. Use 'dev' or 'prod'."
+  echo "Error: Invalid environment. Use 'dev', 'prod', or 'test'."
   show_usage
 fi
 
@@ -37,6 +43,13 @@ fi
 if [ -z "$1" ]; then
   echo "Error: Command not specified!"
   show_usage
+fi
+
+# Special case for 'test run' to execute tests
+if [ "$COMPOSE_FILE" == "docker-compose.test.yml" ] && [ "$1" == "run" ]; then
+  echo "Running tests in container..."
+  docker-compose -f $COMPOSE_FILE up --build --abort-on-container-exit --exit-code-from api-test
+  exit $?
 fi
 
 # Execute docker-compose with the appropriate file and remaining arguments

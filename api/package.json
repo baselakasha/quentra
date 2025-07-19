@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node -r tsconfig-paths/register' src/server.ts",
-    "test": "NODE_ENV=testing jest --runInBand",
-    "test:watch": "NODE_ENV=testing jest --watchAll"
+    "test": "jest --runInBand",
+    "test:watch": "jest --watchAll"
   },
   "devDependencies": {
     "@jest/globals": "^30.0.0-beta.3",
