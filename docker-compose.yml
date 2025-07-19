@@ -27,6 +27,9 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile.dev
+      args:
+        - NODE_ENV=development
+    image: quentra-api-dev:latest
     platform: linux/arm64/v8
     container_name: quentra-api
     restart: unless-stopped
@@ -56,6 +59,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
+      args:
+        - NODE_ENV=development
+    image: quentra-frontend-dev:latest
     platform: linux/arm64/v8
     container_name: quentra-frontend
     restart: unless-stopped

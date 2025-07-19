@@ -27,6 +27,9 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    image: quentra-api-prod:latest
     platform: linux/arm64/v8
     container_name: quentra-api-prod
     restart: always
@@ -57,13 +60,14 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    image: quentra-frontend-prod:latest
     platform: linux/arm64/v8
     container_name: quentra-frontend-prod
     restart: always
     depends_on:
       - api
     ports:
-      - "${FRONTEND_PORT:-80}:80"
+      - "80:80"
     networks:
       - quentra-network
 
