@@ -10,6 +10,7 @@
 ![](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)
 ![](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)
+![](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![](https://img.shields.io/badge/typeorm-FE0803?style=for-the-badge&logo=typeorm&logoColor=white)
 ![](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
 ![](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
@@ -21,7 +22,7 @@ Manage your monthly household budget, a holiday, a project or any budget using a
 </div>
 
 ## Implementation
-The backend is a RESTful API built using TypeScript, Node.js, Express.js, and TypeOrm, while the frontend is built using Angular 
+The backend is a RESTful API built using TypeScript, Node.js, Express.js, and TypeOrm with PostgreSQL database, while the frontend is built using Angular 
 
 Testing was done using Jest. 
 
