@@ -112,7 +112,8 @@ export const updateBudget = async (
     const budgetId = req.params.id;
     const userId = (req as any).user.userId || (req as any).user.id;
 
-    const budget = await budgetRepo.findOne({
+    // First, find the budget with categories to ensure we have access to it
+    let budget = await budgetRepo.findOne({
       where: { id: budgetId, user: { id: userId } },
     });
 
@@ -120,10 +121,22 @@ export const updateBudget = async (
       return res.status(404).json({ error: "Budget not found" });
     }
 
+    // Apply the updates
     const updatedBudget = budgetRepo.merge(budget, req.body);
     await budgetRepo.save(updatedBudget);
+    
+    // Re-fetch the budget with categories to return the complete data
+    const budgetWithCategories = await budgetRepo.findOne({
+      where: { id: budgetId },
+      relations: ["categories"],
+    });
+    
+    // Order categories by their order field
+    if (budgetWithCategories && budgetWithCategories.categories) {
+      budgetWithCategories.categories.sort((a, b) => a.order - b.order);
+    }
 
-    res.status(200).json(updatedBudget);
+    res.status(200).json(budgetWithCategories);
   } catch (error) {
     next(error);
   }
