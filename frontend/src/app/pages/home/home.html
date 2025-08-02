@@ -37,7 +37,39 @@
         <h2 class="title is-3">Your Budgets</h2>
       </div>
       <div class="column has-text-right-tablet">
-        <div class="add-budget-btn">
+        <div class="buttons is-right">
+          <!-- Sort dropdown -->
+          <div class="dropdown mr-2" [class.is-active]="isDropdownActive">
+            <div class="dropdown-trigger">
+              <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" (click)="toggleSortDropdown($event)">
+                <span>Sort by: {{ getSortFieldDisplayName() }}</span>
+                <span class="icon is-small">
+                  <i class="fas" [class.fa-arrow-up]="sortDirection === 'asc'" [class.fa-arrow-down]="sortDirection === 'desc'"></i>
+                </span>
+                <span class="icon is-small">
+                  <i class="fas fa-angle-down"></i>
+                </span>
+              </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+              <div class="dropdown-content">
+                <a href="javascript:void(0)" class="dropdown-item" [class.is-active]="sortField === 'name'" (click)="sortBudgets('name'); $event.stopPropagation()">
+                  Name
+                </a>
+                <a href="javascript:void(0)" class="dropdown-item" [class.is-active]="sortField === 'startDate'" (click)="sortBudgets('startDate'); $event.stopPropagation()">
+                  Start Date
+                </a>
+                <a href="javascript:void(0)" class="dropdown-item" [class.is-active]="sortField === 'endDate'" (click)="sortBudgets('endDate'); $event.stopPropagation()">
+                  End Date
+                </a>
+                <a href="javascript:void(0)" class="dropdown-item" [class.is-active]="sortField === 'monthlyIncome'" (click)="sortBudgets('monthlyIncome'); $event.stopPropagation()">
+                  Monthly Income
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Create budget button -->
           <button class="button is-primary" (click)="createNewBudget()">
             <span class="icon">
               <i class="fas fa-plus"></i>
