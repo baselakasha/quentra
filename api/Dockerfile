@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Install dependencies (including devDependencies for build)
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --production=false
 
 # Copy source code and TypeScript configs
 COPY src/ ./src/
