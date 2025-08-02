@@ -38,13 +38,27 @@ export const getBudgets = async (
 ) => {
   try {
     const userId = (req as any).user.userId || (req as any).user.id;
+    const { sort, direction } = req.query;
+    
+    console.log(`Sort request - field: ${sort}, direction: ${direction}`);
+    
+    // Build order object based on query parameters
+    const order: Record<string, "ASC" | "DESC"> = {
+      isPinned: "DESC" // Pinned budgets always come first
+    };
+    
+    // Add secondary sort field if provided
+    if (sort && ['name', 'startDate', 'endDate', 'monthlyIncome'].includes(sort as string)) {
+      order[sort as string] = (direction === 'asc' ? 'ASC' : 'DESC');
+    } else {
+      // Default secondary sort is by start date, newest first
+      order.startDate = "DESC";
+    }
+    
     const budgets = await budgetRepo.find({
       where: { user: { id: userId } },
       relations: ["categories"],
-      order: {
-        isPinned: "DESC", // Pinned budgets first
-        startDate: "DESC" // Then sort by start date (newest first)
-      }
+      order
     });
     
     // Order categories within each budget

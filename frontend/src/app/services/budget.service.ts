@@ -29,8 +29,21 @@ export class BudgetService {
       );
   }
 
-  getBudgets(): Observable<Budget[]> {
-    return this.http.get<Budget[]>(this.configService.getFullApiUrl(this.apiEndpoint))
+  getBudgets(sortField?: string, sortDirection?: 'asc' | 'desc'): Observable<Budget[]> {
+    // Build query string if sort parameters are provided
+    let url = this.configService.getFullApiUrl(this.apiEndpoint);
+    if (sortField) {
+      const params = new URLSearchParams();
+      params.append('sort', sortField);
+      if (sortDirection) {
+        params.append('direction', sortDirection);
+      }
+      url = `${url}?${params.toString()}`;
+    }
+    
+    console.log(`API request URL: ${url}`);
+    
+    return this.http.get<Budget[]>(url)
       .pipe(
         catchError(this.handleError)
       );

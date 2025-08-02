@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BudgetComponent } from '../../components/budget/budget';
 import { BudgetModalComponent } from '../../components/budget-modal/budget-modal';
 import { BudgetService } from '../../services/budget.service';
-import { Budget, CreateBudgetRequest } from '../../types/budget.types';
+import { Budget, CreateBudgetRequest, BudgetSortField, SortDirection } from '../../types/budget.types';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
@@ -26,6 +26,11 @@ export class Home implements OnInit {
   budgetSubscription: Subscription | null = null;
   authStateSubscription: Subscription | null = null;
   isLoggedIn = false;
+  
+  // Sorting properties
+  sortField: BudgetSortField = 'startDate';
+  sortDirection: SortDirection = 'desc';
+  isDropdownActive = false;
 
   @ViewChild(BudgetModalComponent) budgetModal!: BudgetModalComponent;
 
@@ -65,10 +70,12 @@ export class Home implements OnInit {
   loadBudgets() {
     if (!this.isLoggedIn) return;
     
+    console.log(`Loading budgets with sort: ${this.sortField}, direction: ${this.sortDirection}`);
+    
     this.loading = true;
     this.error = null;
     
-    this.budgetSubscription = this.budgetService.getBudgets().subscribe({
+    this.budgetSubscription = this.budgetService.getBudgets(this.sortField, this.sortDirection).subscribe({
       next: (budgets) => {
         // Ensure categories have proper default values with explicit number conversion
         this.budgets = budgets.map(budget => {
@@ -177,12 +184,62 @@ export class Home implements OnInit {
 
   }
   
-  onBudgetUpdated(updatedBudget: Budget) {
-    // Find and update the budget in the local array
-    const index = this.budgets.findIndex(b => b.id === updatedBudget.id);
+  onBudgetUpdated(budget: Budget) {
+    // Find and update the budget in the array
+    const index = this.budgets.findIndex(b => b.id === budget.id);
     if (index !== -1) {
-      this.budgets[index] = { ...this.budgets[index], ...updatedBudget };
-      this.showSuccessMessage(`Budget "${updatedBudget.name}" updated successfully!`);
+      this.budgets[index] = budget;
+    }
+  }
+  
+  // Sort budgets
+  sortBudgets(field: BudgetSortField) {
+    console.log(`Sorting by ${field}, current direction: ${this.sortDirection}`);
+    
+    if (this.sortField === field) {
+      // Toggle direction if same field
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // New field, default to descending for dates, ascending for name
+      this.sortField = field;
+      this.sortDirection = (field === 'name') ? 'asc' : 'desc';
+    }
+    
+    console.log(`New sort: ${this.sortField}, direction: ${this.sortDirection}`);
+    
+    // Reload budgets with new sort
+    this.loadBudgets();
+    
+    // Close dropdown after selection
+    this.isDropdownActive = false;
+  }
+  
+  // Toggle the sort dropdown
+  toggleSortDropdown(event: Event) {
+    event.stopPropagation(); // Prevent the click from reaching the document
+    this.isDropdownActive = !this.isDropdownActive;
+  }
+  
+  // Close dropdown when clicking outside
+  @HostListener('document:click', ['$event'])
+  closeSortDropdown(event: Event) {
+    // Only close if dropdown is active and we're not clicking on the dropdown itself
+    if (this.isDropdownActive) {
+      const dropdownElement = document.querySelector('.dropdown');
+      if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
+        this.isDropdownActive = false;
+      }
+    }
+  }
+  
+  // Get sort field display name
+  getSortFieldDisplayName(): string {
+    switch(this.sortField) {
+      case 'name': return 'Name';
+      case 'startDate': return 'Start Date';
+      case 'endDate': return 'End Date';
+      case 'monthlyIncome': return 'Monthly Income';
+      default: return 'Start Date';
     }
   }
   
@@ -195,10 +252,7 @@ export class Home implements OnInit {
   }
   
   onBudgetDuplicated(newBudget: Budget) {
-    // Add the duplicated budget to the list
-    this.budgets.push(newBudget);
-    
-    // Reload all budgets to ensure correct order
+    // Reload all budgets to ensure correct order with current sorting
     this.loadBudgets();
     
     this.showSuccessMessage(`Budget "${newBudget.name}" created successfully!`);

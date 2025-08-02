@@ -17,6 +17,10 @@ export interface Budget {
   user?: User;
 }
 
+// Budget sorting options
+export type BudgetSortField = 'name' | 'startDate' | 'endDate' | 'monthlyIncome';
+export type SortDirection = 'asc' | 'desc';
+
 export interface Category {
   id: string;
   name: string;
