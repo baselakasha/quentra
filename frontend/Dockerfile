@@ -8,13 +8,13 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --frozen-lockfile --production=false
 
 # Copy source code
 COPY . .
 
 # Build application for production
-RUN yarn build --configuration=production
+RUN node ./node_modules/.bin/ng build --configuration=production
 
 # Production stage with Nginx
 FROM nginx:alpine
