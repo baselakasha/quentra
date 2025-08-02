@@ -351,8 +351,15 @@ export class BudgetComponent implements AfterViewInit {
         // Check if pinned status changed
         const wasPinned = this.budget.isPinned;
         
-        // Update local budget with returned values
-        Object.assign(this.budget, updatedBudget);
+        // Update local budget with returned values, ensuring we preserve categories if not returned
+        if (!updatedBudget.categories && this.budget.categories) {
+          // If for some reason categories aren't returned, keep the existing ones
+          updatedBudget.categories = this.budget.categories;
+        }
+        
+        // Update budget
+        this._budget = updatedBudget;
+        
         this.budgetModal.finishLoading(true);
         this.budgetUpdated.emit(updatedBudget);
         
