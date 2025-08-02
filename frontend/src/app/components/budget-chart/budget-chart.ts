@@ -128,11 +128,19 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
     const labels = filteredBudgets.map(budget => budget.name);
     
     const incomeData = filteredBudgets.map(budget => 
-      this.hasMonthlyIncome(budget) ? budget.monthlyIncome! : 0
+      this.hasMonthlyIncome(budget) ? Number(budget.monthlyIncome!) : 0
     );
     
     const spendingData = filteredBudgets.map(budget => this.getTotalSpent(budget));
     const savingsData = filteredBudgets.map(budget => this.getSavings(budget));
+    
+    // Debug log to check data
+    console.log('Chart Data:', {
+      labels,
+      incomeData,
+      spendingData,
+      savingsData
+    });
     
     // Create the chart
     this.chart = new Chart(ctx, {
@@ -147,7 +155,9 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
             backgroundColor: 'rgba(50, 115, 220, 0.1)',
             borderWidth: 2,
             tension: 0.4,
-            fill: false
+            fill: false,
+            pointRadius: 4,
+            pointHoverRadius: 6
           },
           {
             label: 'Actual Spending',
@@ -156,7 +166,9 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
             backgroundColor: 'rgba(241, 70, 104, 0.1)',
             borderWidth: 2,
             tension: 0.4,
-            fill: false
+            fill: false,
+            pointRadius: 4,
+            pointHoverRadius: 6
           },
           {
             label: 'Actual Savings',
@@ -165,7 +177,9 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
             backgroundColor: 'rgba(72, 199, 116, 0.1)',
             borderWidth: 2,
             tension: 0.4,
-            fill: false
+            fill: false,
+            pointRadius: 4,
+            pointHoverRadius: 6
           }
         ]
       },
@@ -231,19 +245,25 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
   
   // Check if a budget has monthly income set
   hasMonthlyIncome(budget: Budget): boolean {
-    return budget.monthlyIncome !== undefined && budget.monthlyIncome !== null && budget.monthlyIncome > 0;
+    return budget.monthlyIncome !== undefined && budget.monthlyIncome !== null && Number(budget.monthlyIncome) > 0;
   }
   
   // Calculate total spent for a budget
   getTotalSpent(budget: Budget): number {
     if (!budget.categories) return 0;
-    return budget.categories.reduce((total, category) => total + (category.spentAmount || 0), 0);
+    const total = budget.categories.reduce((sum, category) => {
+      const spent = Number(category.spentAmount) || 0;
+      return sum + spent;
+    }, 0);
+    return total;
   }
   
   // Calculate savings for a budget
   getSavings(budget: Budget): number {
     if (!this.hasMonthlyIncome(budget)) return 0;
-    return budget.monthlyIncome! - this.getTotalSpent(budget);
+    const income = Number(budget.monthlyIncome!);
+    const spent = this.getTotalSpent(budget);
+    return income - spent;
   }
   
   // Toggle budget selection
