@@ -268,7 +268,8 @@ export const duplicateBudget = async (
           name: category.name,
           plannedAmount: category.plannedAmount,
           spentAmount: 0, // Reset spent amount to 0 for the new budget
-          budget: { id: savedBudget.id }
+          budget: { id: savedBudget.id },
+          order: category.order
         });
       });
       
