@@ -55,6 +55,7 @@ export class BudgetComponent implements AfterViewInit {
   newCategoryName: string = '';
   newCategoryPlannedAmount: number = 0;
   newCategorySpentAmount: number = 0;
+  newCategoryType: 'need' | 'want' = 'need';
 
   // Category name editing
   editingCategoryId: string | null = null;
@@ -223,7 +224,8 @@ export class BudgetComponent implements AfterViewInit {
       name: this.newCategoryName,
       budgetId: this.budget.id,
       plannedAmount: plannedAmount,
-      spentAmount: spentAmount
+      spentAmount: spentAmount,
+      type: this.newCategoryType
     };
     
     this.categoryService.createCategory(newCategory).subscribe({
@@ -244,6 +246,7 @@ export class BudgetComponent implements AfterViewInit {
         this.newCategoryName = '';
         this.newCategoryPlannedAmount = 0;
         this.newCategorySpentAmount = 0;
+        this.newCategoryType = 'need';
         
         // Refresh categories reference to trigger change detection
         this.refreshCategoriesReference();
@@ -582,5 +585,77 @@ export class BudgetComponent implements AfterViewInit {
         }
       });
     }
+  }
+
+  // Calculate total spent on needs
+  getNeedsSpent(): number {
+    if (!this.budget.categories || this.budget.categories.length === 0) return 0;
+    return this.budget.categories
+      .filter(cat => cat.type === 'need')
+      .reduce((sum, cat) => sum + cat.spentAmount, 0);
+  }
+
+  // Calculate total spent on wants
+  getWantsSpent(): number {
+    if (!this.budget.categories || this.budget.categories.length === 0) return 0;
+    return this.budget.categories
+      .filter(cat => cat.type === 'want')
+      .reduce((sum, cat) => sum + cat.spentAmount, 0);
+  }
+
+  // Calculate percentage of income spent on needs
+  getNeedsPercentage(): number {
+    if (!this.hasMonthlyIncome() || this.budget.monthlyIncome === 0) {
+      return 0;
+    }
+    return (this.getNeedsSpent() / (this.budget.monthlyIncome as number)) * 100;
+  }
+
+  // Calculate percentage of income spent on wants
+  getWantsPercentage(): number {
+    if (!this.hasMonthlyIncome() || this.budget.monthlyIncome === 0) {
+      return 0;
+    }
+    return (this.getWantsSpent() / (this.budget.monthlyIncome as number)) * 100;
+  }
+
+  // Get health class for needs/wants/savings (50/30/20 rule)
+  getNeedsHealthClass(): string {
+    const percentage = this.getNeedsPercentage();
+    if (percentage > 60) return 'danger';  // Over 60% is too high
+    if (percentage > 50) return 'warning'; // Over 50% is slightly high
+    return 'good';
+  }
+
+  getWantsHealthClass(): string {
+    const percentage = this.getWantsPercentage();
+    if (percentage > 40) return 'danger';  // Over 40% is too high
+    if (percentage > 30) return 'warning'; // Over 30% is slightly high
+    return 'good';
+  }
+
+  // Toggle category type between need and want
+  toggleCategoryType(category: Category) {
+    const newType = category.type === 'want' ? 'need' : 'want';
+    category.type = newType; // Update locally for immediate UI feedback
+
+    this.categoryService.updateCategory(category.id, { type: newType }).subscribe({
+      next: (updatedCategory) => {
+        // Update confirmed from server
+        if (this.budget.categories) {
+          const index = this.budget.categories.findIndex(cat => cat.id === category.id);
+          if (index !== -1) {
+            this.budget.categories[index].type = updatedCategory.type || newType;
+          }
+        }
+        this.refreshCategoriesReference();
+      },
+      error: (err) => {
+        // Revert on error
+        category.type = category.type === 'want' ? 'need' : 'want';
+        this.notification.error('Failed to update category type');
+        console.error('Error updating category type:', err);
+      }
+    });
   }
 }

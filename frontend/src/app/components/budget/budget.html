@@ -91,6 +91,7 @@
             <tr>
               <th class="drag-handle-column"></th>
               <th>Category</th>
+              <th>Type</th>
               <th>Planned Spending</th>
               <th>Actual Spending</th>
               <th>Percentage of Planned Spending</th>
@@ -137,6 +138,28 @@
                   </button>
                 </div>
               </td>
+              <td class="category-type-cell">
+                <div class="type-toggle-group">
+                  <button
+                    class="type-toggle-button"
+                    [class.active]="category.type === 'need' || !category.type"
+                    [class.need]="category.type === 'need' || !category.type"
+                    (click)="category.type !== 'need' && toggleCategoryType(category)"
+                    title="Mark as Need"
+                  >
+                    Need
+                  </button>
+                  <button
+                    class="type-toggle-button"
+                    [class.active]="category.type === 'want'"
+                    [class.want]="category.type === 'want'"
+                    (click)="category.type !== 'want' && toggleCategoryType(category)"
+                    title="Mark as Want"
+                  >
+                    Want
+                  </button>
+                </div>
+              </td>
               <td>
                 <input
                   class="input"
@@ -180,6 +203,28 @@
                 placeholder="Category Name"
                 [(ngModel)]="newCategoryName"
               />
+            </td>
+            <td class="category-type-cell">
+              <div class="type-toggle-group">
+                <button
+                  class="type-toggle-button"
+                  [class.active]="newCategoryType === 'need'"
+                  [class.need]="newCategoryType === 'need'"
+                  (click)="newCategoryType = 'need'"
+                  type="button"
+                >
+                  Need
+                </button>
+                <button
+                  class="type-toggle-button"
+                  [class.active]="newCategoryType === 'want'"
+                  [class.want]="newCategoryType === 'want'"
+                  (click)="newCategoryType = 'want'"
+                  type="button"
+                >
+                  Want
+                </button>
+              </div>
             </td>
             <td>
               <input
@@ -296,6 +341,29 @@
             </div>
           </div>
           <div class="card-content">
+            <!-- Category Type Toggle -->
+            <div class="field">
+              <label class="label">Type</label>
+              <div class="type-toggle-group mobile">
+                <button
+                  class="type-toggle-button"
+                  [class.active]="category.type === 'need' || !category.type"
+                  [class.need]="category.type === 'need' || !category.type"
+                  (click)="category.type !== 'need' && toggleCategoryType(category)"
+                >
+                  Need
+                </button>
+                <button
+                  class="type-toggle-button"
+                  [class.active]="category.type === 'want'"
+                  [class.want]="category.type === 'want'"
+                  (click)="category.type !== 'want' && toggleCategoryType(category)"
+                >
+                  Want
+                </button>
+              </div>
+            </div>
+
             <div class="field">
               <label class="label">Planned Spending</label>
               <div class="control">
@@ -357,7 +425,32 @@
                 />
               </div>
             </div>
-            
+
+            <!-- Category Type Toggle for new category -->
+            <div class="field">
+              <label class="label">Type</label>
+              <div class="type-toggle-group mobile">
+                <button
+                  class="type-toggle-button"
+                  [class.active]="newCategoryType === 'need'"
+                  [class.need]="newCategoryType === 'need'"
+                  (click)="newCategoryType = 'need'"
+                  type="button"
+                >
+                  Need
+                </button>
+                <button
+                  class="type-toggle-button"
+                  [class.active]="newCategoryType === 'want'"
+                  [class.want]="newCategoryType === 'want'"
+                  (click)="newCategoryType = 'want'"
+                  type="button"
+                >
+                  Want
+                </button>
+              </div>
+            </div>
+
             <div class="field">
               <label class="label">Planned Amount</label>
               <div class="control">
@@ -457,7 +550,7 @@
         <!-- Savings Information (only shown when there's monthly income) -->
         <div *ngIf="hasMonthlyIncome()" class="savings-info mt-4">
           <h3 class="title is-5 has-text-white">Savings</h3>
-          
+
           <!-- Planned Savings -->
           <div class="columns is-mobile">
             <div class="column">
@@ -475,7 +568,7 @@
               </p>
             </div>
           </div>
-          
+
           <!-- Savings Progress Bar -->
           <div class="progress-container mt-2">
             <div
@@ -483,6 +576,72 @@
               [ngClass]="getSavingsHealthClass()"
               [style.width.%]="getSavingsPercentage()"
             ></div>
+          </div>
+        </div>
+
+        <!-- Spending Breakdown (50/30/20 Rule) -->
+        <div *ngIf="hasMonthlyIncome()" class="spending-breakdown mt-4">
+          <h3 class="title is-5 has-text-white">Spending Breakdown (50/30/20 Rule)</h3>
+          <p class="breakdown-subtitle">Ideal: 50% Needs, 30% Wants, 20% Savings</p>
+
+          <!-- Needs -->
+          <div class="breakdown-item">
+            <div class="breakdown-header">
+              <span class="breakdown-label">Needs</span>
+              <span class="breakdown-amount">
+                £{{ getNeedsSpent() | number:'1.2-2' }}
+                <span class="breakdown-percentage" [ngClass]="getNeedsHealthClass()">
+                  ({{ getNeedsPercentage() | number:'1.0-0' }}%)
+                </span>
+              </span>
+            </div>
+            <div class="progress-container mt-2">
+              <div
+                class="progress-bar needs-bar"
+                [ngClass]="getNeedsHealthClass()"
+                [style.width.%]="getNeedsPercentage()"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Wants -->
+          <div class="breakdown-item mt-3">
+            <div class="breakdown-header">
+              <span class="breakdown-label">Wants</span>
+              <span class="breakdown-amount">
+                £{{ getWantsSpent() | number:'1.2-2' }}
+                <span class="breakdown-percentage" [ngClass]="getWantsHealthClass()">
+                  ({{ getWantsPercentage() | number:'1.0-0' }}%)
+                </span>
+              </span>
+            </div>
+            <div class="progress-container mt-2">
+              <div
+                class="progress-bar wants-bar"
+                [ngClass]="getWantsHealthClass()"
+                [style.width.%]="getWantsPercentage()"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Savings (reused from above) -->
+          <div class="breakdown-item mt-3">
+            <div class="breakdown-header">
+              <span class="breakdown-label">Savings</span>
+              <span class="breakdown-amount">
+                £{{ getSavings() | number:'1.2-2' }}
+                <span class="breakdown-percentage" [ngClass]="getSavingsHealthClass()">
+                  ({{ getSavingsPercentage() | number:'1.0-0' }}%)
+                </span>
+              </span>
+            </div>
+            <div class="progress-container mt-2">
+              <div
+                class="progress-bar savings-bar"
+                [ngClass]="getSavingsHealthClass()"
+                [style.width.%]="getSavingsPercentage()"
+              ></div>
+            </div>
           </div>
         </div>
 

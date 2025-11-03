@@ -10,7 +10,7 @@ export const createCategory = async (
   next: NextFunction
 ) => {
   try {
-    const { name, budgetId, plannedAmount, spentAmount } = req.body;
+    const { name, budgetId, plannedAmount, spentAmount, type } = req.body;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     // Find the highest order number to place the new category at the end
@@ -21,8 +21,8 @@ export const createCategory = async (
       .select("MAX(category.order)", "maxOrder")
       .getRawOne();
 
-    const nextOrder = (highestOrder && highestOrder.maxOrder !== null) 
-      ? highestOrder.maxOrder + 1 
+    const nextOrder = (highestOrder && highestOrder.maxOrder !== null)
+      ? highestOrder.maxOrder + 1
       : 0;
 
     const category = categoryRepo.create({
@@ -30,6 +30,7 @@ export const createCategory = async (
       plannedAmount: plannedAmount || 0,
       spentAmount: spentAmount || 0,
       order: nextOrder,
+      type: type || "need",
       budget: { id: budgetId, user: { id: userId } },
     });
 
@@ -70,7 +71,7 @@ export const updateCategory = async (
 ) => {
   try {
     const categoryId = req.params.id;
-    const { name, plannedAmount, spentAmount } = req.body;
+    const { name, plannedAmount, spentAmount, type } = req.body;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     const category = await categoryRepo.findOne({
@@ -85,6 +86,7 @@ export const updateCategory = async (
     if (name !== undefined) category.name = name;
     if (plannedAmount !== undefined) category.plannedAmount = plannedAmount;
     if (spentAmount !== undefined) category.spentAmount = spentAmount;
+    if (type !== undefined) category.type = type;
 
     await categoryRepo.save(category);
     res.status(200).json(category);
