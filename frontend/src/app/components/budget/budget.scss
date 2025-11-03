@@ -842,22 +842,158 @@ tr.cdk-drag {
     .category-name-edit-container {
       flex: 1;
       padding: 0.25rem 0;
-      
+
       .input {
         height: 1.85rem;
       }
-      
+
       .button {
         height: 1.85rem;
         width: 1.85rem;
         min-width: 1.85rem;
         max-width: 1.85rem;
         padding: 0;
-        
+
         .icon {
           font-size: 0.75rem;
           height: 0.75rem;
           width: 0.75rem;
+        }
+      }
+    }
+  }
+}
+
+// Category type toggle buttons
+.category-type-cell {
+  vertical-align: middle;
+}
+
+.type-toggle-group {
+  display: flex;
+  gap: 0.25rem;
+
+  &.mobile {
+    width: 100%;
+  }
+
+  .type-toggle-button {
+    flex: 1;
+    padding: 0.35rem 0.75rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    &.active {
+      font-weight: 600;
+      color: white;
+
+      &.need {
+        background: linear-gradient(180deg, #4bc5e8 0%, #2591b3 100%);
+        border-color: #4bc5e8;
+        box-shadow: 0 2px 4px rgba(75, 197, 232, 0.3);
+      }
+
+      &.want {
+        background: linear-gradient(180deg, #ffb347 0%, #ff8c00 100%);
+        border-color: #ffb347;
+        box-shadow: 0 2px 4px rgba(255, 179, 71, 0.3);
+      }
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+}
+
+// Spending breakdown section
+.spending-breakdown {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  .title {
+    margin-bottom: 0.5rem;
+  }
+
+  .breakdown-subtitle {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .breakdown-item {
+    .breakdown-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.25rem;
+
+      .breakdown-label {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: white;
+      }
+
+      .breakdown-amount {
+        font-size: 0.9rem;
+        color: white;
+
+        .breakdown-percentage {
+          font-weight: bold;
+          margin-left: 0.25rem;
+
+          &.good {
+            color: #48c774;
+          }
+
+          &.warning {
+            color: #ffdd57;
+          }
+
+          &.danger {
+            color: #f14668;
+          }
+        }
+      }
+    }
+
+    .progress-container {
+      .needs-bar {
+        background-color: #4bc5e8;
+
+        &.warning {
+          background-color: #ffdd57;
+        }
+
+        &.danger {
+          background-color: #f14668;
+        }
+      }
+
+      .wants-bar {
+        background-color: #ffb347;
+
+        &.warning {
+          background-color: #ffdd57;
+        }
+
+        &.danger {
+          background-color: #f14668;
         }
       }
     }

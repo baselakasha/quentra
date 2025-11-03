@@ -21,12 +21,16 @@ export interface Budget {
 export type BudgetSortField = 'name' | 'startDate' | 'endDate' | 'monthlyIncome';
 export type SortDirection = 'asc' | 'desc';
 
+// Category type for needs vs wants
+export type CategoryType = 'need' | 'want';
+
 export interface Category {
   id: string;
   name: string;
   plannedAmount: number;
   spentAmount: number;
   order?: number;
+  type?: CategoryType;
   budget?: {
     id: string;
     name: string;
@@ -53,12 +57,14 @@ export interface CreateCategoryRequest {
   budgetId: string;
   plannedAmount?: number;
   spentAmount?: number;
+  type?: CategoryType;
 }
 
 export interface UpdateCategoryRequest {
   name?: string;
   plannedAmount?: number;
   spentAmount?: number;
+  type?: CategoryType;
 }
 
 // Common error response

@@ -8,6 +8,8 @@ import {
 
 import { Budget } from "./budget";
 
+export type CategoryType = "need" | "want";
+
 @Entity()
 @Unique(["budget", "name"])
 export class Category {
@@ -27,7 +29,10 @@ export class Category {
 
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   spentAmount!: number;
-  
+
   @Column({ type: "int", default: 0 })
   order!: number;
+
+  @Column({ type: "varchar", length: 10, default: "need" })
+  type!: CategoryType;
 }
