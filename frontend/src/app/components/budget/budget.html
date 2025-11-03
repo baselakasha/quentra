@@ -97,18 +97,29 @@
             </tr>
           </thead>
           <tbody cdkDropList (cdkDropListDropped)="dropCategory($event)">
-            <tr *ngFor="let category of budget.categories" cdkDrag>
+            <tr *ngFor="let category of budget.categories" cdkDrag class="category-row">
               <td class="drag-handle-column">
                 <span class="drag-handle" cdkDragHandle>
                   <i class="fas fa-grip-vertical"></i>
                 </span>
               </td>
-              <td>
+              <td class="category-name-cell">
                 <!-- Category name (editable on click) -->
-                <div *ngIf="editingCategoryId !== category.id" class="editable-category-name" (click)="startEditingCategoryName(category)">
-                  {{ category.name }}
+                <div *ngIf="editingCategoryId !== category.id" class="category-name-wrapper">
+                  <div class="editable-category-name" (click)="startEditingCategoryName(category)">
+                    {{ category.name }}
+                  </div>
+                  <button
+                    class="button is-small is-danger category-delete-button"
+                    (click)="deleteCategory(category); $event.stopPropagation()"
+                    title="Delete category"
+                  >
+                    <span class="icon is-small">
+                      <i class="fas fa-trash"></i>
+                    </span>
+                  </button>
                 </div>
-                
+
                 <!-- Editing mode for category name -->
                 <div *ngIf="editingCategoryId === category.id" class="category-name-edit-container">
                   <input
@@ -231,7 +242,7 @@
             <div *ngIf="editingCategoryId !== category.id" class="card-header-title editable-category-name" (click)="startEditingCategoryName(category)">
               {{ category.name }}
             </div>
-            
+
             <!-- Editing mode for category name -->
             <div *ngIf="editingCategoryId === category.id" class="category-name-edit-container card-header-title">
               <input
@@ -247,12 +258,24 @@
                 </span>
               </button>
             </div>
-            
-            <!-- Reordering buttons for mobile -->
-            <div class="category-order-buttons">
-              <button 
-                class="button is-small" 
-                [disabled]="i === 0" 
+
+            <!-- Action buttons for mobile -->
+            <div class="category-action-buttons">
+              <!-- Delete button -->
+              <button
+                class="button is-small is-danger"
+                (click)="deleteCategory(category)"
+                title="Delete category"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-trash"></i>
+                </span>
+              </button>
+
+              <!-- Reordering buttons -->
+              <button
+                class="button is-small"
+                [disabled]="i === 0"
                 (click)="moveCategory(i, i-1)"
                 title="Move up"
               >
@@ -260,9 +283,9 @@
                   <i class="fas fa-arrow-up"></i>
                 </span>
               </button>
-              <button 
-                class="button is-small" 
-                [disabled]="i === (budget.categories?.length || 0) - 1" 
+              <button
+                class="button is-small"
+                [disabled]="i === (budget.categories?.length || 0) - 1"
                 (click)="moveCategory(i, i+1)"
                 title="Move down"
               >

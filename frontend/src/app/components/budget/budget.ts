@@ -523,18 +523,18 @@ export class BudgetComponent implements AfterViewInit {
       this.notification.warning('Category name cannot be empty');
       return;
     }
-    
+
     if (this.editedCategoryName === category.name) {
       // No change, just cancel editing
       this.cancelEditingCategoryName();
       return;
     }
-    
+
     const updatedCategory = {
       ...category,
       name: this.editedCategoryName.trim()
     };
-    
+
     this.categoryService.updateCategory(category.id, { name: this.editedCategoryName.trim() }).subscribe({
       next: (result) => {
         // Update the category name in the local array
@@ -551,5 +551,36 @@ export class BudgetComponent implements AfterViewInit {
         console.error('Error updating category name:', err);
       }
     });
+  }
+
+  // Delete a category
+  async deleteCategory(category: Category) {
+    const confirmed = await this.notification.confirm({
+      title: 'Delete Category',
+      text: `Are you sure you want to delete "${category.name}"? This action cannot be undone.`,
+      confirmButtonText: 'Yes, delete it',
+      cancelButtonText: 'Cancel',
+      icon: 'warning'
+    });
+
+    if (confirmed) {
+      this.categoryService.deleteCategory(category.id).subscribe({
+        next: () => {
+          // Remove the category from the local array
+          if (this.budget.categories) {
+            const index = this.budget.categories.findIndex(cat => cat.id === category.id);
+            if (index !== -1) {
+              this.budget.categories.splice(index, 1);
+              this.refreshCategoriesReference();
+            }
+          }
+          this.notification.toast('Category deleted successfully', 'success');
+        },
+        error: (error) => {
+          this.notification.error('Failed to delete category');
+          console.error('Error deleting category:', error);
+        }
+      });
+    }
   }
 }
