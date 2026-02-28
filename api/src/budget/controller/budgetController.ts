@@ -275,31 +275,31 @@ export const duplicateBudget = async (
       return res.status(404).json({ error: "Budget not found" });
     }
     
-    // Create a new budget with data from the source budget
+    // Spread all budget fields; override only what must differ on the copy
+    const { id: _budgetId, categories: _categories, user: _user, name, isPinned: _isPinned, ...budgetData } = sourceBudget;
     const newBudget = budgetRepo.create({
-      name: `${sourceBudget.name} (Copy)`,
-      startDate: sourceBudget.startDate,
-      endDate: sourceBudget.endDate,
-      monthlyIncome: sourceBudget.monthlyIncome,
-      isPinned: false, // Never duplicate as pinned
-      user: { id: userId }
+      ...budgetData,
+      name: `${name} (Copy)`,
+      isPinned: false,
+      user: { id: userId },
     });
-    
+
     // Save the new budget
     const savedBudget = await budgetRepo.save(newBudget);
-    
+
     // Duplicate all categories if they exist
     if (sourceBudget.categories && sourceBudget.categories.length > 0) {
       const newCategories = sourceBudget.categories.map(category => {
+        // Spread all category fields; override only id (new), budget (new parent),
+        // and spentAmount (reset to 0). Any future fields are copied automatically.
+        const { id: _catId, budget: _budget, spentAmount: _spent, ...categoryData } = category;
         return categoryRepo.create({
-          name: category.name,
-          plannedAmount: category.plannedAmount,
-          spentAmount: 0, // Reset spent amount to 0 for the new budget
+          ...categoryData,
+          spentAmount: 0,
           budget: { id: savedBudget.id },
-          order: category.order
         });
       });
-      
+
       await categoryRepo.save(newCategories);
       
       // Attach categories to the response
