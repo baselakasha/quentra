@@ -89,7 +89,7 @@
     <div class="budget-list" *ngIf="budgets.length > 0">
       <div class="budgets-container">
         <app-budget
-          *ngFor="let budget of budgets"
+          *ngFor="let budget of budgets; trackBy: trackBudgetById"
           [budget]="budget"
           (budgetDeleted)="onBudgetDeleted($event)"
           (budgetUpdated)="onBudgetUpdated($event)"

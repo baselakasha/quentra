@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   Unique,
+  UpdateDateColumn,
 } from "typeorm";
 
 import { User } from "../../auth/entity/user";
@@ -33,6 +34,9 @@ export class Budget {
 
   @Column({ default: false })
   isPinned!: boolean;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 
   @OneToMany(() => Category, (category) => category.budget, {
     cascade: true,

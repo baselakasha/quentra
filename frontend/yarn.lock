@@ -161,6 +161,13 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/service-worker@^20.0.0":
+  version "20.3.21"
+  resolved "https://registry.yarnpkg.com/@angular/service-worker/-/service-worker-20.3.21.tgz#ef2ef905d0a68e176ae61dddd2061a2206bf61d4"
+  integrity sha512-IeW2C/s2EYa92RuTUUvItnCHlyEjaQzHEECoSHGGeAgIvbt9XVqG6bUg2NV2VCiHh5mnXzEw04z0nTIBsYEAJg==
+  dependencies:
+    tslib "^2.3.0"
+
 "@babel/code-frame@^7.27.1":
   version "7.27.1"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.27.1.tgz"
@@ -2298,6 +2305,11 @@ iconv-lite@^0.6.2:
   integrity sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
+
+idb@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/idb/-/idb-8.0.3.tgz#c91e558f15a8d53f1d7f53a094d226fc3ad71fd9"
+  integrity sha512-LtwtVyVYO5BqRvcsKuB2iUMnHwPVByPCXFXOpuU96IZPPoPN6xjOGxZQ74pgSVVLQWtUOYgyeL4GE98BY5D3wg==
 
 ignore-walk@^7.0.0:
   version "7.0.0"

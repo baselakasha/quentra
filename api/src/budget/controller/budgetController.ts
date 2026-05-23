@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { In } from "typeorm";
 import { Budget } from "../entity/budget";
 import { Category } from "../entity/category";
 
@@ -38,15 +39,15 @@ export const getBudgets = async (
 ) => {
   try {
     const userId = (req as any).user.userId || (req as any).user.id;
-    const { sort, direction } = req.query;
-    
+    const { sort, direction, since } = req.query;
+
     console.log(`Sort request - field: ${sort}, direction: ${direction}`);
-    
+
     // Build order object based on query parameters
     const order: Record<string, "ASC" | "DESC"> = {
       isPinned: "DESC" // Pinned budgets always come first
     };
-    
+
     // Add secondary sort field if provided
     if (sort && ['name', 'startDate', 'endDate', 'monthlyIncome'].includes(sort as string)) {
       order[sort as string] = (direction === 'asc' ? 'ASC' : 'DESC');
@@ -54,12 +55,32 @@ export const getBudgets = async (
       // Default secondary sort is by start date, newest first
       order.startDate = "DESC";
     }
-    
-    const budgets = await budgetRepo.find({
-      where: { user: { id: userId } },
-      relations: ["categories"],
-      order
-    });
+
+    let budgets;
+    if (since) {
+      const sinceDate = new Date(since as string);
+      // Find budget IDs where either the budget or any of its categories changed after `since`.
+      // Use a separate select so we can then load all categories for those budgets (not just the changed ones).
+      const rows = await budgetRepo
+        .createQueryBuilder("budget")
+        .leftJoin("budget.categories", "category")
+        .where("budget.user.id = :userId", { userId })
+        .andWhere("(budget.updatedAt > :since OR category.updatedAt > :since)", { since: sinceDate })
+        .select("budget.id")
+        .distinct(true)
+        .getRawMany<{ budget_id: string }>();
+
+      const ids = rows.map(r => r.budget_id);
+      budgets = ids.length === 0
+        ? []
+        : await budgetRepo.find({ where: { id: In(ids) }, relations: ["categories"], order });
+    } else {
+      budgets = await budgetRepo.find({
+        where: { user: { id: userId } },
+        relations: ["categories"],
+        order
+      });
+    }
     
     // Order categories within each budget
     budgets.forEach(budget => {

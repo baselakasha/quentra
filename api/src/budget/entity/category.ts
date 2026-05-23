@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   Unique,
+  UpdateDateColumn,
 } from "typeorm";
 
 import { Budget } from "./budget";
@@ -35,4 +36,7 @@ export class Category {
 
   @Column({ type: "varchar", length: 10, default: "need" })
   type!: CategoryType;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

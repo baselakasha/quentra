@@ -54,7 +54,7 @@ export class Header implements OnInit, OnDestroy {
 
   loadUserInfo(): void {
     if (this.authService.isAuthenticated()) {
-      this.authService.getCurrentUser().subscribe({
+      this.authService.getCurrentUserOfflineFallback().subscribe({
         next: (user) => {
           this.currentUser = user;
         },

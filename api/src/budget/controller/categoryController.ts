@@ -13,7 +13,6 @@ export const createCategory = async (
     const { name, budgetId, plannedAmount, spentAmount, type } = req.body;
     const userId = (req as any).user.userId || (req as any).user.id;
 
-    // Find the highest order number to place the new category at the end
     const highestOrder = await categoryRepo
       .createQueryBuilder("category")
       .innerJoin("category.budget", "budget")

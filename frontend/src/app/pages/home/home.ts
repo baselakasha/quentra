@@ -25,6 +25,7 @@ export class Home implements OnInit {
   successMessage: string | null = null;
   budgetSubscription: Subscription | null = null;
   authStateSubscription: Subscription | null = null;
+  syncSubscription: Subscription | null = null;
   isLoggedIn = false;
   
   // Sorting properties
@@ -45,9 +46,12 @@ export class Home implements OnInit {
   ngOnInit() {
     this.checkAuthenticationStatus();
     
-    // Subscribe to auth state changes
     this.authStateSubscription = this.eventService.authStateChanged$.subscribe(() => {
       this.checkAuthenticationStatus();
+    });
+
+    this.syncSubscription = this.eventService.dataSynced$.subscribe(() => {
+      if (this.isLoggedIn) this.loadBudgets();
     });
   }
   
@@ -65,6 +69,11 @@ export class Home implements OnInit {
   ngOnDestroy() {
     this.budgetSubscription?.unsubscribe();
     this.authStateSubscription?.unsubscribe();
+    this.syncSubscription?.unsubscribe();
+  }
+
+  trackBudgetById(_index: number, budget: Budget): string {
+    return budget.id;
   }
 
   loadBudgets() {

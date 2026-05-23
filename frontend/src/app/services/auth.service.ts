@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { EventService } from './event.service';
 import { ConfigService } from './config.service';
+import { NetworkService } from './network.service';
+import { DbService } from './db.service';
 
 export interface SignupRequest {
   username: string;
@@ -44,7 +46,9 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private eventService: EventService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private networkService: NetworkService,
+    private db: DbService
   ) { }
 
   signup(credentials: SignupRequest): Observable<SignupResponse> {
@@ -63,8 +67,26 @@ export class AuthService {
 
   getCurrentUser(): Observable<UserInfo> {
     return this.http.get<UserInfo>(this.configService.getFullApiUrl(`${this.apiEndpoint}/me`)).pipe(
+      tap(user => this.cacheUser(user)),
       catchError(this.handleError)
     );
+  }
+
+  getCurrentUserOfflineFallback(): Observable<UserInfo> {
+    if (this.networkService.isOnline) {
+      return this.getCurrentUser();
+    }
+    const cached = this.getCachedUser();
+    return cached ? of(cached) : throwError(() => new Error('Offline and no cached user'));
+  }
+
+  cacheUser(user: UserInfo): void {
+    localStorage.setItem('cachedUser', JSON.stringify(user));
+  }
+
+  getCachedUser(): UserInfo | null {
+    const raw = localStorage.getItem('cachedUser');
+    return raw ? JSON.parse(raw) : null;
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -98,6 +120,8 @@ export class AuthService {
 
   logout(): void {
     this.removeToken();
+    localStorage.removeItem('cachedUser');
+    this.db.clearAllData().catch(() => {});
     this.eventService.notifyAuthStateChanged();
   }
 }
