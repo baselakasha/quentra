@@ -24,7 +24,7 @@ Manage your monthly household budget, a holiday, a project or any budget using a
 
 ## Features 
 
-View list of user stories: [User Stories](./docs/user_stories.md)
+View list of user stories: [User Stories](./docs/user-stories.md)
 
 ### Flexible Budget Management
 - **Multiple Budget Types**: Create specialized budgets for household expenses, vacations, projects, or any financial goal

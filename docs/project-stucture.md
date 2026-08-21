@@ -115,5 +115,5 @@ The project is organized into two main directories:
 
 ## Project Documentation
 
-- `user_stories.md`: User stories and requirements
+- `user-stories.md`: User stories and requirements
 - `project-stucture.md`: This file - documentation of project structure
