@@ -13,6 +13,7 @@ on:
       - 'api/**'
       - '.github/workflows/api-tests.yml'
       - 'docker-compose.test.yml'
+  workflow_dispatch: {}
 
 jobs:
   test:
