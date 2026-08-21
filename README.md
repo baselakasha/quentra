@@ -24,32 +24,19 @@ Manage your monthly household budget, a holiday, a project or any budget using a
 
 ## Features 
 
-View list of user stories: [User Stories](./docs/user-stories.md)
+Full list of user stories [here](./docs/user-stories.md).
 
-### Flexible Budget Management
-- **Multiple Budget Types**: Create specialized budgets for household expenses, vacations, projects, or any financial goal
-- **Budget Duplication**: Save time by cloning existing budgets as templates for new ones
-- **Priority Pinning**: Keep important budgets easily accessible at the top of your dashboard
-- **Custom Categories**: Organize spending with personalized categories that match your lifestyle
-
-### Visual Financial Insights
-- **Real-time Progress Tracking**: Visual indicators show exactly how your spending compares to your plan
-- **Color-coded Budget Health**: Instantly understand your financial status with intuitive color cues
-- **Savings Projections**: Automatically calculate and visualize potential savings when income is set
-- **Timeline Awareness**: Clear indicators of budget duration help you stay on track
-
-### Intuitive User Experience
-- **Drag-and-Drop Organization**: Reorder categories effortlessly on desktop
-- **In-line Editing**: Quickly rename categories with a simple click
-- **Responsive Design**: Seamless experience across desktop and mobile devices
-- **Clean, Modern Interface**: Thoughtfully designed with focus on simplicity and efficiency
+- Create as many budgets as you want (household, holiday, project, whatever) and pin the ones you use most
+- Duplicate a budget instead of setting one up from scratch every time
+- Group spending into your own categories, rename them inline, reorder by drag and drop
+- Progress bars and color coding so you can tell at a glance if you're over/under plan
+- Set a monthly income and it'll work out your savings for you
+- Works fine on mobile, not just desktop
 
 ## Implementation
-The backend is a RESTful API built using TypeScript, Node.js, Express.js, and TypeOrm with PostgreSQL database, while the frontend is built using Angular 
+Backend is a TypeScript/Express REST API with TypeORM + PostgreSQL. Frontend is Angular.
 
-Testing was done using Jest. 
-
-Continuous Integration (CI) is done using GitHub Actions.
+Tests are written with Jest, and GitHub Actions runs them on every push.
 
 ## Docker Deployment
 
