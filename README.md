@@ -31,6 +31,10 @@ Full list of user stories [here](./docs/user-stories.md).
 - Group spending into your own categories, rename them inline, reorder by drag and drop
 - Progress bars and color coding so you can tell at a glance if you're over/under plan
 - Set a monthly income and it'll work out your savings for you
+- Tag categories as needs or wants to see how much of your spending is essential
+- Statistics page comparing all your budgets side by side, with charts and totals
+- Works offline and syncs up once you're back online
+- Installable as a PWA on your phone or desktop
 - Works fine on mobile, not just desktop
 
 ## Implementation

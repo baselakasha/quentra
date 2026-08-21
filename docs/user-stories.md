@@ -39,6 +39,26 @@
 
 - [x] As a user, I want to be able to edit category names by clicking on them, so I can quickly rename categories without going through a separate edit form.
 
+- [x] As a user, I want to tag each category as a "need" or a "want", so I can see how much of my spending is essential versus discretionary.
+
+- [x] As a user, I want to sort my budgets by name, start date or end date, so I can find the one I'm looking for faster.
+
+## Statistics
+
+- [x] As a user, I want a statistics page that lists all my budgets with their income, planned/actual spending and savings, so I can compare them at a glance.
+
+- [x] As a user, I want a chart comparing planned vs actual spending across my budgets, so I can spot trends over time.
+
+- [x] As a user, I want summary totals across all my budgets (income, spending, savings), so I don't have to add them up myself.
+
+## Offline Support
+
+- [x] As a user, I want to keep viewing and editing my budgets when I lose internet connection, so a spotty connection doesn't block me.
+
+- [x] As a user, I want my offline changes to sync automatically once I'm back online, so I don't have to redo anything.
+
+- [x] As a user, I want to install Quentra as an app on my phone or desktop, so I can open it like a native app.
+
 ## Visual and User Experience Enhancements
 - [x] As a user, I want a responsive design that works well on both desktop and mobile devices, so I can manage my budgets from any device.
 
