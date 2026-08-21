@@ -7,10 +7,6 @@
 
 - [x] As a user, I want to be able to log out of my account so that I can secure my session.
 
-- [ ] As a user, I want to be able to reset my password if I forget it so that I can regain access to my account.  
-
-- [ ] As a user, I want to be able to view my profile information so that I can see my account details.
-
 ## Budget Management
 - [x] As a user, I want to be able to create a new budget so that I can track my expenses.
     - A budget should have:
