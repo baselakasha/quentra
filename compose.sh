@@ -69,12 +69,16 @@ fi
 if [ ! -f "$ENV_FILE" ]; then
   echo "Warning: Environment file '$ENV_FILE' not found."
   if [ "$ENV_FILE" == ".env.test" ]; then
-    echo "Creating .env.test from .env template..."
     if [ -f ".env" ]; then
+      echo "Creating .env.test from .env template..."
       cp ".env" ".env.test"
       echo "Created .env.test file for testing environment."
+    elif [ -f ".env.example" ]; then
+      echo "Creating .env.test from .env.example template..."
+      cp ".env.example" ".env.test"
+      echo "Created .env.test file for testing environment."
     else
-      echo "Error: No .env file found to create .env.test. Please create $ENV_FILE manually."
+      echo "Error: No .env or .env.example file found to create .env.test. Please create $ENV_FILE manually."
       exit 1
     fi
   else
