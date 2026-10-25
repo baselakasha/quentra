@@ -33,7 +33,7 @@ const budgets: SeedBudget[] = [
     startDate: "2026-02-01",
     endDate: "2026-02-28",
     monthlyIncome: 5800,
-    isPinned: true,
+    isPinned: false,
     categories: [
       { name: "Rent", plannedAmount: 1500, spentAmount: 1500, type: "need" },
       { name: "Groceries", plannedAmount: 400, spentAmount: 370, type: "need" },
