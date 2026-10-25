@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
 import { User } from "@/auth/entity/user";
 import { Budget } from "@/budget/entity/budget";
 import { Category } from "@/budget/entity/category";
@@ -10,9 +10,9 @@ console.log(`[Database Config] Environment: ${config.nodeEnv}, Using: ${isTestEn
 
 // For test environment, use in-memory SQLite
 // For other environments, use PostgreSQL with connection details from config
-const dataSourceConfig = isTestEnvironment 
+const dataSourceConfig: DataSourceOptions = isTestEnvironment 
   ? {
-      type: "sqlite" as const,
+      type: "better-sqlite3" as const,
       database: ":memory:",
       entities: [User, Budget, Category],
       synchronize: true,

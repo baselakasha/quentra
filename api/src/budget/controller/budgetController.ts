@@ -73,11 +73,11 @@ export const getBudgets = async (
       const ids = rows.map(r => r.budget_id);
       budgets = ids.length === 0
         ? []
-        : await budgetRepo.find({ where: { id: In(ids) }, relations: ["categories"], order });
+        : await budgetRepo.find({ where: { id: In(ids) }, relations: { categories: true }, order });
     } else {
       budgets = await budgetRepo.find({
         where: { user: { id: userId } },
-        relations: ["categories"],
+        relations: { categories: true },
         order
       });
     }
@@ -101,12 +101,12 @@ export const getBudgetById = async (
   next: NextFunction
 ) => {
   try {
-    const budgetId = req.params.id;
+    const budgetId = req.params.id as string;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     const budget = await budgetRepo.findOne({
       where: { id: budgetId, user: { id: userId } },
-      relations: ["categories"],
+      relations: { categories: true },
     });
 
     if (!budget) {
@@ -130,7 +130,7 @@ export const updateBudget = async (
   next: NextFunction
 ) => {
   try {
-    const budgetId = req.params.id;
+    const budgetId = req.params.id as string;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     // First, find the budget with categories to ensure we have access to it
@@ -149,7 +149,7 @@ export const updateBudget = async (
     // Re-fetch the budget with categories to return the complete data
     const budgetWithCategories = await budgetRepo.findOne({
       where: { id: budgetId },
-      relations: ["categories"],
+      relations: { categories: true },
     });
     
     // Order categories by their order field
@@ -169,12 +169,12 @@ export const deleteBudget = async (
   next: NextFunction
 ) => {
   try {
-    const budgetId = req.params.id;
+    const budgetId = req.params.id as string;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     const budget = await budgetRepo.findOne({
       where: { id: budgetId, user: { id: userId } },
-      relations: ["categories"]
+      relations: { categories: true }
     });
 
     if (!budget) {
@@ -209,7 +209,7 @@ export const pinBudget = async (
   next: NextFunction
 ) => {
   try {
-    const budgetId = req.params.id;
+    const budgetId = req.params.id as string;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     // Begin a transaction to ensure data consistency
@@ -238,7 +238,7 @@ export const pinBudget = async (
     // Get the updated budget to return
     const updatedBudget = await budgetRepo.findOne({
       where: { id: budgetId, user: { id: userId } },
-      relations: ["categories"],
+      relations: { categories: true },
     });
     
     if (!updatedBudget) {
@@ -257,7 +257,7 @@ export const unpinBudget = async (
   next: NextFunction
 ) => {
   try {
-    const budgetId = req.params.id;
+    const budgetId = req.params.id as string;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     const budget = await budgetRepo.findOne({
@@ -283,13 +283,13 @@ export const duplicateBudget = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const userId = (req as any).user.userId || (req as any).user.id;
     
     // Find the budget to duplicate
     const sourceBudget = await budgetRepo.findOne({
       where: { id, user: { id: userId } },
-      relations: ["categories"]
+      relations: { categories: true }
     });
     
     if (!sourceBudget) {

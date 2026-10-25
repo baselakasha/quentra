@@ -4,6 +4,7 @@ import path from "path";
 // Load environment variables from .env file
 dotenv.config({
   path: path.resolve(process.cwd(), ".env"),
+  quiet: true, // dotenv 17+ prints an injection banner on every start
 });
 
 // Default configuration

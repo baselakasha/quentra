@@ -47,7 +47,7 @@ export const getCategoryById = async (
   next: NextFunction
 ) => {
   try {
-    const categoryId = req.params.id;
+    const categoryId = req.params.id as string;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     const category = await categoryRepo.findOne({
@@ -69,7 +69,7 @@ export const updateCategory = async (
   next: NextFunction
 ) => {
   try {
-    const categoryId = req.params.id;
+    const categoryId = req.params.id as string;
     const { name, plannedAmount, spentAmount, type } = req.body;
     const userId = (req as any).user.userId || (req as any).user.id;
 
@@ -100,7 +100,7 @@ export const deleteCategory = async (
   next: NextFunction
 ) => {
   try {
-    const categoryId = req.params.id;
+    const categoryId = req.params.id as string;
     const userId = (req as any).user.userId || (req as any).user.id;
 
     const category = await categoryRepo.findOne({
