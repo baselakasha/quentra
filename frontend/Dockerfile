@@ -1,4 +1,7 @@
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
+
+# yarn 1.x triggers Node's url.parse() deprecation warning; silence only that one
+ENV NODE_OPTIONS=--disable-warning=DEP0169
 
 # Set build argument with default value
 ARG NODE_ENV=production
@@ -8,7 +11,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false
+RUN yarn install --frozen-lockfile --production=false --ignore-engines
 
 # Copy source code
 COPY . .

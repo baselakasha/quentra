@@ -1,4 +1,7 @@
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
+
+# yarn 1.x triggers Node's url.parse() deprecation warning; silence only that one
+ENV NODE_OPTIONS=--disable-warning=DEP0169
 
 # Set build argument with default value
 ARG NODE_ENV=production
@@ -18,7 +21,10 @@ COPY tsconfig*.json ./
 RUN yarn build
 
 # Production stage
-FROM node:22-alpine
+FROM node:24-alpine
+
+# yarn 1.x triggers Node's url.parse() deprecation warning; silence only that one
+ENV NODE_OPTIONS=--disable-warning=DEP0169
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001

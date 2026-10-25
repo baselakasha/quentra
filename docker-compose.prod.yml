@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   # PostgreSQL Database
   postgres:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     platform: linux/arm64/v8
     container_name: quentra-postgres-prod
     restart: always

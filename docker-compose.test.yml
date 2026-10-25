@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # API Test service with in-memory SQLite
   api-test:
