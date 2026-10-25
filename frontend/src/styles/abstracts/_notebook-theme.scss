@@ -1,0 +1,42 @@
+// Shared dark-blue styling for pages that use the notebook component.
+
+// Accent colours consumed by the notebook (inherited by it from the host element).
+@mixin theme {
+  :host {
+    --notebook-accent: rgb(51, 90, 117); // dark brand blue
+    --notebook-accent-hover: rgb(41, 72, 94);
+    --notebook-surface: #f3f3f3; // the only grey: panels, cards, input fills
+    --notebook-border: rgba(51, 90, 117, 0.2); // dividers and progress tracks (tinted blue, not grey)
+    --notebook-muted: rgba(51, 90, 117, 0.7); // secondary text
+    --notebook-punch: rgb(36, 65, 85); // slightly darker so the punches don't merge into the cover
+  }
+}
+
+// Full-page auth layout (login, signup) on top of the theme.
+@mixin auth-page {
+  @include theme;
+
+  :host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .login-form-container {
+    width: 100%;
+
+    form {
+      width: 100%;
+    }
+  }
+
+  // The button is projected into the notebook, so the notebook's scoped styles don't reach it
+  .button.is-black {
+    background-color: var(--notebook-accent);
+    border: none;
+
+    &:hover:not([disabled]) {
+      background-color: var(--notebook-accent-hover);
+    }
+  }
+}

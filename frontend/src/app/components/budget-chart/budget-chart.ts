@@ -95,10 +95,10 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
     }
   }
   
-  // Set global chart defaults for white text
+  // Set global chart defaults for dark text on the white cover
   private setChartDefaults(): void {
-    Chart.defaults.color = '#ffffff';
-    Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+    Chart.defaults.color = '#000000';
+    Chart.defaults.borderColor = 'rgba(51, 90, 117, 0.15)';
   }
   
   // Create a chart showing income, spending, and savings for each budget
@@ -151,8 +151,8 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
           {
             label: 'Monthly Income',
             data: incomeData,
-            borderColor: '#3273dc',
-            backgroundColor: 'rgba(50, 115, 220, 0.1)',
+            borderColor: '#335a75',
+            backgroundColor: 'rgba(51, 90, 117, 0.1)',
             borderWidth: 2,
             tension: 0.4,
             fill: false,
@@ -190,7 +190,7 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
           legend: {
             position: 'top',
             labels: {
-              color: 'white',
+              color: '#000000',
               font: {
                 size: 12
               }
@@ -216,10 +216,10 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
         scales: {
           x: {
             grid: {
-              color: 'rgba(255, 255, 255, 0.1)'
+              color: 'rgba(51, 90, 117, 0.15)'
             },
             ticks: {
-              color: 'white',
+              color: '#000000',
               font: {
                 size: 12
               }
@@ -227,10 +227,10 @@ export class BudgetChartComponent implements OnInit, AfterViewInit, OnDestroy, O
           },
           y: {
             grid: {
-              color: 'rgba(255, 255, 255, 0.1)'
+              color: 'rgba(51, 90, 117, 0.15)'
             },
             ticks: {
-              color: 'white',
+              color: '#000000',
               callback: function(value) {
                 return '£' + value;
               }

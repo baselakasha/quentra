@@ -1,14 +1,15 @@
-// Variables
-$white: #ffffff;
-$white-transparent-09: rgba(255, 255, 255, 0.09);
-$white-transparent-15: rgba(255, 255, 255, 0.15);
-$white-transparent-70: rgba(255, 255, 255, 0.7);
-$white-transparent-10: rgba(255, 255, 255, 0.1);
-$black-transparent-10: rgba(0, 0, 0, 0.1);
-$black-transparent-30: rgba(0, 0, 0, 0.3);
-$blue-transparent-20: rgba(50, 115, 220, 0.2);
-$blue-transparent-50: rgba(50, 115, 220, 0.5);
-$blue-transparent-80: rgba(50, 115, 220, 0.8);
+@use "../../../styles/abstracts/notebook-theme";
+
+@include notebook-theme.theme;
+
+// Variables (surface / border / muted come from the shared notebook theme)
+$text: #000;
+$muted: var(--notebook-muted);
+$surface: var(--notebook-surface, #f3f3f3);
+$accent: var(--notebook-accent);
+$accent-hover: var(--notebook-accent-hover);
+$line: var(--notebook-border);
+
 $green-transparent-10: rgba(72, 199, 116, 0.1);
 $green-transparent-30: rgba(72, 199, 116, 0.3);
 $yellow-transparent-10: rgba(255, 221, 87, 0.1);
@@ -19,24 +20,21 @@ $red-transparent-30: rgba(241, 70, 104, 0.3);
 $green: #48c774;
 $yellow: #ffdd57;
 $red: #ef476f;
-$blue: #3273dc;
 
-$border-radius: 1rem;
-$box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-$border: 1px solid $white-transparent-10;
+$border-radius: 0.5rem;
+$border: 1px solid $line;
 
 // Mixins
-@mixin white-text {
-  color: $white !important;
+@mixin dark-text {
+  color: $text !important;
   * {
-    color: $white !important;
+    color: $text !important;
   }
 }
 
-@mixin glass-panel {
-  background-color: $white-transparent-09 !important;
-  backdrop-filter: blur(4px) !important;
-  box-shadow: $box-shadow !important;
+// Flat panel on the white cover: no shadow, no blur
+@mixin panel {
+  background-color: $surface !important;
   border-radius: $border-radius !important;
   border: $border !important;
 }
@@ -45,21 +43,21 @@ $border: 1px solid $white-transparent-10;
   &.is-success {
     background-color: $green-transparent-30 !important;
   }
-  
+
   &.is-warning {
     background-color: $yellow-transparent-30 !important;
   }
-  
+
   &.is-danger {
     background-color: $red-transparent-30 !important;
   }
 }
 
 @mixin summary-card {
-  @include glass-panel;
+  @include panel;
   padding: 1rem !important;
   height: 100% !important;
-  @include white-text;
+  @include dark-text;
 }
 
 // Main container
@@ -67,117 +65,115 @@ $border: 1px solid $white-transparent-10;
   max-width: 1200px !important;
   margin: 0 auto !important;
   padding: 1rem !important;
-  
+
   // Typography
   .title {
     margin-bottom: 0.5rem !important;
-    color: $white !important;
+    color: $text !important;
   }
-  
+
   .subtitle {
     margin-bottom: 2rem !important;
-    color: $white-transparent-70 !important;
+    color: $muted !important;
   }
-  
+
   // Loading spinner
   .loader {
     height: 80px !important;
     width: 80px !important;
     margin: 2rem auto !important;
-    border: 5px solid $white-transparent-10 !important;
-    border-top: 5px solid $blue !important;
+    border: 5px solid $line !important;
+    border-top: 5px solid $accent !important;
     border-radius: 50% !important;
     animation: spin 1s linear infinite !important;
   }
-  
+
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  
+
   // Notification
   .notification.is-info {
-    background-color: $blue-transparent-20 !important;
-    color: $white !important;
+    background-color: $surface !important;
+    color: $text !important;
     border-radius: $border-radius !important;
-    border: 1px solid $blue-transparent-50 !important;
+    border: 1px solid $accent !important;
   }
-  
+
   // Sort controls
   .field.is-grouped {
     .tags {
       .tag {
         &.is-clickable {
           cursor: pointer !important;
-          background-color: $white-transparent-09 !important;
-          color: $white !important;
-          backdrop-filter: blur(4px);
+          background-color: $surface !important;
+          color: $text !important;
           border: $border !important;
-          box-shadow: $box-shadow !important;
-          
+
           &:hover {
-            background-color: $white-transparent-15 !important;
+            background-color: $line !important;
           }
-          
+
           &.is-selected {
-            background-color: $blue-transparent-50 !important;
-            color: $white !important;
-            border-color: $blue-transparent-80 !important;
+            background-color: $accent !important;
+            color: #fff !important;
+            border-color: $accent !important;
           }
         }
-        
+
         &.is-dark {
-          background-color: $black-transparent-30 !important;
-          color: $white !important;
+          background-color: $accent !important;
+          color: #fff !important;
         }
       }
     }
   }
-  
+
   .sort-icons {
     display: inline-flex;
     margin-left: 0.5rem;
-    
+
     .icon {
       cursor: pointer;
       margin: 0 0.2rem;
-      color: $white-transparent-70;
-      
+      color: $muted;
+
       &:hover {
-        color: $white;
+        color: $accent;
       }
     }
   }
-  
+
   // Summary container
   .summary-container {
     width: 100% !important;
     margin-top: 1rem !important;
-    
+
     .summary-card {
       @include summary-card;
-      
+
       .heading {
         font-size: 0.75rem !important;
         font-weight: 600 !important;
         text-transform: uppercase !important;
         letter-spacing: 0.05em !important;
-        color: $white-transparent-70 !important;
+        color: $muted !important;
         margin-bottom: 0.5rem !important;
       }
-      
+
       .title {
         margin-bottom: 0 !important;
       }
-      
+
       .tag {
         font-size: 0.75rem !important;
-        background-color: $white-transparent-15 !important;
+        background-color: #fff !important;
         @include status-colors;
       }
     }
   }
-  
+
   // Table container
   .statistics-table-container.table-container {
     width: 100% !important;
@@ -187,15 +183,15 @@ $border: 1px solid $white-transparent-10;
     margin-bottom: 2rem !important;
     max-width: 100% !important;
     background-color: transparent !important;
-    
+
     // Table styling
     table.table.statistics-table {
       width: 100% !important;
-    border-collapse: separate !important;
+      border-collapse: separate !important;
       border-spacing: 0 !important;
-      
-      @include glass-panel;
-      @include white-text;
+
+      @include panel;
+      @include dark-text;
 
       // Table header
       thead th {
@@ -204,121 +200,123 @@ $border: 1px solid $white-transparent-10;
         position: relative;
         padding-right: 2rem !important;
         white-space: nowrap;
-        border-bottom: 1px solid $white-transparent-10 !important;
-        background-color: $black-transparent-10 !important;
+        border-bottom: $border !important;
+        background-color: transparent !important;
       }
-      
+
       // Table body
       tbody {
         tr td:first-child {
           font-weight: bold !important;
         }
-        
+
         td {
           padding: 0.5rem 0.75rem !important;
-          border-bottom: 1px solid $white-transparent-10 !important;
+          border-bottom: $border !important;
+          background-color: transparent !important;
           vertical-align: middle !important;
         }
-        
+
         tr:last-child td {
           border-bottom: none !important;
         }
-        
+
         tr {
           &.is-success {
             background-color: $green-transparent-10 !important;
           }
-          
+
           &.is-warning {
             background-color: $yellow-transparent-10 !important;
           }
-          
+
           &.is-danger {
             background-color: $red-transparent-10 !important;
           }
         }
       }
-      
+
       // Tags in table
       .tag {
         font-size: 0.75rem !important;
-        background-color: $white-transparent-15 !important;
+        background-color: #fff !important;
         @include status-colors;
       }
     }
   }
-  
+
   // Mobile cards
   .is-hidden-tablet {
     padding: 1rem !important;
-    
+
     .card {
       margin-bottom: 1.5rem !important;
       overflow: hidden !important;
-      @include glass-panel;
-      @include white-text;
-      
+      @include panel;
+      @include dark-text;
+
       &.is-success {
         border-color: $green !important;
       }
-      
+
       &.is-warning {
         border-color: $yellow !important;
       }
-      
+
       &.is-danger {
         border-color: $red !important;
       }
-      
+
       // Card header
       .card-header {
         box-shadow: none !important;
-        border-bottom: 1px solid $white-transparent-10 !important;
-        background-color: $black-transparent-10 !important;
-        
+        border-bottom: $border !important;
+        background-color: transparent !important;
+
         .card-header-title {
           padding: 0.75rem 1rem !important;
           font-weight: 600 !important;
         }
       }
-      
+
       // Card content
       .card-content {
         padding: 1rem !important;
+        background-color: transparent !important;
       }
-      
+
       // Layout in cards
       .columns {
         margin-bottom: 0.5rem !important;
-        
+
         .column {
           padding: 0.5rem !important;
         }
       }
-      
+
       // Heading in cards
       .heading {
         font-size: 0.75rem !important;
         font-weight: 600 !important;
         text-transform: uppercase !important;
         letter-spacing: 0.05em !important;
-        color: $white-transparent-70 !important;
+        color: $muted !important;
         margin-bottom: 0.25rem !important;
       }
-      
+
       // Tags in cards
       .tag {
-        background-color: $white-transparent-15 !important;
+        background-color: #fff !important;
         @include status-colors;
       }
     }
   }
-  
+
   // Animations
   .table-container, .is-hidden-tablet {
     animation: fadeIn 0.4s ease-in-out;
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -327,48 +325,6 @@ $border: 1px solid $white-transparent-10;
     to {
       opacity: 1;
       transform: translateY(0);
-    }
-  }
-}
-
-// Deep selectors for Angular component styling
-:host ::ng-deep {
-  app-notebook {
-    // Ensure notebook doesn't interfere with our styles
-    .table-container {
-      background-color: transparent !important;
-    }
-    
-    // Summary cards
-    .summary-container {
-      .summary-card {
-        @include glass-panel;
-        @include white-text;
-      }
-    }
-    
-    // Ensure table styles work inside notebook
-    table.statistics-table {
-      width: 100% !important;
-      @include glass-panel;
-      @include white-text;
-      border: none !important;
-
-    }
-    
-    // Ensure card styles work inside notebook
-    .is-hidden-tablet .card {
-      @include glass-panel;
-      @include white-text;
-      
-      .card-header {
-        background-color: $black-transparent-10 !important;
-        border-bottom: 1px solid $white-transparent-10 !important;
-      }
-      
-      .heading {
-        color: $white-transparent-70 !important;
-      }
     }
   }
 }

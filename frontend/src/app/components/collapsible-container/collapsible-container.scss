@@ -7,7 +7,7 @@
   
   &.is-pinned {
     .collapsible-header {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: var(--notebook-surface, #f3f3f3);
     }
   }
   
@@ -67,7 +67,7 @@
     border-radius: 4px;
     
     &:hover {
-      background-color: rgba(255, 255, 255, 0.03);
+      background-color: var(--notebook-surface, #f3f3f3);
     }
     
     &-left {
@@ -85,7 +85,7 @@
     .toggle-button {
       background: none;
       border: none;
-      color: white;
+      color: #000;
       cursor: pointer;
       padding: 0.5rem;
       margin-right: 0.5rem;
@@ -95,7 +95,7 @@
       justify-content: center;
       
       &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: var(--notebook-surface, #f3f3f3);
         border-radius: 4px;
       }
       
@@ -112,7 +112,7 @@
       
       .title {
         margin: 0;
-        color: white;
+        color: #000;
       }
     }
   }

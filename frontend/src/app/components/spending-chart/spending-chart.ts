@@ -54,7 +54,7 @@ export class SpendingChartComponent implements OnChanges, AfterViewInit {
               legend: {
                 position: 'right',
                 labels: {
-                  color: '#ffffff'
+                  color: '#000000'
                 }
               },
               tooltip: {

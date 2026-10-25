@@ -8,13 +8,14 @@
 }
 
 .navbar {
+  background-color: transparent;
   color: black;
   
   .navbar-item, .navbar-brand a {
     color: inherit;
     
     &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: rgba(51, 90, 117, 0.1);
       color: inherit;
     }
   }
@@ -42,17 +43,17 @@
       display: block;
       width: 24px;
       height: 2px;
-      background-color: #333; /* Darker color for visibility */
+      background-color: #000;
       margin: 0 auto;
       transition: all 0.3s ease;
     }
     
     &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: rgba(51, 90, 117, 0.1);
     }
     
     &.is-active {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: rgba(51, 90, 117, 0.1);
       
       span:nth-child(1) {
         transform: translateY(5px) rotate(45deg);
@@ -69,14 +70,13 @@
   }
   
   .navbar-menu.is-active {
-    background-color: white;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    background-color: #f3f3f3;
     
     .navbar-item {
-      color: #333;
+      color: #000;
       
       &:hover, &:focus {
-        background-color: rgba(0, 0, 0, 0.05);
+        background-color: rgba(51, 90, 117, 0.1);
       }
     }
     

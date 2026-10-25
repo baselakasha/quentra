@@ -1,3 +1,7 @@
+@use "../../../styles/abstracts/notebook-theme";
+
+@include notebook-theme.theme;
+
 .budget-header {
   .icon-text {
     display: flex;
@@ -98,7 +102,6 @@
       .dropdown-content {
         background-color: #fff;
         border-radius: 0.375rem;
-        box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.02);
         
         .dropdown-item {
           display: flex;
@@ -107,7 +110,7 @@
           cursor: pointer;
           
           &:hover {
-            background-color: #f5f5f5;
+            background-color: var(--notebook-surface, #f3f3f3);
           }
           
           &.has-text-danger:hover {
@@ -124,6 +127,22 @@
 }
 
 .budget-content {
+  // Desktop: a fixed gap between the table and the overview. Grid tracks can't be pushed
+  // wider by the table's min-width, so the two grey panels never touch.
+  @media screen and (min-width: 1024px) {
+    &.columns {
+      display: grid;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 1.5rem;
+      margin: 0;
+
+      > .column {
+        width: auto;
+        padding: 0;
+      }
+    }
+  }
+
   // Make it full width on mobile
   @media screen and (max-width: 768px) {
     margin-left: -1rem;
@@ -139,6 +158,29 @@
     }
   }
   
+  // The table has no wrapper of its own. Fixed layout makes it fit its column (no horizontal
+  // scroll, no spilling into the overview panel); cells shrink and wrap instead.
+  .table-view {
+    max-width: 100%;
+
+    .table {
+      table-layout: fixed;
+
+      thead th {
+        &:nth-child(1) { width: 2rem; }
+        &:nth-child(2) { width: 26%; }
+        &:nth-child(3) { width: 21%; }
+        &:nth-child(4),
+        &:nth-child(5) { width: 15%; }
+      }
+
+      .type-toggle-button {
+        min-width: 0;
+        padding: 0.35rem 0.4rem;
+      }
+    }
+  }
+
   .table-container {
     width: 100%;
     overflow-x: auto;
@@ -150,7 +192,7 @@
   }
   
   .budget-info {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--notebook-surface, #f3f3f3);
     border-radius: 6px;
     padding: 1.5rem;
     
@@ -189,35 +231,30 @@
     .button {
       border-radius: 1rem;
       border: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       transition: all 0.2s ease;
       
       &.is-info {
-        background: linear-gradient(180deg, #4bc5e8 0%, #2591b3 100%);
+        background: var(--notebook-accent);
         
         &:hover {
-          background: linear-gradient(180deg, #59cded 0%, #33a3c5 100%);
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+          background: var(--notebook-accent-hover);
         }
         
         &:active {
-          background: linear-gradient(180deg, #1a7fa1 0%, #3db9dc 100%);
-          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+          background: var(--notebook-accent-hover);
           transform: translateY(1px);
         }
       }
       
       &.is-danger {
-        background: linear-gradient(180deg, #ef476f 0%, #d1365b 100%);
+        background: #ef476f;
         
         &:hover {
-          background: linear-gradient(180deg, #f25a7e 0%, #e5496d 100%);
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+          background: #d1365b;
         }
         
         &:active {
-          background: linear-gradient(180deg, #c02d51 0%, #ef476f 100%);
-          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+          background: #d1365b;
           transform: translateY(1px);
         }
       }
@@ -227,14 +264,14 @@
   // Progress bar styles
   .progress-container {
     height: 8px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--notebook-border, rgba(51, 90, 117, 0.2));
     border-radius: 4px;
     overflow: hidden;
     margin-top: 0.25rem;
     
     .progress-bar {
       height: 100%;
-      background-color: #3e8ed0;
+      background-color: var(--notebook-accent);
       border-radius: 4px;
       transition: width 0.3s ease;
       
@@ -251,15 +288,13 @@
   // Styling for the category table
   .table {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.09);
+    background-color: var(--notebook-surface, #f3f3f3);
     overflow: hidden;
-    color: white;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(4px);
+    color: #000;
     border-radius: 0.5rem;
 
     th {
-      color: white;
+      color: #000;
       font-weight: 600;
       padding: 0.75rem;
     }
@@ -268,9 +303,9 @@
     }
     
     td {
-      color: white;
+      color: #000;
       padding: 0.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid var(--notebook-border, rgba(51, 90, 117, 0.2));
       vertical-align: middle;
     }
     
@@ -280,59 +315,56 @@
     
     // Input field with the "hole" recessed effect
     .input {
-      background-color: transparent;
+      background-color: var(--notebook-surface, #f3f3f3);
       border: none;
       border-radius: 4rem;
       padding: 0.5rem;
       width: 100%;
       height: 2rem;
-      color: white;
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+      color: #000;
+      box-shadow: inset 0 0 0 1px var(--notebook-border, rgba(51, 90, 117, 0.2));
       transition: all 0.2s ease-in-out;
       
       &::placeholder {
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--notebook-muted, rgba(51, 90, 117, 0.7));
       }
       
       &:focus {
         outline: none;
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
-        background-color: rgba(20, 20, 20, 0.7);
+        box-shadow: inset 0 0 0 1px var(--notebook-accent);
+        background-color: var(--notebook-surface, #f3f3f3);
       }
     }
     
     // Button styling to match the inset design
     .button.is-primary {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--notebook-accent);
       border-radius: 1rem;
       width: 80%;
       border: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       transition: all 0.2s ease;
       height: 36px;
       
       &:hover {
-        background: linear-gradient(180deg, #4bc5e8 0%, #2591b3 100%);
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+        background: var(--notebook-accent-hover);
       }
       
       &:active {
-        background: linear-gradient(180deg, #1a7fa1 0%, #3db9dc 100%);
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+        background: var(--notebook-accent-hover);
         transform: translateY(1px);
       }
     }
     
     .warning {
-      background-color: rgba(255, 186, 8, 0.2);
+      background-color: rgba(255, 221, 87, 0.25);
     }
     
     .danger {
-      background-color: rgba(239, 71, 111, 0.2);
+      background-color: rgba(241, 70, 104, 0.12);
     }
     
     .good {
-      background-color: rgba(61, 185, 220, 0.2);
+      background-color: rgba(72, 199, 116, 0.15);
     }
   }
   
@@ -355,10 +387,8 @@
     .category-card {
       margin-bottom: 1rem;
       border-radius: 1rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background-color: rgba(255, 255, 255, 0.09);
-      backdrop-filter: blur(4px);
+      border: 1px solid var(--notebook-border, rgba(51, 90, 117, 0.2));
+      background-color: var(--notebook-surface, #f3f3f3);
       overflow: hidden;
       
       &.totals {
@@ -366,7 +396,7 @@
         border-width: 2px;
         
         &.is-healthy {
-          border-color: #4bc5e8;
+          border-color: var(--notebook-accent);
         }
         
         &.is-warning {
@@ -385,18 +415,18 @@
       
       .card-header {
         box-shadow: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid var(--notebook-border, rgba(51, 90, 117, 0.2));
         
         .card-header-title {
           padding: 0.75rem 1rem;
-          color: white;
+          color: #000;
           font-weight: 600;
         }
       }
       
       .card-content {
         padding: 1rem;
-        color: white;
+        color: #000;
       }
       
       .field:not(:last-child) {
@@ -404,7 +434,7 @@
       }
       
       .label {
-        color: white;
+        color: #000;
         font-weight: 500;
         font-size: 0.9rem;
         margin-bottom: 0.25rem;
@@ -416,57 +446,54 @@
       
       .title {
         margin-bottom: 0;
-        color: white;
+        color: #000;
       }
       
       .heading {
         font-size: 0.75rem;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.7);
+        color: var(--notebook-muted, rgba(51, 90, 117, 0.7));
         margin-bottom: 0.25rem;
       }
       
       // Use the same input style as the table
       .input {
-        background-color: transparent;
+        background-color: var(--notebook-surface, #f3f3f3);
         border: none;
         border-radius: 4rem;
         padding: 0.5rem;
         width: 100%;
         height: 2rem;
-        color: white;
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+        color: #000;
+        box-shadow: inset 0 0 0 1px var(--notebook-border, rgba(51, 90, 117, 0.2));
         transition: all 0.2s ease-in-out;
         
         &::placeholder {
-          color: rgba(255, 255, 255, 0.5);
+          color: var(--notebook-muted, rgba(51, 90, 117, 0.7));
         }
         
         &:focus {
           outline: none;
-          box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
-          background-color: rgba(20, 20, 20, 0.7);
+          box-shadow: inset 0 0 0 1px var(--notebook-accent);
+          background-color: var(--notebook-surface, #f3f3f3);
         }
       }
       
       // Button styling to match the inset design
       .button.is-primary {
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--notebook-accent);
         border-radius: 1rem;
         width: 100%;
         border: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         transition: all 0.2s ease;
         height: 36px;
         
         &:hover {
-          background: linear-gradient(180deg, #4bc5e8 0%, #2591b3 100%);
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+          background: var(--notebook-accent-hover);
         }
         
         &:active {
-          background: linear-gradient(180deg, #1a7fa1 0%, #3db9dc 100%);
-          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+          background: var(--notebook-accent-hover);
           transform: translateY(1px);
         }
       }
@@ -474,14 +501,14 @@
       // Progress bar styles - reuse the same styling as the table
       .progress-container {
         height: 8px;
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: var(--notebook-border, rgba(51, 90, 117, 0.2));
         border-radius: 4px;
         overflow: hidden;
         margin-top: 0.25rem;
         
         .progress-bar {
           height: 100%;
-          background-color: #3e8ed0;
+          background-color: var(--notebook-accent);
           border-radius: 4px;
           transition: width 0.3s ease;
           
@@ -506,7 +533,7 @@
   .toggle-button {
     background: none;
     border: none;
-    color: white;
+    color: #000;
     cursor: pointer;
     padding: 0.5rem;
     margin-right: 0.5rem;
@@ -516,7 +543,7 @@
     justify-content: center;
     
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: var(--notebook-surface, #f3f3f3);
       border-radius: 4px;
     }
     
@@ -564,7 +591,8 @@ app-notebook.collapsed {
 }
 
 .savings-info {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border: 1px solid var(--notebook-border, rgba(51, 90, 117, 0.2));
   border-radius: 6px;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -581,7 +609,7 @@ app-notebook.collapsed {
         font-size: 0.9rem;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.7);
+        color: var(--notebook-muted, rgba(51, 90, 117, 0.7));
         margin-bottom: 0.5rem;
       }
       
@@ -599,7 +627,7 @@ app-notebook.collapsed {
     }
     
     &.warning {
-      color: #ffdd57;
+      color: #b58900;
     }
     
     &.danger {
@@ -633,20 +661,17 @@ app-notebook.collapsed {
 
 .drag-handle {
   cursor: move;
-  color: #ccc;
+  color: var(--notebook-muted, rgba(51, 90, 117, 0.7));
   transition: color 0.2s ease;
   
   &:hover {
-    color: #666;
+    color: var(--notebook-accent);
   }
 }
 
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-              0 8px 10px 1px rgba(0, 0, 0, 0.14),
-              0 3px 14px 2px rgba(0, 0, 0, 0.12);
   opacity: 0.8;
   background-color: white;
   
@@ -657,7 +682,7 @@ app-notebook.collapsed {
 
 .cdk-drag-placeholder {
   opacity: 0.2;
-  background: #f5f5f5;
+  background: var(--notebook-surface, #f3f3f3);
 }
 
 .cdk-drag-animating {
@@ -703,17 +728,15 @@ tr.cdk-drag {
         }
 
         &.is-danger {
-          background: linear-gradient(180deg, #ef476f 0%, #d1365b 100%);
+          background: #ef476f;
           border: none;
 
           &:hover {
-            background: linear-gradient(180deg, #f25a7e 0%, #e5496d 100%);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            background: #d1365b;
           }
 
           &:active {
-            background: linear-gradient(180deg, #c02d51 0%, #ef476f 100%);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+            background: #d1365b;
           }
         }
 
@@ -743,18 +766,16 @@ tr.cdk-drag {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(180deg, #ef476f 0%, #d1365b 100%);
+      background: #ef476f;
       border: none;
       border-radius: 4px;
 
       &:hover {
-        background: linear-gradient(180deg, #f25a7e 0%, #e5496d 100%);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        background: #d1365b;
       }
 
       &:active {
-        background: linear-gradient(180deg, #c02d51 0%, #ef476f 100%);
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+        background: #d1365b;
       }
 
       .icon {
@@ -796,7 +817,7 @@ tr.cdk-drag {
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--notebook-surface, #f3f3f3);
     &::after {
       content: "\f044"; // Edit icon
       font-family: "Font Awesome 5 Free";
@@ -880,10 +901,10 @@ tr.cdk-drag {
   .type-toggle-button {
     flex: 1;
     padding: 0.35rem 0.75rem;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid var(--notebook-border, rgba(51, 90, 117, 0.2));
     border-radius: 4px;
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.7);
+    background: var(--notebook-surface, #f3f3f3);
+    color: var(--notebook-muted, rgba(51, 90, 117, 0.7));
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
@@ -891,8 +912,8 @@ tr.cdk-drag {
     white-space: nowrap;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.5);
+      background: var(--notebook-surface, #f3f3f3);
+      border-color: var(--notebook-border, rgba(51, 90, 117, 0.2));
     }
 
     &.active {
@@ -900,15 +921,13 @@ tr.cdk-drag {
       color: white;
 
       &.need {
-        background: linear-gradient(180deg, #4bc5e8 0%, #2591b3 100%);
-        border-color: #4bc5e8;
-        box-shadow: 0 2px 4px rgba(75, 197, 232, 0.3);
+        background: var(--notebook-accent);
+        border-color: var(--notebook-accent);
       }
 
       &.want {
-        background: linear-gradient(180deg, #ffb347 0%, #ff8c00 100%);
-        border-color: #ffb347;
-        box-shadow: 0 2px 4px rgba(255, 179, 71, 0.3);
+        background: #5EA5D7;
+        border-color: #5EA5D7;
       }
     }
 
@@ -920,7 +939,8 @@ tr.cdk-drag {
 
 // Spending breakdown section
 .spending-breakdown {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border: 1px solid var(--notebook-border, rgba(51, 90, 117, 0.2));
   border-radius: 6px;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -931,7 +951,7 @@ tr.cdk-drag {
 
   .breakdown-subtitle {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--notebook-muted, rgba(51, 90, 117, 0.7));
     margin-bottom: 1rem;
     font-style: italic;
   }
@@ -946,12 +966,12 @@ tr.cdk-drag {
       .breakdown-label {
         font-weight: 600;
         font-size: 0.95rem;
-        color: white;
+        color: #000;
       }
 
       .breakdown-amount {
         font-size: 0.9rem;
-        color: white;
+        color: #000;
 
         .breakdown-percentage {
           font-weight: bold;
@@ -962,7 +982,7 @@ tr.cdk-drag {
           }
 
           &.warning {
-            color: #ffdd57;
+            color: #b58900;
           }
 
           &.danger {
@@ -974,7 +994,7 @@ tr.cdk-drag {
 
     .progress-container {
       .needs-bar {
-        background-color: #4bc5e8;
+        background-color: var(--notebook-accent);
 
         &.warning {
           background-color: #ffdd57;
@@ -986,7 +1006,7 @@ tr.cdk-drag {
       }
 
       .wants-bar {
-        background-color: #ffb347;
+        background-color: #5EA5D7;
 
         &.warning {
           background-color: #ffdd57;

@@ -8,6 +8,7 @@ body, html {
     font-style: normal;
     min-height: 100vh;
     max-width: 96%;
+    background-color: #fcfcfc; // Bulma sets html white, so both need overriding
     margin: 0 auto;
     /* on non mobile its full width */
     @include media-quiries.media-query(laptops){

@@ -1,9 +1,7 @@
+@use "../../../styles/abstracts/notebook-theme";
+
 // Custom styles for the signup page
-:host {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+@include notebook-theme.auth-page;
 
 .signup-page-wrapper {
   position: relative;
@@ -33,14 +31,6 @@
 .signup-notebook {
   display: block;
   margin-top: 2rem;
-}
-
-.login-form-container {
-  width: 100%;
-  
-  form {
-    width: 100%;
-  }
 }
 
 // Text center utility for signup link

@@ -14,6 +14,11 @@
 
 
 :root {
+  /* Text: one black everywhere (Bulma defaults to #363636 / #4a4a4a) */
+  --bulma-text: #000;
+  --bulma-text-strong: #000;
+  --bulma-title-color: #000;
+
   /* ─── Base colour (HSL & RGB) ─────────────────────── */
   --bulma-primary-h: 205deg;      /* hue   */
   --bulma-primary-s: 39%;         /* sat   */

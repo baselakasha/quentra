@@ -41,16 +41,16 @@
         padding: 0.5rem 1rem;
         
         &.is-active {
-          background-color: #3e8ed0;
+          background-color: var(--bulma-primary);
           color: white;
         }
         
         &:hover {
-          background-color: #f5f5f5;
-          color: #363636;
+          background-color: #f3f3f3;
+          color: #000;
           
           &.is-active {
-            background-color: #3273dc;
+            background-color: var(--bulma-primary);
             color: white;
           }
         }

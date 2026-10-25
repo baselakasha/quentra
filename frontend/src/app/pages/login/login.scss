@@ -1,14 +1,4 @@
-// Login page specific styles
-:host {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+@use "../../../styles/abstracts/notebook-theme";
 
-.login-form-container {
-  width: 100%;
-  
-  form {
-    width: 100%;
-  }
-}
+// Login page specific styles
+@include notebook-theme.auth-page;
