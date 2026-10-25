@@ -4,12 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Budget } from '../../types/budget.types';
 import Chart from 'chart.js/auto';
 import { DropdownComponent } from '../dropdown';
-import { DropdownItemComponent } from '../dropdown-item';
 
 @Component({
   selector: 'app-budget-chart',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownComponent, DropdownItemComponent],
+  imports: [CommonModule, FormsModule, DropdownComponent],
   templateUrl: './budget-chart.html',
   styleUrl: './budget-chart.scss'
 })
