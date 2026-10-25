@@ -1,0 +1,270 @@
+{
+  "$schema": "./node_modules/testreel/recording-definition.schema.json",
+  "url": "http://localhost:4200/login",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "outputSize": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cursor": {
+    "style": "default",
+    "size": 22,
+    "color": "#000000",
+    "rippleColor": "rgba(51, 90, 117, 0.45)",
+    "rippleSize": 44,
+    "transitionMs": 350
+  },
+  "chrome": {
+    "titleBarColor": "#f3f3f3",
+    "url": "Quentra"
+  },
+  "background": {
+    "gradient": {
+      "from": "#335a75",
+      "to": "#5EA5D7"
+    },
+    "padding": 48,
+    "borderRadius": 14
+  },
+  "waitForSelector": "input[formcontrolname='username']",
+  "steps": [
+    {
+      "action": "wait",
+      "ms": 390
+    },
+    {
+      "action": "type",
+      "selector": "input[formcontrolname='username']",
+      "text": "alexm",
+      "delay": 60,
+      "pauseAfter": 0
+    },
+    {
+      "action": "type",
+      "selector": "input[formcontrolname='password']",
+      "text": "demo1234",
+      "delay": 60,
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 260
+    },
+    {
+      "action": "click",
+      "selector": "button[type='submit']",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 1560
+    },
+    {
+      "action": "scroll",
+      "y": 380,
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 650
+    },
+    {
+      "action": "scroll",
+      "y": -380,
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 325
+    },
+    {
+      "action": "click",
+      "selector": "button:has-text('Sort by')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 260
+    },
+    {
+      "action": "click",
+      "selector": ".dropdown-item:has-text('Name')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 975
+    },
+    {
+      "action": "click",
+      "selector": "button:has-text('Sort by')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 260
+    },
+    {
+      "action": "click",
+      "selector": ".dropdown-item:has-text('Monthly Income')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 975
+    },
+    {
+      "action": "click",
+      "selector": "button:has-text('Sort by')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 260
+    },
+    {
+      "action": "click",
+      "selector": ".dropdown-item:has-text('Start Date')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 650
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .toggle-button",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 975
+    },
+    {
+      "action": "scroll",
+      "y": 330,
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 585
+    },
+    {
+      "action": "zoom",
+      "selector": ".collapsible-container:has-text('February 2026') .spending-breakdown",
+      "scale": 1.4,
+      "duration": 900
+    },
+    {
+      "action": "wait",
+      "ms": 910
+    },
+    {
+      "action": "zoom",
+      "scale": 1,
+      "duration": 700
+    },
+    {
+      "action": "scroll",
+      "y": 380,
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 910
+    },
+    {
+      "action": "scroll",
+      "y": -710,
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 325
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .table-view tr:has-text('Clothing') .type-toggle-button:has-text('Need')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 520
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .table-view tr:has-text('Clothing') .type-toggle-button:has-text('Want')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 520
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .toggle-button",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 780
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('Emergency Fund') .toggle-button",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 1300
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('Emergency Fund') .toggle-button",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 650
+    },
+    {
+      "action": "click",
+      "selector": "a.navbar-item:has-text('Statistics')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 1430
+    },
+    {
+      "action": "click",
+      "selector": ".tag.is-clickable:has-text('Name')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 520
+    },
+    {
+      "action": "scroll",
+      "y": 460,
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 1170
+    },
+    {
+      "action": "click",
+      "selector": "button:has-text('All budgets')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 1040
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "$schema": "./node_modules/testreel/recording-definition.schema.json",
+  "url": "http://localhost:4200/login",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "outputSize": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cursor": {
+    "style": "default",
+    "size": 22,
+    "color": "#000000",
+    "rippleColor": "rgba(51, 90, 117, 0.45)",
+    "rippleSize": 44,
+    "transitionMs": 350
+  },
+  "chrome": {
+    "titleBarColor": "#f3f3f3",
+    "url": "Quentra"
+  },
+  "background": {
+    "gradient": {
+      "from": "#335a75",
+      "to": "#5EA5D7"
+    },
+    "padding": 48,
+    "borderRadius": 14
+  },
+  "waitForSelector": "input[formcontrolname='username']",
+  "steps": [
+    {
+      "action": "wait",
+      "ms": 300
+    },
+    {
+      "action": "type",
+      "selector": "input[formcontrolname='username']",
+      "text": "alexm",
+      "delay": 12,
+      "pauseAfter": 0
+    },
+    {
+      "action": "type",
+      "selector": "input[formcontrolname='password']",
+      "text": "demo1234",
+      "delay": 12,
+      "pauseAfter": 0
+    },
+    {
+      "action": "click",
+      "selector": "button[type='submit']",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 1300
+    },
+    {
+      "action": "wait",
+      "ms": 900
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .toggle-button",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 900
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .table-view tr:has-text('Clothing') .type-toggle-button:has-text('Need')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .table-view tr:has-text('Clothing') .type-toggle-button:has-text('Want')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "scroll",
+      "y": 420
+    },
+    {
+      "action": "wait",
+      "ms": 400
+    },
+    {
+      "action": "scroll",
+      "y": -420
+    },
+    {
+      "action": "click",
+      "selector": "a.navbar-item:has-text('Statistics')",
+      "pauseAfter": 0
+    },
+    {
+      "action": "wait",
+      "ms": 1800
+    },
+    {
+      "action": "scroll",
+      "y": 480
+    },
+    {
+      "action": "wait",
+      "ms": 500
+    }
+  ]
+}

@@ -5,3 +5,6 @@ db.sqlite
 .env.*
 !.env.example
 .DS_Store
+# Demo recording
+demo/node_modules
+demo/testreel-output

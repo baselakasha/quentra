@@ -1,0 +1,210 @@
+{
+  "$schema": "./node_modules/testreel/recording-definition.schema.json",
+  "url": "http://localhost:4200/login",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "outputSize": {
+    "width": 1920,
+    "height": 1080
+  },
+  "waitForSelector": "input[formcontrolname='username']",
+  "cursor": {
+    "style": "default",
+    "size": 22,
+    "color": "#000000",
+    "rippleColor": "rgba(51, 90, 117, 0.45)",
+    "rippleSize": 44,
+    "transitionMs": 700
+  },
+  "chrome": {
+    "titleBarColor": "#f3f3f3",
+    "url": "Quentra"
+  },
+  "background": {
+    "gradient": {
+      "from": "#335a75",
+      "to": "#5EA5D7"
+    },
+    "padding": 48,
+    "borderRadius": 14
+  },
+  "steps": [
+    {
+      "action": "wait",
+      "ms": 1500
+    },
+    {
+      "action": "click",
+      "selector": "input[formcontrolname='username']"
+    },
+    {
+      "action": "type",
+      "selector": "input[formcontrolname='username']",
+      "text": "alexm",
+      "delay": 90
+    },
+    {
+      "action": "click",
+      "selector": "input[formcontrolname='password']"
+    },
+    {
+      "action": "type",
+      "selector": "input[formcontrolname='password']",
+      "text": "demo1234",
+      "delay": 90
+    },
+    {
+      "action": "wait",
+      "ms": 600
+    },
+    {
+      "action": "click",
+      "selector": "button[type='submit']"
+    },
+    {
+      "action": "wait",
+      "ms": 2500
+    },
+    {
+      "action": "wait",
+      "ms": 2500
+    },
+    {
+      "action": "click",
+      "selector": "button:has-text('Sort by')"
+    },
+    {
+      "action": "wait",
+      "ms": 800
+    },
+    {
+      "action": "click",
+      "selector": ".dropdown-item:has-text('Monthly Income')"
+    },
+    {
+      "action": "wait",
+      "ms": 1200
+    },
+    {
+      "action": "click",
+      "selector": "button:has-text('Sort by')"
+    },
+    {
+      "action": "click",
+      "selector": ".dropdown-item:has-text('Start Date')"
+    },
+    {
+      "action": "wait",
+      "ms": 1500
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .toggle-button"
+    },
+    {
+      "action": "wait",
+      "ms": 1500
+    },
+    {
+      "action": "scroll",
+      "y": 420
+    },
+    {
+      "action": "wait",
+      "ms": 1800
+    },
+    {
+      "action": "zoom",
+      "selector": ".collapsible-container:has-text('February 2026') .spending-breakdown",
+      "scale": 1.5,
+      "duration": 1200
+    },
+    {
+      "action": "wait",
+      "ms": 2000
+    },
+    {
+      "action": "zoom",
+      "scale": 1,
+      "duration": 800
+    },
+    {
+      "action": "scroll",
+      "y": 500
+    },
+    {
+      "action": "wait",
+      "ms": 2000
+    },
+    {
+      "action": "scroll",
+      "y": -920
+    },
+    {
+      "action": "wait",
+      "ms": 1200
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .table-view tr:has-text('Clothing') .type-toggle-button:has-text('Need')"
+    },
+    {
+      "action": "wait",
+      "ms": 1500
+    },
+    {
+      "action": "click",
+      "selector": ".collapsible-container:has-text('February 2026') .table-view tr:has-text('Clothing') .type-toggle-button:has-text('Want')"
+    },
+    {
+      "action": "wait",
+      "ms": 1500
+    },
+    {
+      "action": "wait",
+      "ms": 2000
+    },
+    {
+      "action": "wait",
+      "ms": 1800
+    },
+    {
+      "action": "click",
+      "selector": "a.navbar-item:has-text('Statistics')"
+    },
+    {
+      "action": "wait",
+      "ms": 2500
+    },
+    {
+      "action": "wait",
+      "ms": 2500
+    },
+    {
+      "action": "click",
+      "selector": ".tag.is-clickable:has-text('Name')"
+    },
+    {
+      "action": "wait",
+      "ms": 1500
+    },
+    {
+      "action": "scroll",
+      "y": 500
+    },
+    {
+      "action": "wait",
+      "ms": 2500
+    },
+    {
+      "action": "scroll",
+      "y": -500
+    },
+    {
+      "action": "wait",
+      "ms": 1500
+    }
+  ]
+}

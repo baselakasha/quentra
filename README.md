@@ -22,6 +22,12 @@ Manage your monthly household budget, a holiday, a project or any budget using a
 
 </div>
 
+## Demo
+
+![Quentra demo](./docs/demo-medium.gif)
+
+Also available: [8-second teaser](./docs/demo-short.mp4) and the [full walkthrough (MP4, ~1 min)](./docs/demo.mp4). Regenerated automatically, see [`demo/`](./demo).
+
 ## Features 
 
 Full list of user stories [here](./docs/user-stories.md).
