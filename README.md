@@ -16,17 +16,11 @@
 ![](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
 ![](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 
-<img src="https://github.com/user-attachments/assets/d44e4f9f-9ae7-45d0-9a5e-5e0117433520" width="80%" />
 
 Manage your monthly household budget, a holiday, a project or any budget using an intuitive web app.
-
-</div>
-
-## Demo
-
 ![Quentra demo](./docs/demo-medium.gif)
 
-Also available: [8-second teaser](./docs/demo-short.mp4) and the [full walkthrough (MP4, ~1 min)](./docs/demo.mp4). Regenerated automatically, see [`demo/`](./demo).
+</div>
 
 ## Features 
 
